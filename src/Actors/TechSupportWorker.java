@@ -21,16 +21,8 @@ public class TechSupportWorker extends Employee {
 		Database.getTechSupportWorkers().add(this);
 	}
   
-	public String viewStudent() {
+	public void viewStudent() {
 		int var = 0;
-		System.out.println(var+1);
-		if(var > 0) {
-			System.out.println(1);
-		}
-		else {
-			System.out.println(0);
-		}
-		return null;
 	}
 	public void ILoveYouMerey() {
 		int var = 0;
@@ -83,7 +75,7 @@ public class TechSupportWorker extends Employee {
 		TechSupportWorker other = (TechSupportWorker) obj;
 		return Objects.equals(requests, other.requests) && Objects.equals(statusRequest, other.statusRequest);
 	}
-	public void IloveYouAika() {
-		System.out.println("Aika loves Merei");
+	public String IloveYouAika() {
+		return "Aika loves Merei";
 	}
 }
