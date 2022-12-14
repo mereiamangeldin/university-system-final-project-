@@ -24,6 +24,9 @@ public class TechSupportWorker extends Employee {
 	public String viewStudent() {
 		return null;
 	}
+	public void ILoveYouMerey() {
+		System.out.println("Merey loves Aika a lot lot");
+	}
   
 	public boolean requestAccepted(Request request) {
 		for(HashMap.Entry<Request, Boolean> r : statusRequest.entrySet()) {
