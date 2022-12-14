@@ -82,11 +82,4 @@ public class Admin extends Employee {
     	
     }
 
-    public String viewStudent() {
-        return null;
-    }
-
-    public void viewMark() {
-    	
-    }
 }
