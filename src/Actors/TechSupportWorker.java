@@ -20,11 +20,7 @@ public class TechSupportWorker extends Employee {
 	{
 		Database.getTechSupportWorkers().add(this);
 	}
-  
-	public String viewStudent() {
-		return null;
-	}
-  
+
 	public boolean requestAccepted(Request request) {
 		for(HashMap.Entry<Request, Boolean> r : statusRequest.entrySet()) {
 			if(r.getKey().equals(request)) {
