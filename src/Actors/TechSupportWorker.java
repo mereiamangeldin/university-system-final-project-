@@ -24,8 +24,9 @@ public class TechSupportWorker extends Employee {
 		Database.getTechSupportWorkers().add(this);
 	}
   
-	public String viewStudent() {
-		return null;
+	public void viewStudent() {
+		System.out.println("Medina dura!");
+		System.out.println("Aisultan durak!");
 	}
   
 	public boolean requestAccepted(Request request) {
