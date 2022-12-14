@@ -22,6 +22,14 @@ public class TechSupportWorker extends Employee {
 	}
   
 	public String viewStudent() {
+		int var = 0;
+		System.out.println(var+1);
+		if(var > 0) {
+			System.out.println(1);
+		}
+		else {
+			System.out.println(0);
+		}
 		return null;
 	}
 	public void ILoveYouMerey() {
