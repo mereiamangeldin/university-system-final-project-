@@ -10,9 +10,6 @@ public class TechSupportWorker extends Employee {
 	public TechSupportWorker() {
 		super();
 	}
-	public String medinaAndAisultan() {
-		return "the Best";
-	}
 
 	public TechSupportWorker(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
 		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
@@ -24,9 +21,8 @@ public class TechSupportWorker extends Employee {
 		Database.getTechSupportWorkers().add(this);
 	}
   
-	public void viewStudent() {
-		System.out.println("Medina dura!");
-		System.out.println("Aisultan durak!");
+	public String viewStudent() {
+		return null;
 	}
   
 	public boolean requestAccepted(Request request) {
@@ -54,9 +50,6 @@ public class TechSupportWorker extends Employee {
 
 	public void setStatusRequest(HashMap<Request, Boolean> statusRequest) {
 		this.statusRequest = statusRequest;
-	}
-	public void MedinkaPuper() {
-		System.out.println("Aisultan not cool!");
 	}
 
 	public String toString() {
