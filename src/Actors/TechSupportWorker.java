@@ -13,22 +13,16 @@ public class TechSupportWorker extends Employee {
 
 	public TechSupportWorker(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
 		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
-//		this.requests = new HashMap<Request, Boolean>();
-//		this.statusRequest = new HashMap<Request, Boolean>();
+		this.requests = new HashMap<Request, Boolean>();
+		this.statusRequest = new HashMap<Request, Boolean>();
 	}
 	
 	{
 		Database.getTechSupportWorkers().add(this);
 	}
   
-	public int viewStudent() {
-		int var = 0;
-		return 0;
-	}
-	public void ILoveYouMerey() {
-		int var = 0;
-		boolean guys = true;
-		System.out.println("Merey loves Aika noy a lot lot");
+	public String viewStudent() {
+		return null;
 	}
   
 	public boolean requestAccepted(Request request) {
@@ -47,7 +41,7 @@ public class TechSupportWorker extends Employee {
 	}
 
 	public void setRequests(HashMap<Request, Boolean> requests) {
-//		this.requests = requests;
+		this.requests = requests;
 	}
 
 	public HashMap<Request, Boolean> getStatusRequest() {
@@ -63,7 +57,7 @@ public class TechSupportWorker extends Employee {
 	}
 
 	public int hashCode() {
-//		final int prime = 31;
+		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + Objects.hash(requests, statusRequest);
 		return result;
@@ -75,9 +69,5 @@ public class TechSupportWorker extends Employee {
 		if (getClass() != obj.getClass()) return false;
 		TechSupportWorker other = (TechSupportWorker) obj;
 		return Objects.equals(requests, other.requests) && Objects.equals(statusRequest, other.statusRequest);
-	}
-	public boolean IloveYouAika() {
-		return true;
-		
 	}
 }
