@@ -24,8 +24,8 @@ public class TechSupportWorker extends Employee {
 		Database.getTechSupportWorkers().add(this);
 	}
   
-	public String viewStudent() {
-		return null;
+	public int viewStudent() {
+		return -1;
 	}
   
 	public boolean requestAccepted(Request request) {
