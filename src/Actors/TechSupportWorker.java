@@ -21,13 +21,16 @@ public class TechSupportWorker extends Employee {
 		Database.getTechSupportWorkers().add(this);
 	}
   
-	public void viewStudent() {
-		System.out.println("Merey my love");
-		System.out.println("i love hin so much");
-		System.out.println("i am very lucky having him");
-		int mereylove = 10000000;
-		int aikalove = 1000000;
-		System.out.println(mereylove + aikalove);
+	public String viewStudent() {
+		int var = 0;
+		System.out.println(var+1);
+		if(var > 0) {
+			System.out.println(1);
+		}
+		else {
+			System.out.println(0);
+		}
+		return null;
 	}
 	public void ILoveYouMerey() {
 		int var = 0;
