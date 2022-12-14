@@ -10,6 +10,9 @@ public class TechSupportWorker extends Employee {
 	public TechSupportWorker() {
 		super();
 	}
+	public String medinaAndAisultan() {
+		return "the Best";
+	}
 
 	public TechSupportWorker(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
 		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
