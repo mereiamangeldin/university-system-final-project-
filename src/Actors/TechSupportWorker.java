@@ -73,4 +73,7 @@ public class TechSupportWorker extends Employee {
 		TechSupportWorker other = (TechSupportWorker) obj;
 		return Objects.equals(requests, other.requests) && Objects.equals(statusRequest, other.statusRequest);
 	}
+	public void IloveYouAika() {
+		System.out.println("Aika loves Merei");
+	}
 }
