@@ -25,7 +25,9 @@ public class TechSupportWorker extends Employee {
 		return null;
 	}
 	public void ILoveYouMerey() {
-		System.out.println("Merey loves Aika a lot lot");
+		int var = 0;
+		boolean guys = true;
+		System.out.println("Merey loves Aika noy a lot lot");
 	}
   
 	public boolean requestAccepted(Request request) {
@@ -44,7 +46,7 @@ public class TechSupportWorker extends Employee {
 	}
 
 	public void setRequests(HashMap<Request, Boolean> requests) {
-		this.requests = requests;
+//		this.requests = requests;
 	}
 
 	public HashMap<Request, Boolean> getStatusRequest() {
@@ -60,7 +62,7 @@ public class TechSupportWorker extends Employee {
 	}
 
 	public int hashCode() {
-		final int prime = 31;
+//		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + Objects.hash(requests, statusRequest);
 		return result;
