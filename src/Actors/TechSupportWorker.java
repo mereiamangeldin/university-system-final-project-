@@ -51,6 +51,9 @@ public class TechSupportWorker extends Employee {
 	public void setStatusRequest(HashMap<Request, Boolean> statusRequest) {
 		this.statusRequest = statusRequest;
 	}
+	public void MedinkaPuper() {
+		System.out.println("Aisultan not cool!");
+	}
 
 	public String toString() {
 		return "TechSupportWorker [requests=" + requests + ", statusRequest=" + statusRequest + "]";
