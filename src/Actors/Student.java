@@ -97,6 +97,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     }
 
     public void viewCourses(){
+    	Database.getUserActions().add(String.format("User: %s has viewed courses", super.getUsername()));
     	for(HashMap.Entry<Course, Mark> marks : transcript.entrySet()) {
     		System.out.println(marks.getKey());
       }
@@ -117,6 +118,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     			for(HashMap.Entry<Course, Mark> marks : transcript.entrySet()) {
     				if(marks.getKey().equals(course.getPrerequisite())) {
     					if(marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
+    						Database.getUserActions().add(String.format("User: %s has registered for course: %s", super.getUsername(), course.getName()));
     						transcript.put(course, new Mark());
     						break;
     					}
@@ -124,7 +126,8 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     			}
     		}
         else {
-          transcript.put(course, new Mark());
+        	Database.getUserActions().add(String.format("User: %s has registered for course: %s", super.getUsername(), course.getName()));
+        	transcript.put(course, new Mark());
         }
       }
     }
@@ -140,6 +143,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     public void makeBookOrder(Librarian librarian, Order order){
     	String answer = librarian.orderBook(order);
         if(answer.equals("Accepted")) {
+			Database.getUserActions().add(String.format("User: %s made order for book: %s", super.getUsername(), order.getBook().getName()));
         	System.out.println("The order has been done succesfully! "
         			+ "You can take the order in 5 minutes. Please don't forget to return the book until the deadline!");
         } else if(answer.equals("Books over")) {
@@ -153,6 +157,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     	if(employee instanceof TechSupportWorker) {
     		TechSupportWorker t = (TechSupportWorker)employee;
         if(request.getRequestDescription().length() > 20) {
+			Database.getUserActions().add(String.format("User: %s made request to tech support worker", super.getUsername()));
         	t.getRequests().put(request, true);
         	System.out.println("Request has been accepted!");
         	t.getStatusRequest().put(request, false);
@@ -172,6 +177,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
         }
       }
       else if(employee instanceof Manager) {
+		Database.getUserActions().add(String.format("User: %s made request to manager", super.getUsername()));
     	  Manager m = (Manager)employee;
     	  m.getRequests().put(request, false);
     	  for(School s : Database.getSchools()) {
@@ -189,10 +195,12 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     }
 
     public void writeComment(String comment, News n) {
+		Database.getUserActions().add(String.format("User: %s writed comment to news %s", super.getUsername(), n.getTitle()));
     	n.getComments().add(comment);
     }
 
     public void viewTranscript() {
+		Database.getUserActions().add(String.format("User: %s has viewed transcript", super.getUsername()));
     	for(HashMap.Entry<Course, Mark> marks : transcript.entrySet()) {
     		System.out.println(marks.getKey().getName() + ": " + marks.getValue().getTotal());
         }
@@ -227,7 +235,9 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     public void viewMark(Course c) {
     	for(HashMap.Entry<Course, Mark> t : transcript.entrySet()) {
     		if(t.getKey().equals(c)) {
+    			Database.getUserActions().add(String.format("User: %s viewed mark of course: %s", super.getUsername(), c.getName()));
     			System.out.println(c.getName() + ": " + t.getValue());
+    			break;
     		}
         }
     }

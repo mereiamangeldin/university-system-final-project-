@@ -47,9 +47,7 @@ public class Librarian extends Employee {
     	System.out.println("You have no debts!");
     }
   
-    public void makeRequest(Request request, Employee employee) {    
-    }
-  
+
     public Vector<Order> getTakers() {
     	return takers;
     }

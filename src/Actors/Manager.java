@@ -25,6 +25,7 @@ public class Manager extends Employee implements CanViewMarks {
 	}
 
 	public void viewMark(Course c) {
+		Database.getUserActions().add(String.format("User: %s viewed mark of course: ", super.getUsername(), c.getName()));
 		for(Student s: Database.getStudents()) {
 			s.viewMark(c);
 		}
@@ -40,6 +41,7 @@ public class Manager extends Employee implements CanViewMarks {
 	}
   
 	public void removeNews(News news) {
+		Database.getUserActions().add(String.format("User: %s removed news: ", super.getUsername(), news.getTitle()));
 		for(News n : Database.getAllNews()) {
 			if(n.equals(news)) {
 				Database.getAllNews().remove(n);

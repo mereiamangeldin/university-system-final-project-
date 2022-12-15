@@ -1,5 +1,6 @@
 package Actors;
-import java.util.Date;
+import java.util.*;
+import java.text.*;
 import Attributes.*;
 
 public class Admin extends Employee {
@@ -15,6 +16,7 @@ public class Admin extends Employee {
 	}
 	
     public void addUser(User u) {
+		Database.getUserActions().add(String.format("User: %s added user: %s", super.getUsername(), u.getUsername()));
     	if(u instanceof Teacher) {
     		Database.getTeachers().add((Teacher)u);
     	}
@@ -45,6 +47,7 @@ public class Admin extends Employee {
     }
     
     public void removeUser(User u) {
+		Database.getUserActions().add(String.format("User: %s removed user: %s", super.getUsername(), u.getUsername()));
     	if(u instanceof Teacher) {
     		Database.getTeachers().remove((Teacher)u);
 	  	}
@@ -74,12 +77,29 @@ public class Admin extends Employee {
 	  	}
     }
 
-    public void updateUser() {
-    	
+    public void updateUser(User u, String type, String toChange) throws Exception{
+		Database.getUserActions().add(String.format("User: %s updated user: %s", super.getUsername(), u.getUsername()));
+    	if(type.toLowerCase().equals("username")) {
+    		u.setUsername(toChange);
+    	}
+    	if(type.toLowerCase().equals("name")) {
+    		u.setName(toChange);
+    	}
+    	if(type.toLowerCase().equals("surname")) {
+    		u.setSurname(toChange);
+    	}
+    	if(type.toLowerCase().equals("password")) {
+    		u.setPassword(toChange);
+    	}
+    	if(type.toLowerCase().equals("dateofbirth")) {
+    		u.setDateOfBirth(new SimpleDateFormat("dd/MM/yyyy").parse(toChange));
+    	}
     }
 
     public void seeUserActions(User u) {
-    	
+    	for(String s : Database.getUserActions()) {
+    		System.out.println(s);
+    	}
     }
 
 }

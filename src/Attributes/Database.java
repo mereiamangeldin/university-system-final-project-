@@ -19,6 +19,7 @@ public final class Database {
     private static Vector<News> allNews;
     private static Vector<Request> requests;
     private static Vector<Parent> parents;
+    private static Vector<String> userActions;
     
     {
     	teachers = new Vector<Teacher>();
@@ -34,36 +35,11 @@ public final class Database {
     	admins = new Vector<Admin>();
     	techSupportWorkers = new Vector<TechSupportWorker>();
     	parents = new Vector<Parent>();
+    	setUserActions(new Vector<String>()); 
     }
     
     private Database() {};
     
-    public static void addUser(User u) {
-    	if(u instanceof Student) {
-    		students.add((Student)u);
-    	}
-    	else if(u instanceof Admin) {
-    		admins.add((Admin)u);
-    	}
-    	else if(u instanceof Teacher) {
-    		teachers.add((Teacher)u);
-    	}
-    	else if(u instanceof Librarian) {
-    		librarians.add((Librarian)u);
-    	}
-    	else if(u instanceof Parent) {
-    		parents.add((Parent)u);
-    	}
-    	else if(u instanceof Dean) {
-    		deans.add((Dean)u);
-    	}
-    	else if(u instanceof Manager) {
-    		managers.add((Manager)u);
-    	}
-    	else if(u instanceof TechSupportWorker) {
-    		techSupportWorkers.add((TechSupportWorker)u);
-    	}
-    }
     
 	public static Database getDatabase() {
 		return db;
@@ -119,5 +95,13 @@ public final class Database {
 	
 	public static Vector<Parent> getParents(){
 		return parents;
+	}
+
+	public static Vector<String> getUserActions() {
+		return userActions;
+	}
+
+	public static void setUserActions(Vector<String> userActions) {
+		Database.userActions = userActions;
 	}
 }

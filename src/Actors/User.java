@@ -24,11 +24,15 @@ public abstract class User {
 	}
     
     public boolean login(String password) {
-    	if(this.password.equals(password)) logged = true;
-    		return logged;
+    	if(this.password.equals(password)) {
+    		Database.getUserActions().add(String.format("User: %s has logged", username));
+    		logged = true;
+    	}
+    	return logged;
     }
 
     public boolean logout() {
+    	Database.getUserActions().add(String.format("User: %s has logged out", username));
     	logged = false;
     	return logged;
     }
