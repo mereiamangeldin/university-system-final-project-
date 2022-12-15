@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>OOP final project</name>
+=======
+	<name>OOP project</name>
+>>>>>>> b88165c594c5d65cf570a27dc8b84710af68f105
 	<comment></comment>
 	<projects>
 	</projects>

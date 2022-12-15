@@ -1,31 +1,53 @@
 package Attributes;
 
 import Actors.*;
-import java.util.HashMap;
+import java.util.*;
+import javafx.util.*;
 
 public class Questionnaire {
-	private HashMap<Teacher, Double> rating;
+	private Vector<Pair<Teacher, Double>> rating;
 
 	public Questionnaire() {
-		rating = new HashMap<Teacher, Double>();
+		rating = new Vector<Pair<Teacher, Double>>();
 	}
 	
 	public double getTeacherRate(Teacher teacher) {
-	    return 0;
+		double rate = 0;
+		int cnt = 0;
+	    for(Pair<Teacher, Double> p : rating) {
+	    	if(p.getKey().equals(teacher)) {
+	    		rate += p.getValue();
+	    		cnt++;
+	    	}
+	    }
+	    return rate / cnt;
 	}
 	
 	public String getBestTeacher() {
-	    return null;
+		double rate = 0;
+		String name = "";
+		HashSet <Teacher> teacher = new HashSet<Teacher>();
+		for(Pair<Teacher, Double> p : rating) {
+	    	teacher.add(p.getKey());
+	    }
+		for(Teacher t : teacher) {
+	    	if(getTeacherRate(t) > rate) {
+	    		rate = getTeacherRate(t);
+	    		name = t.getName();
+	    	}
+	    }
+		return name + "is the best teacher!";
 	}
 
 	public void printTeachersByRate(String type) {
+		
 	}
 	
-	public HashMap<Teacher, Double> getRating() {
+	public Vector<Pair<Teacher, Double>> getRating() {
 		return rating;
 	}
 	
-	public void setRating(HashMap<Teacher, Double> rating) {
+	public void setRating(Vector<Pair<Teacher, Double>> rating) {
 		this.rating = rating;
 	}
 	

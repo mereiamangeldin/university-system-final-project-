@@ -119,7 +119,7 @@ public abstract class Employee extends User implements CanMakeRequest, CanWriteC
 
   	public void viewStudentBy(int viewBy) {
   		if(viewBy == 1){
-  			Collections.sort(Database.getStudents(), new IdComparator());
+  			Collections.sort(Database.getStudents());
   			System.out.println(Database.getStudents());
   		}
   		

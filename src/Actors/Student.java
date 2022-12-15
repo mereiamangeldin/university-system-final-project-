@@ -1,6 +1,7 @@
 package Actors;
 
 import Interfaces.*;
+import javafx.util.*;
 import java.util.*;
 import Attributes.*;
 import Enums.*;
@@ -129,7 +130,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     }
 
     public void rateTeachers(Teacher teacher, Questionnaire q, Double mark){
-    	q.getRating().put(teacher, mark);
+    	q.getRating().add(new Pair<Teacher, Double>(teacher, mark));
     }
 
     public HashMap<Course, Mark> getTranscript() {
