@@ -1,8 +1,8 @@
 package Attributes;
 
 import Actors.*;
+import javafx.util.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Questionnaire {
 	private HashMap<Teacher, Vector<Double>> rating;
@@ -24,7 +24,6 @@ public class Questionnaire {
 	    }
 	    return rate / cnt;
 	}
-	
 	public String getBestTeacher() {
 		double rate = 0;
 		String name = "";
@@ -36,17 +35,13 @@ public class Questionnaire {
 	    }
 		return name + "is the best teacher!";
 	}
-	public Double sumV(Vector <Double> vector) {
-		Double sum = 0.0;
-		for(Double d: vector) {
-			sum += d;
+	public Vector<Pair<Teacher, Double>> printTeachersByRate() {
+		Vector<Pair<Teacher, Double>> sortedByRate = new Vector<Pair<Teacher, Double>>();
+		for(HashMap.Entry<Teacher, Vector<Double>> r: rating.entrySet()) {
+			sortedByRate.add(new Pair<Teacher, Double>(r.getKey(), getTeacherRate(r.getKey())));
 		}
-		return sum;
-	}
-	public void printTeachersByRate() {
-		HashMap<Teacher, Vector<Double>> stream = rating.entrySet().stream().sorted(Collections.reverseOrder(HashMap.Entry.comparingByValue(new RateComparator()))).collect(Collectors.toMap
-				(HashMap.Entry::getKey, HashMap.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-		System.out.println(stream);
+		Collections.sort(sortedByRate, new RateComparator());
+		return sortedByRate;
 	}
 	
 	public HashMap<Teacher, Vector<Double>> getRating() {
