@@ -13,6 +13,7 @@ public class Course {
     private ScienceDegree scienceDegree;
     private Vector<File> files;
     private CourseType type;
+    private Vector<Teacher> teachers;
     
     public Course(String id, String name, Course prerequisite, int numberOfCredits, School school, ScienceDegree scienceDegree, CourseType type) {
     	this.id = id;
@@ -101,5 +102,13 @@ public class Course {
 		return "Course [id=" + id + ", name=" + name + ", prerequisite=" + prerequisite
 				+ ", numberOfCredits=" + numberOfCredits + ", school=" + school + ", scienceDegree=" + scienceDegree
 				+ ", files=" + files + ", type=" + type + "]";
+	}
+
+	public Vector<Teacher> getTeachers() {
+		return teachers;
+	}
+
+	public void setTeachers(Vector<Teacher> teachers) {
+		this.teachers = teachers;
 	}
 }

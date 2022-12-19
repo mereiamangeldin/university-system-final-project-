@@ -5,7 +5,12 @@ import Attributes.*;
 
 public class Dean extends Employee {
 
-    public Dean() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public Dean() {
     	super();
     }
     
@@ -19,7 +24,7 @@ public class Dean extends Employee {
 
     public boolean signRequest(Request r) {
 		Database.getUserActions().add(String.format("User: %s signed request of date: %s", super.getUsername(), r.getDateOfRequest()));
-        if(r.getRequestDescription().length() >= 25) return true;
+        if(r.getDescription().length() >= 25) return true;
         	return false;
     }
     

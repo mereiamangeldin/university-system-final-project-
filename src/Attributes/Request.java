@@ -1,22 +1,27 @@
 package Attributes;
 
 import java.util.*;
+import Enums.*;
 
 public class Request {
-	private String requestDescription;
+	private String userID;
+	private requestType title;
+	private String description;
     private Date dateOfRequest;
     
-    public Request(String requestDescription) {
-		this.requestDescription = requestDescription;
-		this.dateOfRequest = dateOfRequest;
+    public Request(String userID, requestType title, String requestDescription) {
+    	this.userID = userID;
+    	this.title = title;
+		this.description = requestDescription;
+		this.dateOfRequest = new Date();
 	}
     
-	public String getRequestDescription() {
-		return requestDescription;
+	public String getDescription() {
+		return description;
 	}
 	
-	public void setRequestDescription(String requestDescription) {
-		this.requestDescription = requestDescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public Date getDateOfRequest() {
@@ -31,7 +36,7 @@ public class Request {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((dateOfRequest == null) ? 0 : dateOfRequest.hashCode());
-		result = prime * result + ((requestDescription == null) ? 0 : requestDescription.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		return result;
 	}
 
@@ -45,16 +50,32 @@ public class Request {
 				return false;
 		} else if (!dateOfRequest.equals(other.dateOfRequest))
 			return false;
-		if (requestDescription == null) {
-			if (other.requestDescription != null)
+		if (description == null) {
+			if (other.description != null)
 				return false;
-		} else if (!requestDescription.equals(other.requestDescription))
+		} else if (!description.equals(other.description))
 			return false;
 		return true;
 	}
 
 	public String toString() {
-		return "Request [requestDescription=" + requestDescription + ", dateOfRequest=" + dateOfRequest + "]";
+		return "Request [Description=" + description + ", dateOfRequest=" + dateOfRequest + "]";
+	}
+
+	public requestType getTitle() {
+		return title;
+	}
+
+	public void setTitle(requestType title) {
+		this.title = title;
+	}
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 }
 

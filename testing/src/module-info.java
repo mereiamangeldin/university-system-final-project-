@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author Merei
+ *
+ */
+module testing {
+}

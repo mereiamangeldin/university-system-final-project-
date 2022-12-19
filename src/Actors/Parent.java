@@ -5,6 +5,10 @@ import Attributes.*;
 import Interfaces.*;
 
 public class Parent extends User implements CanViewTranscript, CanViewMarks {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Student child;
 
 	public Parent() {

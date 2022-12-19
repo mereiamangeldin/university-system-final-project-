@@ -7,8 +7,9 @@ import java.util.*;
 import Attributes.*;
 import Enums.*;
 
-public class Student extends User implements CanWriteComment, CanViewTranscript, CanViewMarks, Comparable<Student> {
-    private String id;
+public class Student extends User implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student> {
+	private static final long serialVersionUID = 1L;
+	private String id;
     private School school;
     private int yearOfStudy;
     private HashMap<Pair<Course, Teacher>, Mark> transcript;
@@ -112,33 +113,8 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
       }
     }
 
-    public void registerForCourse(Course course, Teacher t){
-    	int amountOfCredits = 0;
-    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
-    		if(marks.getValue().getFinalScore() == 0 && marks.getValue().getLetterGrade() != 'F') {
-    			amountOfCredits += marks.getKey().getKey().getNumberOfCredits();
-    		}
-    	}
-    	if(amountOfCredits+course.getNumberOfCredits() > 30) {
-    		System.out.println("Impossible, number of credits greater than 30");
-    	}
-    	else {
-    		if(course.getPrerequisite() != null) {
-    			for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
-    				if(marks.getKey().getKey().equals(course.getPrerequisite())) {
-    					if(marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
-    						Database.getUserActions().add(String.format("User: %s has registered for course: %s", super.getUsername(), course.getName()));
-    						transcript.put(new Pair<Course, Teacher>(course, t), new Mark());
-    						break;
-    					}
-    				}
-    			}
-    		}
-        else {
-        	Database.getUserActions().add(String.format("User: %s has registered for course: %s", super.getUsername(), course.getName()));
-        	transcript.put(new Pair<Course, Teacher>(course, t), new Mark());
-        }
-      }
+    public void registerForCourse(Course course, Teacher t, Manager m){
+    	this.makeRequest(new Request(this.getId(), requestType.courseRegistration, course.getId()+" "+t.getId()), m);
     }
 
     public void rateTeachers(Teacher teacher, Questionnaire q, Double mark){
@@ -167,46 +143,23 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
         }
     }
     
-    public void makeRequest(Request request, Employee employee) {
+    public String makeRequest(Request request, Employee employee) {
     	if(employee instanceof TechSupportWorker) {
-    		TechSupportWorker t = (TechSupportWorker)employee;
-        if(request.getRequestDescription().length() > 20) {
-			Database.getUserActions().add(String.format("User: %s made request to tech support worker", super.getUsername()));
-        	t.getRequests().put(request, true);
-        	System.out.println("Request has been accepted!");
-        	t.getStatusRequest().put(request, false);
-//          try {
-//            Thread.sleep(5000);
-//          }catch(InterruptedException ie) {
-//            
-//          }
-          if(t.requestAccepted(request)) {
-        	  System.out.println("Your request has been successfully completed!");
-          } else {
-        	  System.out.println("Your request has not been completed!");
-          }
-        } else {
-        	t.getRequests().put(request, false);
-        	System.out.println("Request has been rejected!");
+        if(request.getDescription().length() > 20 && request.getTitle().equals(requestType.employeeRequest)) {
+        	TechSupportWorker t = (TechSupportWorker)employee;
+        	t.getRequests().add(request);
+    		Database.getUserActions().add(String.format("User: %s made request to Tech support worker", super.getUsername()));
+        	return "Your request has been sended to Tech Support worker";
+        }else {
+        	return "Your request is rejected: description size is less than 20 and sended by employee";	
         }
       }
       else if(employee instanceof Manager) {
 		Database.getUserActions().add(String.format("User: %s made request to manager", super.getUsername()));
-    	  Manager m = (Manager)employee;
-    	  m.getRequests().put(request, false);
-    	  for(School s : Database.getSchools()) {
-    		  if(s.getManagers().contains(m)) {
-    			  if(m.sendRequestToDean(s.getDean(), request)) {
-    				  for(HashMap.Entry<Request, Boolean> r : m.getRequests().entrySet()) {
-    					  if(r.getKey().equals(request)) {
-    						  r.setValue(true);
-    					  }
-    				  }
-    			  }
-    		  }
-    	  }
-      	}
-    }
+    	return "Your request has been sended to manager";
+      }
+    	return "Request can be sended only to manager or tech support worker";
+   }
 
     public void writeComment(String comment, News n) {
 		Database.getUserActions().add(String.format("User: %s writed comment to news %s", super.getUsername(), n.getTitle()));

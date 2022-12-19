@@ -7,5 +7,9 @@
 /TeacherTypes.class
 /TypeOfFile.class
 /TypeOfLesson.class
+<<<<<<< HEAD
 /SocialStatus.class
 /TypeOfPayment.class
+=======
+/requestType.class
+>>>>>>> 585f38bdd4b6382345653b28abd4aac8ac81bcff
