@@ -20,12 +20,9 @@ public class TechSupportWorker extends Employee {
 	{
 		Database.getTechSupportWorkers().add(this);
 	}
-  
-	public String viewStudent() {
-		return null;
-	}
-  
+
 	public boolean requestAccepted(Request request) {
+		Database.getUserActions().add(String.format("User: %s accepted request of date: %s", super.getUsername(), request.getDateOfRequest()));
 		for(HashMap.Entry<Request, Boolean> r : statusRequest.entrySet()) {
 			if(r.getKey().equals(request)) {
 				Random rd = new Random();

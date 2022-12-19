@@ -1,31 +1,59 @@
 package Attributes;
 
 import Actors.*;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Questionnaire {
-	private HashMap<Teacher, Double> rating;
+	private HashMap<Teacher, Vector<Double>> rating;
 
 	public Questionnaire() {
-		rating = new HashMap<Teacher, Double>();
+		rating = new HashMap<Teacher,Vector<Double>>();
 	}
 	
 	public double getTeacherRate(Teacher teacher) {
-	    return 0;
+		double rate = 0;
+		int cnt = 0;
+	    for(HashMap.Entry<Teacher, Vector<Double>> p : rating.entrySet()) {
+	    	if(p.getKey().equals(teacher)) {
+	    		for(Double d: p.getValue()) {
+	    			rate += d;
+	    			cnt++;
+	    		}
+	    	}
+	    }
+	    return rate / cnt;
 	}
 	
 	public String getBestTeacher() {
-	    return null;
+		double rate = 0;
+		String name = "";
+		for(HashMap.Entry<Teacher, Vector<Double>> p : rating.entrySet()) {
+	    	if(getTeacherRate(p.getKey()) > rate) {
+	    		rate = getTeacherRate(p.getKey());
+	    		name = p.getKey().getName();
+	    	}
+	    }
+		return name + "is the best teacher!";
 	}
-
-	public void printTeachersByRate(String type) {
+	public Double sumV(Vector <Double> vector) {
+		Double sum = 0.0;
+		for(Double d: vector) {
+			sum += d;
+		}
+		return sum;
+	}
+	public void printTeachersByRate() {
+		HashMap<Teacher, Vector<Double>> stream = rating.entrySet().stream().sorted(Collections.reverseOrder(HashMap.Entry.comparingByValue(new RateComparator()))).collect(Collectors.toMap
+				(HashMap.Entry::getKey, HashMap.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+		System.out.println(stream);
 	}
 	
-	public HashMap<Teacher, Double> getRating() {
+	public HashMap<Teacher, Vector<Double>> getRating() {
 		return rating;
 	}
 	
-	public void setRating(HashMap<Teacher, Double> rating) {
+	public void setRating(HashMap<Teacher, Vector<Double>> rating) {
 		this.rating = rating;
 	}
 	

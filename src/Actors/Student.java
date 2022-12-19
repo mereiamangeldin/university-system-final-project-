@@ -1,6 +1,8 @@
 package Actors;
 
 import Interfaces.*;
+import javafx.util.Pair;
+
 import java.util.*;
 import Attributes.*;
 import Enums.*;
@@ -9,7 +11,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     private String id;
     private School school;
     private int yearOfStudy;
-    private HashMap<Course, Mark> transcript;
+    private HashMap<Pair<Course, Teacher>, Mark> transcript;
     private boolean grant;
     private double scholarship;
     private ScienceDegree scienceDegree;
@@ -27,7 +29,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     	this.grant = grant;
     	this.scholarship = scholarship;
     	this.scienceDegree = scienceDegree;
-    	this.transcript = new HashMap<Course, Mark>();  
+    	this.transcript = new HashMap<Pair<Course, Teacher>, Mark>();  
     	this.organizations = new HashMap<Organization, Position>();
     }
     
@@ -91,21 +93,30 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     	this.organizations = organizations;
     }
 
-    public void setTranscript(HashMap<Course, Mark> transcript) {
+    public void setTranscript(HashMap<Pair<Course, Teacher>, Mark> transcript) {
     	this.transcript = transcript;
+    }
+    
+    public Vector<Teacher> getTeachers(){
+    	Vector<Teacher> teachers = new Vector<Teacher>();
+    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> x : transcript.entrySet()) {
+    		teachers.add(x.getKey().getValue());
+    	}
+    	return teachers;
     }
 
     public void viewCourses(){
-    	for(HashMap.Entry<Course, Mark> marks : transcript.entrySet()) {
-    		System.out.println(marks.getKey());
+    	Database.getUserActions().add(String.format("User: %s has viewed courses", super.getUsername()));
+    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
+    		System.out.println(marks.getKey().getKey());
       }
     }
 
     public void registerForCourse(Course course, Teacher t){
     	int amountOfCredits = 0;
-    	for(HashMap.Entry<Course, Mark> marks : transcript.entrySet()) {
+    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
     		if(marks.getValue().getFinalScore() == 0 && marks.getValue().getLetterGrade() != 'F') {
-    			amountOfCredits += marks.getKey().getNumberOfCredits();
+    			amountOfCredits += marks.getKey().getKey().getNumberOfCredits();
     		}
     	}
     	if(amountOfCredits+course.getNumberOfCredits() > 30) {
@@ -113,32 +124,40 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     	}
     	else {
     		if(course.getPrerequisite() != null) {
-    			for(HashMap.Entry<Course, Mark> marks : transcript.entrySet()) {
-    				if(marks.getKey().equals(course.getPrerequisite())) {
+    			for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
+    				if(marks.getKey().getKey().equals(course.getPrerequisite())) {
     					if(marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
-    						transcript.put(course, new Mark());
+    						Database.getUserActions().add(String.format("User: %s has registered for course: %s", super.getUsername(), course.getName()));
+    						transcript.put(new Pair<Course, Teacher>(course, t), new Mark());
     						break;
     					}
     				}
     			}
     		}
         else {
-          transcript.put(course, new Mark());
+        	Database.getUserActions().add(String.format("User: %s has registered for course: %s", super.getUsername(), course.getName()));
+        	transcript.put(new Pair<Course, Teacher>(course, t), new Mark());
         }
       }
     }
 
     public void rateTeachers(Teacher teacher, Questionnaire q, Double mark){
-    	q.getRating().put(teacher, mark);
+    	if(q.getRating().containsKey(teacher)) {
+    		q.getRating().get(teacher).add(mark);
+    	}else {
+    		q.getRating().put(teacher, new Vector<Double>());
+    		q.getRating().get(teacher).add(mark);
+    	}
     }
 
-    public HashMap<Course, Mark> getTranscript() {
+    public HashMap<Pair<Course, Teacher>, Mark> getTranscript() {
     	return transcript;
     }  
     
     public void makeBookOrder(Librarian librarian, Order order){
     	String answer = librarian.orderBook(order);
         if(answer.equals("Accepted")) {
+			Database.getUserActions().add(String.format("User: %s made order for book: %s", super.getUsername(), order.getBook().getName()));
         	System.out.println("The order has been done succesfully! "
         			+ "You can take the order in 5 minutes. Please don't forget to return the book until the deadline!");
         } else if(answer.equals("Books over")) {
@@ -152,6 +171,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     	if(employee instanceof TechSupportWorker) {
     		TechSupportWorker t = (TechSupportWorker)employee;
         if(request.getRequestDescription().length() > 20) {
+			Database.getUserActions().add(String.format("User: %s made request to tech support worker", super.getUsername()));
         	t.getRequests().put(request, true);
         	System.out.println("Request has been accepted!");
         	t.getStatusRequest().put(request, false);
@@ -171,6 +191,7 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
         }
       }
       else if(employee instanceof Manager) {
+		Database.getUserActions().add(String.format("User: %s made request to manager", super.getUsername()));
     	  Manager m = (Manager)employee;
     	  m.getRequests().put(request, false);
     	  for(School s : Database.getSchools()) {
@@ -188,12 +209,14 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
     }
 
     public void writeComment(String comment, News n) {
+		Database.getUserActions().add(String.format("User: %s writed comment to news %s", super.getUsername(), n.getTitle()));
     	n.getComments().add(comment);
     }
 
     public void viewTranscript() {
-    	for(HashMap.Entry<Course, Mark> marks : transcript.entrySet()) {
-    		System.out.println(marks.getKey().getName() + ": " + marks.getValue().getTotal());
+		Database.getUserActions().add(String.format("User: %s has viewed transcript", super.getUsername()));
+    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
+    		System.out.println(marks.getKey().getKey().getName() + ": " + marks.getValue().getTotal());
         }
     }
     
@@ -224,9 +247,11 @@ public class Student extends User implements CanWriteComment, CanViewTranscript,
       }
 
     public void viewMark(Course c) {
-    	for(HashMap.Entry<Course, Mark> t : transcript.entrySet()) {
-    		if(t.getKey().equals(c)) {
+    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : transcript.entrySet()) {
+    		if(t.getKey().getKey().equals(c)) {
+    			Database.getUserActions().add(String.format("User: %s viewed mark of course: %s", super.getUsername(), c.getName()));
     			System.out.println(c.getName() + ": " + t.getValue());
+    			break;
     		}
         }
     }
