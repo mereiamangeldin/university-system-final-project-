@@ -8,7 +8,8 @@ import Attributes.*;
 import Enums.*;
 
 public class Student extends User implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student> {
-    private String id;
+	private static final long serialVersionUID = 1L;
+	private String id;
     private School school;
     private int yearOfStudy;
     private HashMap<Pair<Course, Teacher>, Mark> transcript;
