@@ -2,6 +2,7 @@ package Actors;
 
 import Enums.*;
 import Interfaces.*;
+import javafx.util.Pair;
 import Attributes.*;
 import java.io.*;
 import java.util.*;
@@ -59,7 +60,7 @@ public class Manager extends Employee implements CanViewMarks {
         for(Teacher t : Database.getTeachers()) {
         	if(teacherID.equals(t.getId())) {
         		if(c.getClass().equals(t.getClass())) {
-        			c.getTeachers().add(t);
+//        			c.getTeachers().add(t);
         			return true;
         		}
         	}
@@ -133,8 +134,8 @@ public class Manager extends Employee implements CanViewMarks {
 	public void createReport(Course course) {
 		double mx = 101, mn = -1, total = 0, n = 0;
 	    for(Student s : Database.getStudents()) {
-	    	for(HashMap.Entry<Course, Mark> marks : s.getTranscript().entrySet()) {
-	    		if(marks.getKey().equals(course) && marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
+	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
+	    		if(marks.getKey().getKey().equals(course) && marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
 	    			total += marks.getValue().getTotal();
 	    			n += 1;
 	    			if(mx < marks.getValue().getTotal()) mx = marks.getValue().getTotal();

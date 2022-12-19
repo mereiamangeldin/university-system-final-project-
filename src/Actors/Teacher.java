@@ -1,6 +1,8 @@
 package Actors;
 
 import Interfaces.*;
+import javafx.util.Pair;
+
 import java.util.*;
 import Attributes.*;
 import Enums.*;
@@ -62,13 +64,14 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     }
  
     public void putMark(Course course, String studentId, int type, double point) {
+    	Pair<Course, Teacher> p = new Pair<Course, Teacher>(course, this);
     	for(Student s: Database.getStudents()) {
-    		if(s.getTranscript().containsKey(course) && s.getId().equals(studentId)) {
+    		if(s.getTranscript().containsKey(p) && s.getId().equals(studentId)) {
     			if(type == 1) {
-    				s.getTranscript().get(course).setFirstAttestation(point);
+    				s.getTranscript().get(p).setFirstAttestation(point);
     			}
 	            else {
-	            	s.getTranscript().get(course).setSecondAttestation(point);
+	            	s.getTranscript().get(p).setSecondAttestation(point);
 	            }
     			break;
     		}
@@ -76,13 +79,10 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     }
 
    public void viewMark(Course c) {
+	   Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
 	   for(Student s: Database.getStudents()) {
-		   if(s.getTranscript().containsKey(c)) {
-			   for(HashMap.Entry<Course, Mark> t: s.getTranscript().entrySet()) {
-				   if(t.getKey().getTeachers().contains(this)) {
-					   s.viewMark(c);
-				   }
-			   }
+		   if(s.getTranscript().containsKey(p)) {
+			   s.viewMark(c);
 		   }
 	   }
    }

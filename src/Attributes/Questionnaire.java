@@ -2,22 +2,24 @@ package Attributes;
 
 import Actors.*;
 import java.util.*;
-import javafx.util.*;
+import java.util.stream.Collectors;
 
 public class Questionnaire {
-	private Vector<Pair<Teacher, Double>> rating;
+	private HashMap<Teacher, Vector<Double>> rating;
 
 	public Questionnaire() {
-		rating = new Vector<Pair<Teacher, Double>>();
+		rating = new HashMap<Teacher,Vector<Double>>();
 	}
 	
 	public double getTeacherRate(Teacher teacher) {
 		double rate = 0;
 		int cnt = 0;
-	    for(Pair<Teacher, Double> p : rating) {
+	    for(HashMap.Entry<Teacher, Vector<Double>> p : rating.entrySet()) {
 	    	if(p.getKey().equals(teacher)) {
-	    		rate += p.getValue();
-	    		cnt++;
+	    		for(Double d: p.getValue()) {
+	    			rate += d;
+	    			cnt++;
+	    		}
 	    	}
 	    }
 	    return rate / cnt;
@@ -26,28 +28,32 @@ public class Questionnaire {
 	public String getBestTeacher() {
 		double rate = 0;
 		String name = "";
-		HashSet <Teacher> teacher = new HashSet<Teacher>();
-		for(Pair<Teacher, Double> p : rating) {
-	    	teacher.add(p.getKey());
-	    }
-		for(Teacher t : teacher) {
-	    	if(getTeacherRate(t) > rate) {
-	    		rate = getTeacherRate(t);
-	    		name = t.getName();
+		for(HashMap.Entry<Teacher, Vector<Double>> p : rating.entrySet()) {
+	    	if(getTeacherRate(p.getKey()) > rate) {
+	    		rate = getTeacherRate(p.getKey());
+	    		name = p.getKey().getName();
 	    	}
 	    }
 		return name + "is the best teacher!";
 	}
-
-	public void printTeachersByRate(String type) {
-		
+	public Double sumV(Vector <Double> vector) {
+		Double sum = 0.0;
+		for(Double d: vector) {
+			sum += d;
+		}
+		return sum;
+	}
+	public void printTeachersByRate() {
+		HashMap<Teacher, Vector<Double>> stream = rating.entrySet().stream().sorted(Collections.reverseOrder(HashMap.Entry.comparingByValue(new RateComparator()))).collect(Collectors.toMap
+				(HashMap.Entry::getKey, HashMap.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+		System.out.println(stream);
 	}
 	
-	public Vector<Pair<Teacher, Double>> getRating() {
+	public HashMap<Teacher, Vector<Double>> getRating() {
 		return rating;
 	}
 	
-	public void setRating(Vector<Pair<Teacher, Double>> rating) {
+	public void setRating(HashMap<Teacher, Vector<Double>> rating) {
 		this.rating = rating;
 	}
 	

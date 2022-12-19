@@ -7,7 +7,6 @@ import Enums.*;
 public class Course {
 	private String id;
     private String name;
-    private Vector<Teacher> teachers;
     private Course prerequisite;
     private int numberOfCredits;
     private School school;
@@ -23,7 +22,6 @@ public class Course {
 		this.school = school;
 		this.scienceDegree = scienceDegree;
 		this.type = type;
-		this.teachers = new Vector<Teacher>();
 		this.files = new Vector<File>();
 	}
     
@@ -49,14 +47,6 @@ public class Course {
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public Vector<Teacher> getTeachers() {
-		return teachers;
-	}
-	
-	public void setTeachers(Vector<Teacher> teachers) {
-		this.teachers = teachers;
 	}
 	
 	public Course getPrerequisite() {
@@ -108,7 +98,7 @@ public class Course {
 	}
 
 	public String toString() {
-		return "Course [id=" + id + ", name=" + name + ", teachers=" + teachers + ", prerequisite=" + prerequisite
+		return "Course [id=" + id + ", name=" + name + ", prerequisite=" + prerequisite
 				+ ", numberOfCredits=" + numberOfCredits + ", school=" + school + ", scienceDegree=" + scienceDegree
 				+ ", files=" + files + ", type=" + type + "]";
 	}
