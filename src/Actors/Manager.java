@@ -13,9 +13,11 @@ public class Manager extends Employee implements CanViewMarks {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ManagerType type;
-	private HashMap<Request, Boolean> requests;
+	private Vector<Request> requests;
 	private BufferedReader reader = null;
-  
+	{
+		requests = new Vector<Request>();
+	}
 	public Manager() {
 		super();
 	}
@@ -35,6 +37,64 @@ public class Manager extends Employee implements CanViewMarks {
 			s.viewMark(c);
 		}
 	}
+	public void processRequests(int pos) {
+		if(pos > this.requests.size()) return;
+		Request r = requests.elementAt(pos-1);
+		if(r.getTitle().equals(requestType.employeeRequest)) {
+			for(School s : Database.getSchools()) {
+	    		  if(s.getManagers().contains(this)) {
+	    			  if(this.sendRequestToDean(s.getDean(), r)) {
+	    				  requests.remove(pos-1);
+	    				  return;
+	    			  }
+	    		  }
+	    	  }
+		}
+		else {
+			String studentID = r.getUserID();
+			int delimeter = r.getDescription().indexOf(' ');
+			String courseID = r.getDescription().substring(0, delimeter);
+			String teacherID = r.getDescription().substring(delimeter+1, r.getDescription().length());
+			for(Course c : Database.getCourses()) {
+				if(c.getId().equals(courseID)) {
+					for(Teacher t : Database.getTeachers()) {
+						if(t.getId().equals(teacherID)) {
+							for(Student s : Database.getStudents()) {
+								if(s.getId().equals(studentID)) {
+									int amountOfCredits = 0;
+							    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
+							    		if(marks.getValue().getFinalScore() == 0 && marks.getValue().getLetterGrade() != 'F') {
+							    			amountOfCredits += marks.getKey().getKey().getNumberOfCredits();
+							    		}
+							    	}
+							    	if(amountOfCredits+c.getNumberOfCredits() > 30) return;
+							    		if(c.getPrerequisite() != null) {
+							    			for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
+							    				if(marks.getKey().getKey().equals(c.getPrerequisite())) {
+							    					if(marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
+							    						Database.getUserActions().add(String.format("User: %s has registered for course: %s", super.getUsername(), c.getName()));
+							    						s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
+							    						break;
+							    					}
+							    				}
+							    			}
+							    		}
+								        else {
+								        	Database.getUserActions().add(String.format("User: %s has registered for course: %s", super.getUsername(), c.getName()));
+								        	s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
+								        }
+								}
+							}
+							break;
+						}
+					}
+					break;
+				}
+			}
+		}
+		requests.remove(pos-1);
+	}
+	
   
 	public void addNews() throws IOException {
 		System.out.print("Write title: ");
@@ -55,35 +115,21 @@ public class Manager extends Employee implements CanViewMarks {
 		}
 	}
   
-	public boolean assignCourseToTeacher() throws IOException {
-		System.out.print("Enter course id here: ");
-		String courseID = reader.readLine();
+	public boolean assignCourseToTeacher(String courseID, String teacherID) throws IOException {
 		for(Course c : Database.getCourses()) {
-			if(courseID.equals(c.getId())) {
-				String teacherID = reader.readLine();
-        for(Teacher t : Database.getTeachers()) {
-        	if(teacherID.equals(t.getId())) {
-        		if(c.getClass().equals(t.getClass())) {
-//        			c.getTeachers().add(t);
-        			return true;
-        		}
-        	}
-        }
-        System.out.println("Teacher not found!");
-        return false;
+			if(courseID.equals(courseID)) {
+		        for(Teacher t : Database.getTeachers()) {
+		        	if(teacherID.equals(teacherID)) {
+		        			c.getTeachers().add(t);
+		        			return true;
+		        	}
+		        }
+		        return false;
 			}
 		}
-		System.out.println("Course not found!");
 		return false;
 	}
-  
-	public void viewEmployeesRequests(Request requests) {
-		System.out.println(requests);
-	}
-  
-	public boolean approveStudentsRegistration(Student s, Course c) {
-		return true;
-	}
+
   
 //    private String id;
 //    private String name;
@@ -176,11 +222,11 @@ public class Manager extends Employee implements CanViewMarks {
 	    this.type = type;
 	  }
 
-	  public HashMap<Request, Boolean> getRequests() {
+	  public Vector<Request> getRequests() {
 	    return requests;
 	  }
 
-	  public void setRequests(HashMap<Request, Boolean> requests) {
+	  public void setRequests(Vector<Request> requests) {
 	    this.requests = requests;
 	  }
 

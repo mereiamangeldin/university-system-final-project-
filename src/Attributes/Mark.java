@@ -19,16 +19,6 @@ public class Mark {
     	letterGrade = 'N';
     }
     
-    public Mark(int grade, char letterGrade, double firstAttestation, double secondAttestation, double finalScore, double total, double gpa) {
-    	this.grade = grade;
-    	this.letterGrade = letterGrade;
-    	this.firstAttestation = firstAttestation;
-    	this.secondAttestation = secondAttestation;
-    	this.finalScore = finalScore;
-    	this.total = total;
-    	this.gpa = gpa;
-    }
-    
     public int getGrade() {
     	return grade;
     }

@@ -43,6 +43,10 @@ public abstract class User implements Serializable {
     	System.out.println(Database.getNews());
     }
     
+    public final void initializeSystem() {
+    	login(password);
+    	viewNews();
+    }
     public String getUsername() {
     	return username;
     }

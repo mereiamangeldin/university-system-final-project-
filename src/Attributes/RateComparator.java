@@ -1,15 +1,16 @@
 package Attributes;
 
 import java.util.*;
-public class RateComparator implements Comparator<Vector<Double>>{
-	public int compare(Vector<Double> a, Vector<Double> b) {
-		Double sumA = 0.0, sumB = 0.0;
-		for(Double d: a) {
-			sumA += d;
+import Actors.*;
+import javafx.util.*;
+
+public class RateComparator implements Comparator<Pair<Teacher, Double>>{
+	public int compare(Pair<Teacher, Double> a, Pair<Teacher, Double> b) {
+		if(a.getValue().compareTo(b.getValue()) == 1) {
+			return -1;
+		}else if(a.getValue().compareTo(b.getValue()) == -1) {
+			return 1;
 		}
-		for(Double d: b) {
-			sumB += d;
-		}
-		return sumA.compareTo(sumB);
+		return 0;
 	}
 }
