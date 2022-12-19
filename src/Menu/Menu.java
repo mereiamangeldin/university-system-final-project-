@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import Actors.*;
 import Attributes.*;
 import Enums.*;
@@ -31,12 +33,20 @@ public class Menu {
 		Course c3 = new Course("PP001", "Programming Principles 1", null, 4, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
 		Course c4 = new Course("PP002", "Programming Principles 2", c3, 4, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
 		Course c5 = new Course("OP300", "Object-Oriented Programming", c4, 3, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
+		News n = new News("Announcement about the competition \"A. S. Pushkin's Poetry Evening\".", "We invite all students to take part in the competition. For the record - a.omarova@kbtu.kz");
+		News n2 = new News("On the transfer of the classes of the teacher Kereev A. to the online format", "Classes on the subject \"Oratory\" by Kereeva Asel are transferred from offline to online format due to the health of the teacher.");
 		Manager m = new Manager("Kuralai", "Manasova", "kurochka_122", dateFormat.parse("1989/12/01"), "M1201", dateFormat.parse("1999/08/12"), 500000, "122-122", ManagerType.SITI);
 		Manager m1 = new Manager("Tatyana", "Morgunova", "tanushammm", dateFormat.parse("1960/04/02"), "M1234", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.SAM);
 		Librarian l = new Librarian("Antonina", "Tsoy", "tonya555", dateFormat.parse("1991/02/01"), "L3234", dateFormat.parse("2021/04/05"), 310000, "112-135");
 		TechSupportWorker tsw = new TechSupportWorker("Alikhan", "Karabayev", "alikhense23", dateFormat.parse("1970/06/04"), "TS9234", dateFormat.parse("1985/02/28"), 390000, "130-139");
 		Parent p = new Parent("Tamara", "Beken", "tamarochka004", dateFormat.parse("1984/03/23"), s);
 		System.out.println("Our team is the BEST in the WHOLE WORLD!");
+		
+		Database.serializeUsers();
+		Database.serializeBooks();
+		Database.serializeCourses();
+		Database.serializeNews();
+		Database.serializeSchools();
 
 		InputStreamReader myStream = new InputStreamReader(System.in);        
 		BufferedReader reader = new BufferedReader(myStream);		
@@ -70,12 +80,12 @@ public class Menu {
 					System.out.println(user);
 					if(user instanceof Student) StudentMenu.menu(user);
 					else if(user instanceof Teacher) TeacherMenu.menu(user);
-					else if(user instanceof Admin) AdminMenu.menu(user);
+					if(user instanceof Admin) AdminMenu.menu(user);
 					else if(user instanceof Manager) ManagerMenu.menu(user);
 					else if(user instanceof Librarian) LibrarianMenu.menu(user);
-					else if(user instanceof TechSupportWorker) TechSupportWorker.menu(user);
-					else if(user instanceof Parent) Parent.menu(user);
-					else if(user instanceof Dean) Dean.menu(user);
+					else if(user instanceof TechSupportWorker) TechSupportWorkerMenu.menu(user);
+					else if(user instanceof Parent) ParentMenu.menu(user);
+//					else if(user instanceof Dean) DeanMenu.menu(user);
 				}
 				else {
 					System.out.println("User not found.");
@@ -185,4 +195,63 @@ public class Menu {
 		}
 		return false;
 	}
+	
+	public static void changePassword(User user, BufferedReader reader) throws IOException {
+		System.out.print("Enter your password: ");
+		String oldPassword = reader.readLine();
+		if(oldPassword.equals(user.getPassword())) {
+			System.out.println("Enter new password: ");
+			String newPassword = reader.readLine();
+			System.out.println("Enter new password again: ");
+			String newPassword2 = reader.readLine();
+			if(newPassword.equals(newPassword2)) {
+				if(newPassword.equals(user.getPassword())) {
+					System.out.println("The new password is the same as the present one.");
+				} else {
+					user.setPassword(newPassword);
+				}
+			} else {
+				System.out.println("New passwords don't match");
+			}
+		}
+	}
+	
+	public static void sendMessage(Employee e, BufferedReader reader) throws IOException {
+		System.out.print("Enter text of the message: ");
+		String text = reader.readLine();
+		Message m = new Message(new Date(), text);
+//		System.out.print(Database.getEmployees());
+		System.out.println("Enter employee username you want to message to: ");
+		String username = reader.readLine();
+//		Employee e = Database.getEmployeeByUsername(username);
+//		if(e != null) {
+//			admin.sendMessage(m, e);
+//			System.out.println("Message sent.");
+//		} 
+//		else {
+//			System.out.println("Employee not found.");
+//		}
+	}
+//	public static void viewNews(User user, BufferedReader reader) {
+//		int i = 1; 
+//		for(News n : Database.getNews()) {
+//			System.out.println(i + ". " + n);
+//			i += 1;
+//		}
+//		System.out.println("""
+//				1. Comment news.
+//				0. Back. """);
+//		String option = reader.readLine();
+//		switch(option) {
+//			case "1":
+//				System.out.print("Enter number of news: ");
+//				int choice = Integer.parseInt(reader.readLine());
+//				System.out.print("Enter comment: ");
+//				String comment = reader.readLine();
+//				user.writeComment(comment, Database.getNews().get(choice - 1));
+//				System.out.println("You commented on the news.");
+//			case "0":
+//				break;
+//		}
+//	}
 }

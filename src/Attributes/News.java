@@ -9,13 +9,13 @@ public class News {
     private Vector<String> comments;
     
     public News(String title, String text) {
-		this.title = title;
+		this.title = title; 
 		this.text = text;
 		comments = new Vector<String>();
 	}
     
     {
-    	Database.getAllNews().add(this);
+    	Database.getNews().add(this);
     }
     
     public void addComment(String comment) {

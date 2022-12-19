@@ -9,10 +9,9 @@ public class Order {
     private Book book;
     private int monthLeft;
     
-    public Order(Student student, Book book, int monthLeft) {
+    public Order(Student student, Book book) {
 		this.student = student;
 		this.book = book;
-		this.monthLeft = monthLeft;
 	}
     
 	public Student getStudent() {

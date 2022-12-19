@@ -1,10 +1,12 @@
 package Actors;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import Attributes.Database;
 
-public abstract class User {
+public abstract class User implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String username;
     private String password;
     private String name;
@@ -18,7 +20,7 @@ public abstract class User {
     	super();
 		this.name = name;
 		this.surname = surname;
-		this.username = this.name.charAt(0) + "_" + this.surname;
+		this.username = Character.toLowerCase(this.name.charAt(0)) + "_" + this.surname.toLowerCase();
 		this.password = password;
 		this.dateOfBirth = dateOfBirth;
 	}
@@ -34,7 +36,7 @@ public abstract class User {
     }
 
     public void viewNews() {
-    	System.out.println(Database.getAllNews());
+    	System.out.println(Database.getNews());
     }
     
     public String getUsername() {
