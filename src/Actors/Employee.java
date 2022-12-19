@@ -5,6 +5,10 @@ import Attributes.*;
 import Interfaces.*;
 
 public abstract class Employee extends User implements CanMakeRequest, CanWriteComment {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
     private Date hireDate;
     private double salary;

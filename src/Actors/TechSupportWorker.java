@@ -4,6 +4,11 @@ import java.util.*;
 import Attributes.*;
 
 public class TechSupportWorker extends Employee {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private HashMap<Request, Boolean> requests;
 	private HashMap<Request, Boolean> statusRequest;
 	

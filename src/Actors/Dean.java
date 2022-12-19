@@ -5,7 +5,12 @@ import Attributes.*;
 
 public class Dean extends Employee {
 
-    public Dean() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public Dean() {
     	super();
     }
     

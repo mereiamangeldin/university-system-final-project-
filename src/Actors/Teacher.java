@@ -8,6 +8,10 @@ import Attributes.*;
 import Enums.*;
 
 public class Teacher extends Employee implements CanViewMarks, Comparable<Teacher> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private School school;
 	private TeacherTypes type;
     

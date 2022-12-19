@@ -8,6 +8,10 @@ import java.io.*;
 import java.util.*;
 
 public class Manager extends Employee implements CanViewMarks {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ManagerType type;
 	private HashMap<Request, Boolean> requests;
 	private BufferedReader reader = null;
@@ -42,12 +46,8 @@ public class Manager extends Employee implements CanViewMarks {
 	}
   
 	public void removeNews(News news) {
-<<<<<<< HEAD
-		for(News n : Database.getNews()) {
-=======
 		Database.getUserActions().add(String.format("User: %s removed news: ", super.getUsername(), news.getTitle()));
-		for(News n : Database.getAllNews()) {
->>>>>>> 30eb8b0bc9f3fdabebef97fc8dc87420ed16b393
+		for(News n : Database.getNews()) {
 			if(n.equals(news)) {
 				Database.getNews().remove(n);
 				System.out.println("The news was deleted successfully");

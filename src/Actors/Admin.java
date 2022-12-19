@@ -5,6 +5,11 @@ import Attributes.*;
 
 public class Admin extends Employee {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Admin() {};
 	
 	public Admin(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
