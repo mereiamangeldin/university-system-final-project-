@@ -37,15 +37,19 @@ public class Manager extends Employee implements CanViewMarks {
 		String title = reader.readLine();
 		System.out.print("Write text of the news:");
 		String text = reader.readLine();
-		Database.getAllNews().add(new News(title, text));
+		Database.getNews().add(new News(title, text));
 		System.out.println("The news was added successfully.");
 	}
   
 	public void removeNews(News news) {
+<<<<<<< HEAD
+		for(News n : Database.getNews()) {
+=======
 		Database.getUserActions().add(String.format("User: %s removed news: ", super.getUsername(), news.getTitle()));
 		for(News n : Database.getAllNews()) {
+>>>>>>> 30eb8b0bc9f3fdabebef97fc8dc87420ed16b393
 			if(n.equals(news)) {
-				Database.getAllNews().remove(n);
+				Database.getNews().remove(n);
 				System.out.println("The news was deleted successfully");
 			}
 		}

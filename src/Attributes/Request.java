@@ -6,7 +6,7 @@ public class Request {
 	private String requestDescription;
     private Date dateOfRequest;
     
-    public Request(String requestDescription, Date dateOfRequest) {
+    public Request(String requestDescription) {
 		this.requestDescription = requestDescription;
 		this.dateOfRequest = dateOfRequest;
 	}
