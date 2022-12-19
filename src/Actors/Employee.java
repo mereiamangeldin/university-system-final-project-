@@ -1,7 +1,8 @@
 package Actors;
 
 import java.util.*;
-import Attributes.*; 
+import Attributes.*;
+import Enums.requestType;
 import Interfaces.*;
 
 public abstract class Employee extends User implements CanMakeRequest, CanWriteComment {
@@ -78,40 +79,23 @@ public abstract class Employee extends User implements CanMakeRequest, CanWriteC
   		employee.getEmail().put(this, message);
   	}
 
-  	public void makeRequest(Request request, Employee employee){
-  		if(employee instanceof TechSupportWorker) {
-  			TechSupportWorker t = (TechSupportWorker)employee;
-  			if(request.getRequestDescription().length() > 20) {
-  				t.getRequests().put(request, true);
-  				System.out.println("Request has been accepted!");
-  				t.getStatusRequest().put(request, false);
-  				if(t.requestAccepted(request)) {
-  					System.out.println("Your request has been successfully completed!");
-  				} else {
-  					System.out.println("Your request has not been completed!");
-  				}
-  			} 
-  			else {
-  				t.getRequests().put(request, false);
-  				System.out.println("Request has been rejected!");
-  			}	
-  		}
-  		else if(employee instanceof Manager) {
-  			Manager m = (Manager)employee;
-	  		m.getRequests().put(request, false);
-  			for(School s : Database.getSchools()) {
-  				if(s.getManagers().contains(m)) {
-  					if(m.sendRequestToDean(s.getDean(), request)) {
-  						for(HashMap.Entry<Request, Boolean> r : m.getRequests().entrySet()) {
-  							if(r.getKey().equals(request)) {
-  								r.setValue(true);
-  							}
-  						}
-  					}
-  				}
-  			}
-  		}
-  	}
+    public String makeRequest(Request request, Employee employee) {
+    	if(employee instanceof TechSupportWorker) {
+        if(request.getDescription().length() > 20 && request.getTitle().equals(requestType.employeeRequest)) {
+        	TechSupportWorker t = (TechSupportWorker)employee;
+        	t.getRequests().add(request);
+    		Database.getUserActions().add(String.format("User: %s made request to Tech support worker", super.getUsername()));
+        	return "Your request has been sended to Tech Support worker";
+        }else {
+        	return "Your request is rejected: description size is less than 20 and sended by employee";	
+        }
+      }
+      else if(employee instanceof Manager) {
+		Database.getUserActions().add(String.format("User: %s made request to manager", super.getUsername()));
+    	return "Your request has been sended to manager";
+      }
+    return "Request can be sended only to manager or tech support worker";
+   }
 
   	public void writeComment(String comment, News n) {
   		n.getComments().add(comment);
