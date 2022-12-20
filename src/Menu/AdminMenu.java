@@ -34,6 +34,7 @@ public class AdminMenu {
         	if(option.equals("0")) {
         		admin.logout();
         		System.out.println("You logged out.");
+        		break;
         	}
         	else if(option.equals("1")) {
         		AdminMenu.manageUsersMenu(admin, reader);

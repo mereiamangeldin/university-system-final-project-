@@ -180,7 +180,7 @@ public class Manager extends Employee implements CanViewMarks {
 		Course newCourse = new Course(id, name, prerequisite, numberOfCredits, s, scienceDegree, c);
 		Database.getUserActions().add(String.format("Manager %s added new course ($s) for registration", getFullName(), newCourse.getName()));
   }
-  
+
 	// Выводим количество студентов, прошедших/изучающих (?) курс, максимальную, минимальную и среднюю оценку
 	public void createReport(Course course) {
 		double mx = 101, mn = -1, total = 0, n = 0;

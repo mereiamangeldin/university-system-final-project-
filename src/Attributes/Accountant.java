@@ -1,6 +1,8 @@
 package Attributes;
 import java.util.Vector;
-import Actors.*;
+
+import Attributes.Database;
+import Attributes.Payment;
 import Enums.SocialStatus;
 import Enums.TypeOfPayment;
 import javafx.util.*;
@@ -33,6 +35,7 @@ public class Accountant{
 		return "\n";
 	}
 	
+<<<<<<< HEAD
 //	public void defaultAmount() {
 //		for(Student s : Database.getStudents()) {
 //			for(Payment p : payments) {
@@ -62,4 +65,22 @@ public class Accountant{
 //			}
 //		}
 //	}
+=======
+	public void getStudentWhoNotPayForSF() {
+		for(Student s : Database.getStudents()) {
+			boolean check = false;
+			for(Payment p : payments) {
+				if((p.getTypeOfPayment().equals(TypeOfPayment.STUDENT_FEE))) {
+					if(p.getStudent().equals(s)) {
+						check = true;
+						break;
+					}
+				}
+			}
+			if(!check) {
+				this.notPayForStudentFee.add(s);
+			}
+		}
+	}
+>>>>>>> ebeb90525217b743afe3b70f8ce93ca41eecbe2e
 }
