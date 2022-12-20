@@ -5,9 +5,6 @@ import Attributes.*;
 import Interfaces.*;
 
 public class Parent extends User implements CanViewTranscript, CanViewMarks {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Student child;
 
@@ -22,10 +19,12 @@ public class Parent extends User implements CanViewTranscript, CanViewMarks {
   
     public void viewTranscript() {
     	child.viewTranscript();
+    	Database.getUserActions().add(String.format("Parent %s viewed the transcript of the child", getFullName()));
     }
 
     public void viewMark(Course c) {
     	child.viewMark(c);
+    	Database.getUserActions().add(String.format("Parent %s viewed the mark of the child %s for the course %s", getFullName(), child.getFullName(), c.getName()));
     }
     
     public Student getChild() {

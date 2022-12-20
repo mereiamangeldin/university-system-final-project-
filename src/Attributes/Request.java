@@ -5,11 +5,11 @@ import Enums.*;
 
 public class Request {
 	private String userID;
-	private requestType title;
+	private RequestType title;
 	private String description;
     private Date dateOfRequest;
     
-    public Request(String userID, requestType title, String requestDescription) {
+    public Request(String userID, RequestType title, String requestDescription) {
     	this.userID = userID;
     	this.title = title;
 		this.description = requestDescription;
@@ -62,11 +62,11 @@ public class Request {
 		return "Request [Description=" + description + ", dateOfRequest=" + dateOfRequest + "]";
 	}
 
-	public requestType getTitle() {
+	public RequestType getTitle() {
 		return title;
 	}
 
-	public void setTitle(requestType title) {
+	public void setTitle(RequestType title) {
 		this.title = title;
 	}
 
@@ -78,4 +78,3 @@ public class Request {
 		this.userID = userID;
 	}
 }
-
