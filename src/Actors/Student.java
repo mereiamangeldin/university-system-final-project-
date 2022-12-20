@@ -17,6 +17,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     private double scholarship;
     private ScienceDegree scienceDegree;
     private HashMap<Organization, Position> organizations;
+    private boolean isBlocked;
     
     public Student() {
     	super();
@@ -32,6 +33,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	this.scienceDegree = scienceDegree;
     	this.transcript = new HashMap<Pair<Course, Teacher>, Mark>();  
     	this.organizations = new HashMap<Organization, Position>();
+    	this.isBlocked = false;
     }
     
     {
@@ -105,7 +107,15 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	}
     	return teachers;
     }
-
+    
+    public boolean getIsBlocked() {
+    	return isBlocked;
+    }
+    
+    public void setIsBlocked(boolean isBlocked) {
+    	this.isBlocked = isBlocked;
+    }
+    
     public void viewCourses(){
     	Database.getUserActions().add(String.format("User: %s has viewed courses", super.getUsername()));
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {

@@ -54,4 +54,16 @@ public class Admin extends Employee {
     public Vector<String> seeUsersActions() {
     	return Database.getUserActions();
     }
+    
+    public void seeUserActions(User u) {
+    	for(String s : Database.getUserActions()) {
+    		System.out.println(s);
+    	}
+    }
+    
+    public void blockStudentsWhoNotPayForSf(Accountant a) {
+    	for(Student s : a.getNotPayForStudentFee()) {
+    		s.setIsBlocked(true);
+    	}
+    }
 }
