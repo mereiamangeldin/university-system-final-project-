@@ -33,9 +33,9 @@ public class test {
 		q.getRating().get(t3).add(85.0);
 		q.getRating().get(t3).add(90.4);
 		
-		for(Pair<Teacher, Double> x: q.printTeachersByRate()){
-			System.out.println(x);
-		}
+//		for(Pair<Teacher, Double> x: q.printTeachersByRate()){
+//			System.out.println(x);
+//		}
 		
 		Student s = new Student("Kairat", "Baimyshev", "kairat_2004", dateFormat.parse("2004/12/01"), "21B030944", SITE, 1, true, 32500, ScienceDegree.BACHELOR);
 		Student s2 = new Student("Dilyara", "Berikova", "dilyara_2003", dateFormat.parse("2003/06/02"), "21B030723", SAM, 2, true, 65000, ScienceDegree.BACHELOR);
@@ -46,11 +46,14 @@ public class test {
 		Course c3 = new Course("PP001", "Programming Principles 1", null, 4, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
 		Course c4 = new Course("PP002", "Programming Principles 2", c3, 4, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
 		Course c5 = new Course("OP300", "Object-Oriented Programming", c4, 3, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
-		Database.getStudents().add(s);
-		Database.getStudents().add(s2);
-		s.getTranscript().put(new Pair<Course, Teacher>(c2, t), new Mark());
-		t.putMark(c2, "21B030944", 1, 30.0);
-		t.viewMark(c2);
+		Database.getUsers().add(s);
+		Database.getUsers().add(s2);
+		Database.getUsers().add(s3);
+		Student k = Database.getStudentById("21B030944");
+		System.out.println(k);
+//		s.getTranscript().put(new Pair<Course, Teacher>(c2, t), new Mark());
+//		t.putMark(c2, "21B030944", 1, 30.0);
+//		t.viewMark(c2);
 		
 //		HashMap<Teacher, Vector<Double>> stream = q.getRating().entrySet().stream().sorted(Collections.reverseOrder(HashMap.Entry.comparingByValue(new RateComparator()))).collect(Collectors.toMap
 //				(HashMap.Entry::getKey, HashMap.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
