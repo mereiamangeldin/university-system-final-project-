@@ -30,88 +30,52 @@ public final class Database {
 	public static Database getInstance() {
 		return instance;
 	}
-	private static Vector<Teacher> teachers;
-    private static Vector<Student> students;
-    private static Vector<Manager> managers;
-    private static Vector<Dean> deans;
-    private static Vector<Librarian> librarians;
-    private static Vector<Admin> admins;
-    private static Vector<TechSupportWorker> techSupportWorkers;
+//	  private static Vector<Teacher> teachers;
+//    private static Vector<Student> students;
+//    private static Vector<Manager> managers;
+//    private static Vector<Dean> deans;
+//    private static Vector<Librarian> librarians;
+//    private static Vector<Admin> admins;
+//    private static Vector<TechSupportWorker> techSupportWorkers;
     private static Vector<School> schools;
     private static Vector<Book> books;
     private static Vector<Course> courses;
     private static Vector<News> news;
     private static Vector<Request> requests;
-    private static Vector<Parent> parents;
+//    private static Vector<Parent> parents;
     private static Vector<String> userActions;
     
     {
-    	teachers = new Vector<Teacher>();
-    	students = new Vector<Student>();
-    	managers = new Vector<Manager>();
+//    	teachers = new Vector<Teacher>();
+//    	students = new Vector<Student>();
+//    	managers = new Vector<Manager>();
     	schools = new Vector<School>();
     	books = new Vector<Book>();
     	courses = new Vector<Course>();
     	news = new Vector<News>();
     	requests = new Vector<Request>();
-    	deans = new Vector<Dean>();
-    	librarians = new Vector<Librarian>();
-    	admins = new Vector<Admin>();
-    	techSupportWorkers = new Vector<TechSupportWorker>();
-    	parents = new Vector<Parent>();
+//    	deans = new Vector<Dean>();
+//    	librarians = new Vector<Librarian>();
+//    	admins = new Vector<Admin>();
+//    	techSupportWorkers = new Vector<TechSupportWorker>();
+//    	parents = new Vector<Parent>();
     	users = new Vector<User>();
     	setUserActions(new Vector<String>()); 
     }
-    
-    
-    
-//    	if(u instanceof Student) {
-//    		students.add((Student)u);
-//    	}
-//    	else if(u instanceof Admin) {
-//    		admins.add((Admin)u);
-//    	}
-//    	else if(u instanceof Teacher) {
-//    		teachers.add((Teacher)u);
-//    	}
-//    	else if(u instanceof Librarian) {
-//    		librarians.add((Librarian)u);
-//    	}
-//    	else if(u instanceof Parent) {
-//    		parents.add((Parent)u);
-//    	}
-//    	else if(u instanceof Dean) {
-//    		deans.add((Dean)u);
-//    	}
-//    	else if(u instanceof Manager) {
-//    		managers.add((Manager)u);
-//    	}
-//    	else if(u instanceof TechSupportWorker) {
-//    		techSupportWorkers.add((TechSupportWorker)u);
-//    	}
     
     public static Vector<User> getUsers() {
     	return users;
     }
     
-//    public static Vector<Employee> getEmployees(){
-//    	 Vector<Employee> v = (Vector<Employee>)users.stream().filter(u->u instanceof Employee);
-//    	 return v;
-//    }
     
-//    public static Vector<Student> getStudents(){
-//    	Vector<Student> v = (Vector<Student>)users.stream().filter(u->u instanceof Student);
-//    	return v;
-//    }
-//    
-//    public static Employee getEmployeeByUsername(String username) {
-//    	for(Employee e : getEmployees()) {
-//    		if(e.getUsername().equals(username)) {
-//    			return e;
-//    		}
-//    	}
-//    	return null;
-//    }
+    public static Employee getEmployeeByUsername(String username) {
+    	for(Employee employee : getEmployees()) {
+    		if(employee.getUsername().equals(username)) {
+    			return employee;
+    		}
+    	}
+    	return null;
+    }
 //    
 //    public static Student getStudentById(String id) {
 //    	for(Student s : getStudents()) {
@@ -121,6 +85,11 @@ public final class Database {
 //    	}
 //    	return null;
 //    }
+    
+    public static Vector<Employee> getEmployees() {
+		Vector <Employee> employees = users.stream().filter(x -> x instanceof Employee).map(x -> (Employee)x).collect(Collectors.toCollection(Vector::new));
+		return employees;
+	}
 	
 	public static Vector<Teacher> getTeachers() {
 		Vector <Teacher> teachers = users.stream().filter(x -> x instanceof Teacher).map(x -> (Teacher)x).collect(Collectors.toCollection(Vector::new));
