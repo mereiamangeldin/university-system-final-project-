@@ -257,4 +257,52 @@ public class Menu {
 			}
 		}
 	}
+	
+	public static void makeRequest(Employee employee, BufferedReader reader) throws IOException {
+		String requestMenu = "Who do you want to contact?\n1. Technical Support Center.\n2. Dean's office.\n3.Office of the register.\n.0.Back.";
+		String option;
+		while(true) {
+			System.out.println(requestMenu);
+			option = reader.readLine();
+			if(option.equals("0")) {
+				break;
+			}
+			String id, text;
+			int i = 1;
+			if(option.equals("1")) {
+				for(TechSupportWorker t : Database.getTechSupportWorkers()) {
+					System.out.println(i + ". " + t.getId() + " " + t.getFullName());
+					i += 1;
+				}
+				System.out.print("Enter the id of the employee you want to write a request to: ");
+				id = reader.readLine();
+				System.out.print("Text the description of your request: ");
+				text = reader.readLine();
+//				employee.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getTechSupportWorkerById(id));
+			}
+			if(option.equals("2")) {
+//				Database.showSchools();
+				i = 1;
+				for(School s : Database.getSchools()) {
+					System.out.println(i + ". " + s.getName());
+					i += 1;
+				}
+				System.out.print("What school do you want to apply to? (enter number): ");
+				System.out.println(Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getManagers());
+				System.out.print(String.format("Enter the id of the manager of %s", Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getName()));
+				id = reader.readLine();
+				System.out.print("Text the description of your request: ");
+				text = reader.readLine();
+//				employee.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
+			}
+			if(option.equals("3")) {
+//				System.out.println(Database.getORManagers());
+				System.out.print("Enter the id of the manager of office of the register: ");
+				id = reader.readLine();
+				System.out.println("Text the description of your request: ");
+				text = reader.readLine();
+//				employee.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
+			}		
+		}	
+	}
 }

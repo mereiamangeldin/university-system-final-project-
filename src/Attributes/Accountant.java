@@ -33,15 +33,15 @@ public class Accountant{
 		return "\n";
 	}
 	
-	public void defaultAmount() {
-		for(Student s : Database.getStudents()) {
-			for(Payment p : payments) {
-				if(!(s.contains(p.getStudent()))){
-					
-				}
-			}
-		}
-	}
+//	public void defaultAmount() {
+//		for(Student s : Database.getStudents()) {
+//			for(Payment p : payments) {
+//				if(!(s.contains(p.getStudent()))){
+//					
+//				}
+//			}
+//		}
+//	}
 	
 
 	
@@ -53,13 +53,13 @@ public class Accountant{
 //		}
 //	}
 	
-	public void getStudentWhoNotPayForSF() {
-		for(Student p : payForStudentFee) {
-			for(Student s : Database.getStudents()) {
-				if(!p.contains(s)) {
-					
-				}
-			}
-		}
-	}
+//	public void getStudentWhoNotPayForSF() {
+//		for(Student p : payForStudentFee) {
+//			for(Student s : Database.getStudents()) {
+//				if(!p.contains(s)) {
+//					
+//				}
+//			}
+//		}
+//	}
 }
