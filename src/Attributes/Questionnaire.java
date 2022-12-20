@@ -24,6 +24,7 @@ public class Questionnaire {
 	    }
 	    return rate / cnt;
 	}
+	
 	public String getBestTeacher() {
 		double rate = 0;
 		String name = "";
@@ -35,7 +36,8 @@ public class Questionnaire {
 	    }
 		return name + "is the best teacher!";
 	}
-	public Vector<Pair<Teacher, Double>> printTeachersByRate() {
+	
+	public Vector<Pair<Teacher, Double>> getTeachersRate() {
 		Vector<Pair<Teacher, Double>> sortedByRate = new Vector<Pair<Teacher, Double>>();
 		for(HashMap.Entry<Teacher, Vector<Double>> r: rating.entrySet()) {
 			sortedByRate.add(new Pair<Teacher, Double>(r.getKey(), getTeacherRate(r.getKey())));
