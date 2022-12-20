@@ -33,32 +33,19 @@ public class Accountant{
 		return "\n";
 	}
 	
-	public void defaultAmount() {
+	public void getStudentWhoNotPayForSF() {
 		for(Student s : Database.getStudents()) {
+			boolean check = false;
 			for(Payment p : payments) {
-				if(!(s.contains(p.getStudent()))){
-					
+				if((p.getTypeOfPayment().equals(TypeOfPayment.STUDENT_FEE))) {
+					if(p.getStudent().equals(s)) {
+						check = true;
+						break;
+					}
 				}
 			}
-		}
-	}
-	
-
-	
-//	public void checkStudentFee() {
-//		for(Payment p : payments) {
-//			if((p.getTypeOfPayment().equals(TypeOfPayment.STUDENT_FEE))){
-//				
-//			}
-//		}
-//	}
-	
-	public void getStudentWhoNotPayForSF() {
-		for(Student p : payForStudentFee) {
-			for(Student s : Database.getStudents()) {
-				if(!p.contains(s)) {
-					
-				}
+			if(!check) {
+				this.notPayForStudentFee.add(s);
 			}
 		}
 	}
