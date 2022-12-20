@@ -5,55 +5,39 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import Actors.*;
+import Enums.ManagerType;
 
 public final class Database {
 	private final static String BASE_PATH = "C:\\temp\\";
 	private static String path;
     private static Vector<User> users;
-		
-    private Database(String path) {
-    	this.path = path;
-    };
-    
-	private static Database instance = new Database(BASE_PATH);
-
-	public String getPath() {
-		return this.path;
-	}
-	
-	public static Database getInstance() {
-		return instance;
-	}
-
-	private static Vector<Teacher> teachers;
-    private static Vector<Student> students;
-    private static Vector<Manager> managers;
-    private static Vector<Dean> deans;
-    private static Vector<Librarian> librarians;
-    private static Vector<Admin> admins;
-    private static Vector<TechSupportWorker> techSupportWorkers;
     private static Vector<School> schools;
     private static Vector<Book> books;
     private static Vector<Course> courses;
     private static Vector<News> news;
     private static Vector<Request> requests;
-//    private static Vector<Parent> parents;
     private static Vector<String> userActions;
+		
+    private Database(String path) {
+    	Database.path = path;
+    };
+    
+	private static Database instance = new Database(BASE_PATH);
+
+	public String getPath() {
+		return Database.path;
+	}
+	
+	public static Database getInstance() {
+		return instance;
+	}
     
     {
-//    	teachers = new Vector<Teacher>();
-//    	students = new Vector<Student>();
-//    	managers = new Vector<Manager>();
     	schools = new Vector<School>();
     	books = new Vector<Book>();
     	courses = new Vector<Course>();
     	news = new Vector<News>();
     	requests = new Vector<Request>();
-//    	deans = new Vector<Dean>();
-//    	librarians = new Vector<Librarian>();
-//    	admins = new Vector<Admin>();
-//    	techSupportWorkers = new Vector<TechSupportWorker>();
-//    	parents = new Vector<Parent>();
     	users = new Vector<User>();
     	setUserActions(new Vector<String>()); 
     }
@@ -62,24 +46,64 @@ public final class Database {
     	return users;
     }
     
-    
     public static Employee getEmployeeByUsername(String username) {
-    	for(Employee employee : getEmployees()) {
-    		if(employee.getUsername().equals(username)) {
-    			return employee;
+    	for(Employee e: getEmployees()) {
+    		if(e.getUsername().equals(username)) {
+    			return e;
     		}
     	}
     	return null;
     }
-//    
-//    public static Student getStudentById(String id) {
-//    	for(Student s : getStudents()) {
-//    		if(s.getId().equals(id)) {
-//    			return s;
-//    		}
-//    	}
-//    	return null;
-//    }
+    
+    public static Student getStudentById(String id) {
+    	for(Student s : getStudents()) {
+    		if(s.getId().equals(id)) {
+    			return s;
+    		}
+    	}
+    	return null;
+    }
+
+    public static Manager getManagerById(String id) {
+    	for(Manager m: getManagers()) {
+    		if(m.getId().equals(id)) {
+    			return m;
+    		}
+    	}
+    	return null;
+    }
+    
+    public static Librarian getLibrarianById(String id) {
+    	for(Librarian l: getLibrarians()) {
+    		if(l.getId().equals(id)) {
+    			return l;
+    		}
+    	}
+    	return null;
+    }
+    
+    public static Teacher getTeacherById(String id) {
+    	for(Teacher t: getTeachers()) {
+    		if(t.getId().equals(id)) {
+    			return t;
+    		}
+    	}
+    	return null;
+    }
+    
+    public static TechSupportWorker getTechSupportWorkerById(String id) {
+    	for(TechSupportWorker  t: getTechSupportWorkers()) {
+    		if(t.getId().equals(id)) {
+    			return t;
+    		}
+    	}
+    	return null;
+    }
+    
+    public static Vector<Manager> getORManagers() {
+    	Vector <Manager> ORManagers = getManagers().stream().filter(x -> x.getType().equals(ManagerType.OR)).collect(Collectors.toCollection(Vector::new));
+    	return ORManagers;
+    }
     
     public static Vector<Employee> getEmployees() {
 		Vector <Employee> employees = users.stream().filter(x -> x instanceof Employee).map(x -> (Employee)x).collect(Collectors.toCollection(Vector::new));
@@ -87,10 +111,12 @@ public final class Database {
 	}
 	
 	public static Vector<Teacher> getTeachers() {
+		Vector <Teacher> teachers = users.stream().filter(x -> x instanceof Teacher).map(x -> (Teacher)x).collect(Collectors.toCollection(Vector::new));
 		return teachers;
 	}
 	
 	public static Vector<Student> getStudents() {
+		Vector <Student> students = users.stream().filter(x -> x instanceof Student).map(x -> (Student)x).collect(Collectors.toCollection(Vector::new));
 		return students;
 	}
 	
@@ -103,6 +129,7 @@ public final class Database {
 	}
 	
 	public static Vector<Manager> getManagers() {
+		Vector <Manager> managers = users.stream().filter(x -> x instanceof Manager).map(x -> (Manager)x).collect(Collectors.toCollection(Vector::new));
 		return managers;
 	}
 	
@@ -119,19 +146,23 @@ public final class Database {
 	}
 	
 	public static Vector<Dean> getDeans() {
-	    return deans;
+		Vector <Dean> deans = users.stream().filter(x -> x instanceof Dean).map(x -> (Dean)x).collect(Collectors.toCollection(Vector::new));
+		return deans;
 	}
 	
 	public static Vector<Librarian> getLibrarians() {
-	    return librarians;
+		Vector <Librarian> librarians = users.stream().filter(x -> x instanceof Librarian).map(x -> (Librarian)x).collect(Collectors.toCollection(Vector::new));
+		return librarians;
 	}
 	
 	public static Vector<Admin> getAdmins() {
-	    return admins;
+		Vector <Admin> admins = users.stream().filter(x -> x instanceof Admin).map(x -> (Admin)x).collect(Collectors.toCollection(Vector::new));
+		return admins;
 	}
 	
 	public static Vector<TechSupportWorker> getTechSupportWorkers() {
-	    return techSupportWorkers;
+		Vector <TechSupportWorker> techSupportWorkers = users.stream().filter(x -> x instanceof TechSupportWorker).map(x -> (TechSupportWorker)x).collect(Collectors.toCollection(Vector::new));
+		return techSupportWorkers;
 	}
 	
 	public static Vector<Parent> getParents(){
