@@ -207,10 +207,10 @@ public class Manager extends Employee implements CanViewMarks {
 		  return v;
 	  }
 	  
-//	  public Vector<Pair<Teacher, Double>> viewTeacherByRate(){
-//		  Vector<Pair<Teacher, Double>> v = Questionnaire.getTeacherRate();
-//		  return v;
-//	  }
+	  public Vector<Pair<Teacher, Double>> viewTeacherByRate(){
+		  Vector<Pair<Teacher, Double>> v = Questionnaire.getTeachersRate();
+		  return v;
+	  }
 	  
 	  public boolean sendRequestToDean(Dean d, Request r) {
 	    return d.signRequest(r);
