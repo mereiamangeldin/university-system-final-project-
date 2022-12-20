@@ -42,38 +42,7 @@ public class Accountant{
 		}
 		return "\n";
 	}
-	
-<<<<<<< HEAD
-//	public void defaultAmount() {
-//		for(Student s : Database.getStudents()) {
-//			for(Payment p : payments) {
-//				if(!(s.contains(p.getStudent()))){
-//					
-//				}
-//			}
-//		}
-//	}
-	
 
-	
-//	public void checkStudentFee() {
-//		for(Payment p : payments) {
-//			if((p.getTypeOfPayment().equals(TypeOfPayment.STUDENT_FEE))){
-//				
-//			}
-//		}
-//	}
-	
-//	public void getStudentWhoNotPayForSF() {
-//		for(Student p : payForStudentFee) {
-//			for(Student s : Database.getStudents()) {
-//				if(!p.contains(s)) {
-//					
-//				}
-//			}
-//		}
-//	}
-=======
 	public void getStudentWhoNotPayForSF() {
 		for(Student s : Database.getStudents()) {
 			boolean check = false;
@@ -90,5 +59,4 @@ public class Accountant{
 			}
 		}
 	}
->>>>>>> ebeb90525217b743afe3b70f8ce93ca41eecbe2e
 }

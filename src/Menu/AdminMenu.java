@@ -100,7 +100,7 @@ public class AdminMenu {
 			}
 			else if(option.equals("2"))
 				System.out.println(Database.getUsers());
-				System.out.print("Enter the id of the user you want to delete:");
+				System.out.print("Enter the username of the user you want to delete:");
 				option = reader.readLine();
 //				User u = Database.getUserById(option);
 //				admin.removeUser(u);
@@ -147,7 +147,6 @@ public class AdminMenu {
 		    		2. Not on grant""");
 		    String isOnGrant = reader.readLine();
 		    boolean grant = false;
-//		    grant = isOnGrant.equals("1") 
 		    if(isOnGrant.equals("1")) {
 		    	grant = true;
 		    } else if(isOnGrant.equals("2")) {
@@ -179,10 +178,10 @@ public class AdminMenu {
     		}
     		System.out.println("Enter parent's child ID in the list of students:");
     		String idS = reader.readLine();
-//    		Student child = Database.getStudentById(idS);
-//    		if(child != null) {
-//        	user = new Parent(name, surname, password, d, child);
-//    		} 
+    		Student child = Database.getStudentById(idS);
+    		if(child != null) {
+        	user = new Parent(name, surname, password, d, child);
+    		} 
 		}
     	
     	// Continue entering employee date 
@@ -264,6 +263,4 @@ public class AdminMenu {
     		System.out.println("Error. Such a user exists in a system.");
     	}
     }
-    
-    public static void 
 }

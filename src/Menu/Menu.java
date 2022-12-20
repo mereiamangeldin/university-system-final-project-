@@ -80,15 +80,12 @@ public class Menu {
 					System.out.println(user);
 					if(user instanceof Student) StudentMenu.menu(user);
 					else if(user instanceof Teacher) TeacherMenu.menu(user);
-					if(user instanceof Admin) AdminMenu.menu(user);
+					else if(user instanceof Admin) AdminMenu.menu(user);
 					else if(user instanceof Manager) ManagerMenu.menu(user);
 					else if(user instanceof Librarian) LibrarianMenu.menu(user);
 					else if(user instanceof TechSupportWorker) TechSupportWorkerMenu.menu(user);
 					else if(user instanceof Parent) ParentMenu.menu(user);
-//					else if(user instanceof Dean) DeanMenu.menu(user);
-				}
-				else {
-					System.out.println("User not found.");
+					else if(user instanceof Dean) DeanMenu.menu(user);
 				}
 			break;
 			} else if(input.equals("2")) {
@@ -103,84 +100,18 @@ public class Menu {
 		String username = reader.readLine();
 		System.out.print("Enter your password: ");
 		String password = reader.readLine();
-		if(input.equals("1")) { // Teacher 
-			for(Teacher t : Database.getTeachers()) {
-				if(t.getUsername().equals(username)) {
-					if(t.login(password)) {
-						return t;
-					}
-					else {
-						System.out.println("Password is incorrect.");
-						return null;
-					}
+		for(User u : Database.getUsers()) {
+			if(u.getUsername().equals(username)) {
+				if(u.login(password)) {
+					return u;
 				}
-				System.out.println("User not found.");
-				return null;
-			}
-		}
-		else if(input.equals("2")) { // Student 
-			for(Student s : Database.getStudents()) {
-				if(checkLogin(s, username, password)) {
-					return s;
+				else {
+					System.out.println("Password is incorrect."); 
+					return null;
 				}
 			}
-//			System.out.println("User not found.");
-			return null;
 		}
-		else if(input.equals("3")) { // Manager 
-			for(Manager m : Database.getManagers()) {
-				if(checkLogin(m, username, password)) {
-					return m;
-				}
-			}
-//			System.out.println("User not found.");
-			return null;
-		}
-		else if(input.equals("4")) { // Librarian 
-			for(Librarian l : Database.getLibrarians()) {
-				if(checkLogin(l, username, password)) {
-					return l;
-				}
-			}
-//			System.out.println("User not found.");
-			return null;
-		}
-		else if(input.equals("5")) { // Tech Support worker  
-			for(TechSupportWorker t : Database.getTechSupportWorkers()) {
-				if(checkLogin(t, username, password)) {
-					return t;
-				}
-			}
-//			System.out.println("User not found.");
-			return null;
-		}
-		else if(input.equals("6")) { // Dean 
-			for(Dean d : Database.getDeans()) {
-				if(checkLogin(d, username, password)) {
-					return d;
-				}
-			}
-//			System.out.println("User not found.");
-			return null;
-		}
-		else if(input.equals("7")) { // Parent 
-			for(Parent p : Database.getParents()) {
-				if(checkLogin(p, username, password)) {
-					return p;
-				}
-			}
-//			System.out.println("User not found.");
-			return null;
-		}
-		else if(input.equals("8")) { // Admin 
-			for(Admin a : Database.getAdmins()) {
-				if(checkLogin(a, username, password)) {
-					return a;
-				}
-			}
-//			System.out.println("User not found.");
-			return null;
-		}
+		System.out.println("User not found.");
 		return null;
 	}
 	
@@ -220,17 +151,17 @@ public class Menu {
 		System.out.print("Enter text of the message: ");
 		String text = reader.readLine();
 		Message m = new Message(new Date(), text);
-//		System.out.print(Database.getEmployees());
-		System.out.println("Enter employee username you want to message to: ");
-		String username = reader.readLine();
-//		Employee e = Database.getEmployeeByUsername(username);
-//		if(e != null) {
-//			admin.sendMessage(m, e);
-//			System.out.println("Message sent.");
-//		} 
-//		else {
-//			System.out.println("Employee not found.");
-//		}
+		System.out.print(Database.getEmployees());
+		System.out.println("Enter employee id you want to message to: ");
+		String id = reader.readLine();
+		Employee employee = Database.getEmployeeById(id);
+		if(employee != null) {
+			e.sendMessage(m, employee);
+			System.out.println("Message sent.");
+		} 
+		else {
+			System.out.println("Employee not found.");
+		}
 	}
 	
 	public static void viewNews(Employee employee, BufferedReader reader) throws NumberFormatException, IOException {
@@ -278,10 +209,9 @@ public class Menu {
 				id = reader.readLine();
 				System.out.print("Text the description of your request: ");
 				text = reader.readLine();
-//				employee.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getTechSupportWorkerById(id));
+				employee.makeRequest(new Request(employee.getId(), RequestType.EmployeeRequest, text), Database.getTechSupportWorkerById(id));
 			}
 			if(option.equals("2")) {
-//				Database.showSchools();
 				i = 1;
 				for(School s : Database.getSchools()) {
 					System.out.println(i + ". " + s.getName());
@@ -293,15 +223,15 @@ public class Menu {
 				id = reader.readLine();
 				System.out.print("Text the description of your request: ");
 				text = reader.readLine();
-//				employee.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
+				employee.makeRequest(new Request(employee.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
 			}
 			if(option.equals("3")) {
-//				System.out.println(Database.getORManagers());
+				System.out.println(Database.getORManagers());
 				System.out.print("Enter the id of the manager of office of the register: ");
 				id = reader.readLine();
 				System.out.println("Text the description of your request: ");
 				text = reader.readLine();
-//				employee.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
+				employee.makeRequest(new Request(employee.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
 			}		
 		}	
 	}
