@@ -114,7 +114,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     }
 
     public void registerForCourse(Course course, Teacher t, Manager m){
-    	this.makeRequest(new Request(this.getId(), requestType.courseRegistration, course.getId()+" "+t.getId()), m);
+    	this.makeRequest(new Request(this.getId(), RequestType.CourseRegistration, course.getId()+" "+t.getId()), m);
     }
 
     public void rateTeachers(Teacher teacher, Questionnaire q, Double mark){
@@ -145,7 +145,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     
     public String makeRequest(Request request, Employee employee) {
     	if(employee instanceof TechSupportWorker) {
-        if(request.getDescription().length() > 20 && request.getTitle().equals(requestType.employeeRequest)) {
+        if(request.getDescription().length() > 20 && request.getTitle().equals(RequestType.EmployeeRequest)) {
         	TechSupportWorker t = (TechSupportWorker)employee;
         	t.getRequests().add(request);
     		Database.getUserActions().add(String.format("User: %s made request to Tech support worker", super.getUsername()));
@@ -202,7 +202,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     public void viewMark(Course c) {
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : transcript.entrySet()) {
     		if(t.getKey().getKey().equals(c)) {
-    			Database.getUserActions().add(String.format("User: %s viewed mark of course: %s", super.getUsername(), c.getName()));
+    			Database.getUserActions().add(String.format("User: %s viewed mark of course: %s", getFullName(), c.getName()));
     			System.out.println(c.getName() + ": " + t.getValue());
     			break;
     		}
@@ -210,6 +210,9 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     }
     
     public int compareTo(Student s) {
-    	return this.getId().compareTo(s.getId());
+    	int resultByName = this.getName().compareTo(s.getName());
+    	if(resultByName != 0) return resultByName;
+    	int resultBySurname = this.getSurname().compareTo(s.getSurname());
+    	return resultBySurname;
     }     
 }

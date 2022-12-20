@@ -8,9 +8,6 @@ import Attributes.*;
 import Enums.*;
 
 public class Teacher extends Employee implements CanViewMarks, Comparable<Teacher> {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private School school;
 	private TeacherTypes type;
@@ -111,6 +108,9 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     } 
    
    public int compareTo(Teacher t) {
-	   return this.getId().compareTo(t.getId());
-   }
+   		int resultByName = this.getName().compareTo(t.getName());
+   		if(resultByName != 0) return resultByName;
+   		int resultBySurname = this.getSurname().compareTo(t.getSurname());
+   		return resultBySurname;   
+   	}
 }

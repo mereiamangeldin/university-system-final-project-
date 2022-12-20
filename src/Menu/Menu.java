@@ -232,26 +232,29 @@ public class Menu {
 //			System.out.println("Employee not found.");
 //		}
 	}
-//	public static void viewNews(User user, BufferedReader reader) {
-//		int i = 1; 
-//		for(News n : Database.getNews()) {
-//			System.out.println(i + ". " + n);
-//			i += 1;
-//		}
-//		System.out.println("""
-//				1. Comment news.
-//				0. Back. """);
-//		String option = reader.readLine();
-//		switch(option) {
-//			case "1":
-//				System.out.print("Enter number of news: ");
-//				int choice = Integer.parseInt(reader.readLine());
-//				System.out.print("Enter comment: ");
-//				String comment = reader.readLine();
-//				user.writeComment(comment, Database.getNews().get(choice - 1));
-//				System.out.println("You commented on the news.");
-//			case "0":
-//				break;
-//		}
-//	}
+	
+	public static void viewNews(Employee employee, BufferedReader reader) throws NumberFormatException, IOException {
+		int newsOrder = 1; 
+		for(News n : Database.getNews()) {
+			System.out.println(newsOrder + ". " + n);
+			newsOrder += 1;
+		}
+		String newsMenu = ("""
+				1. Comment news.
+				0. Back. """);
+		while(true) {
+			System.out.println(newsMenu);
+			String option = reader.readLine();
+			if(option.equals("1")) {
+				System.out.print("Enter number of news: ");
+				newsOrder = Integer.parseInt(reader.readLine());
+				System.out.print("Enter comment: ");
+				String comment = reader.readLine();
+				employee.writeComment(comment, Database.getNews().get(newsOrder - 1));
+				System.out.println("You commented on the news.");
+			} else if(option.equals("0")) {
+				return;
+			}
+		}
+	}
 }

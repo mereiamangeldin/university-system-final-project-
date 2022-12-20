@@ -4,10 +4,6 @@ import java.util.Date;
 import Attributes.*;
 
 public class Dean extends Employee {
-
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public Dean() {
@@ -23,7 +19,7 @@ public class Dean extends Employee {
     }
 
     public boolean signRequest(Request r) {
-		Database.getUserActions().add(String.format("User: %s signed request of date: %s", super.getUsername(), r.getDateOfRequest()));
+		Database.getUserActions().add(String.format("Dean: %s signed request of date: %s", getUsername(), r.getDateOfRequest()));
         if(r.getDescription().length() >= 25) return true;
         	return false;
     }

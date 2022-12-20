@@ -24,12 +24,13 @@ public class Course {
 		this.scienceDegree = scienceDegree;
 		this.type = type;
 		this.files = new Vector<File>();
+		this.teachers = new Vector<Teacher>();
 	}
     
     {
     	Database.getCourses().add(this);
     }
-    
+        
     public Vector<Course> getCoursesOfTeacher(Teacher t) {
     	return null;
     }

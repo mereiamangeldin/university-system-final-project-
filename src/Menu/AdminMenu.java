@@ -17,7 +17,7 @@ public class AdminMenu {
     public static void menu(User user) throws IOException, ParseException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     	Admin admin = (Admin)user;
-    	String menuAdmin = "\nWelcome, Admin: " + admin.getFullName() + """
+    	String menuAdmin = "\nWelcome, : " + admin.getFullName() + """
     			\n1. Manage users.
     			2. See log files about user actions.
     			3. View students.
@@ -31,113 +31,140 @@ public class AdminMenu {
     	while(admin.getLogged()) {
         	System.out.println(menuAdmin);
         	String option = reader.readLine();
-        	switch(option) {
-        		case "0":
-        			admin.logout();
-        			System.out.println("You logged out.");
-        			break;
-        		case "1":
-        			String adminManageUser = """
-        					1. Create new user.
-        					2. Remove user. 
-        					0. Return to main menu.""";
-        			System.out.println(adminManageUser);
+        	if(option.equals("0")) {
+        		admin.logout();
+        		System.out.println("You logged out.");
+        	}
+        	else if(option.equals("1")) {
+        		AdminMenu.manageUsersMenu(admin, reader);
+        	}
+        	else if(option.equals("2")) {
+        		System.out.println(admin.seeUsersActions());
+        	}
+        	else if(option.equals("3")) {
+        		System.out.println(admin.viewStudent());
+        	}
+        	else if(option.equals("4")) {
+        		System.out.println(Database.getUsers());
+        	}
+        	else if(option.equals("5")) {
+        		Menu.sendMessage(admin, reader);
+        	}
+        	else if(option.equals("6")) {
+        		System.out.println(admin.getEmail());
+        	}
+        	else if(option.equals("7")) {
+        		Menu.viewNews(admin, reader);
+        	} 
+        	else if(option.equals("8")) {
+        		Menu.changePassword(admin, reader);
+        	}
+        	else if(option.equals("9")) {
+        		String requestMenu = "Who do you want to contact?\n1. Technical Support Center.\n2. Dean's office.\n3.Office of the register.\n.0.Back.";
+        		while(true) {
+        			System.out.println(requestMenu);
         			option = reader.readLine();
-        			switch(option) {
-        				case "0":
-        					break;
-        				case "1":
-        					String userType = """
-        							1. Student
-        							2. Teacher
-        							3. Manager
-        							4. Librarian
-        							5. Tech support worker
-        							6. Parent
-        							7. Admin
-        							0. Return""";
-        					System.out.println(userType);
-        					option = reader.readLine();
-        					if(option.equals("0")) {
-        						break;
-        					} 
-        					else {
-        						AdminMenu.addUser(option, reader);
-        						break;
-        					}
-        					
+        			if(option.equals("0")) {
+        				break;
         			}
-    			case "2":
-//    				admin.seeUserActions(user);
-//    				System.out.println("");
-    			case "3":
-    				admin.viewStudent();
-//    				System.out.println();
-    			case "4":
-//    				System.out.println(Database.getUsers());
-    			case "5":
-    				System.out.print("Enter text of the message: ");
-    				String text = reader.readLine();
-    				Message m = new Message(new Date(), text);
-//    				System.out.print(Database.getEmployees());
-    				System.out.println("Enter employee username you want to message to: ");
-    				String username = reader.readLine();
-//    				Employee e = Database.getEmployeeByUsername(username);
-//    				if(e != null) {
-//    					admin.sendMessage(m, e);
-//    					System.out.println("Message sent.");
-//    				} 
-//    				else {
-//    					System.out.println("Employee not found.");
-//    				}
-    			case "6": 
-    				System.out.println(admin.getEmail());
-    			case "7":
-    				int i = 1; 
-    				for(News n : Database.getNews()) {
-    					System.out.println(i + ". " + n);
-    					i += 1;
-    				}
-    				System.out.println("""
-    						1. Comment news.
-    						0. Back. """);
-    				option = reader.readLine();
-    				switch(option) {
-    					case "1":
-    						System.out.print("Enter number of news: ");
-    						int choice = Integer.parseInt(reader.readLine());
-    						System.out.print("Enter comment: ");
-    						String comment = reader.readLine();
-    						admin.writeComment(comment, Database.getNews().get(choice - 1));
-    						System.out.println("You commented on the news.");
-    					case "0":
-    						break;
-    				}
-    			case "8":
-    				Menu.changePassword(user, reader);
-    			case "9":
-        			
-        		
-
-    	}
+        			String id, text;
+        			if(option.equals("1")) {
+//        				Database.showTechSupportWorkers();
+        				System.out.print("Enter the id of the employee you want to write a request to: ");
+        				id = reader.readLine();
+        				System.out.print("Text the description of your request: ");
+        				text = reader.readLine();
+//        				admin.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getTechSupportWorkerById(id));
+        			}
+        			if(option.equals("2")) {
+//        				Database.showSchools();
+        				System.out.print("What school do you want to apply to? (enter number): ");
+        				System.out.println(Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getManagers());
+        				System.out.print(String.format("Enter the id of the manager of %s", Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getName()));
+        				id = reader.readLine();
+        				System.out.print("Text the description of your request: ");
+        				text = reader.readLine();
+//        				admin.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
+        			}
+        			if(option.equals("3")) {
+//        				System.out.println(Database.getORManagers());
+        				System.out.print("Enter the id of the manager of office of the register: ");
+        				id = reader.readLine();
+        				System.out.println("Text the description of your request: ");
+        				text = reader.readLine();
+//        				admin.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
+        			}		
+        		}			
+        	}
     	}
     }
+    	
+    	
+	public static void manageUsersMenu(Admin admin, BufferedReader reader) throws IOException, ParseException {
+		String adminManageUser = """
+				1. Create new user.
+				2. Remove user. 
+				0. Return to main menu.""";
+		System.out.println(adminManageUser);
+		while(true) {
+			System.out.println(adminManageUser);
+			String option = reader.readLine();
+			if(option.equals("0")) {
+				break;
+			}
+			else if(option.equals("1")) {
+				String userType = """
+					1. Student
+					2. Teacher
+					3. Manager
+					4. Librarian
+					5. Tech support worker
+					6. Parent
+					7. Admin
+					0. Return""";
+				System.out.println(userType);
+				option = reader.readLine();
+				if(option.equals("0")) {
+					break;
+				} 
+				else {
+					AdminMenu.addUser(option, reader);
+					break;
+				}
+			}
+			else if(option.equals("2"))
+				System.out.println(Database.getUsers());
+				System.out.print("Enter the id of the user you want to delete:");
+				option = reader.readLine();
+//				User u = Database.getUserById(option);
+//				admin.removeUser(u);
+			}
+	}
+	
     
     public static void addUser(String userType, BufferedReader r) throws IOException, ParseException {
     	String name, surname, password, date;
     	Date d;
     	User user = null;
         BufferedReader reader = r;
+        
+        // General date 
     	System.out.print("Name: ");
     	name = reader.readLine();
+    	
     	System.out.print("Last name: ");
     	surname = reader.readLine();
+    	
     	System.out.print("Create password: ");
     	password = reader.readLine();
+    	
     	System.out.print("Date of Birth in format yyyy/MM/dd: ");
     	date = reader.readLine();
+    	
     	d = new SimpleDateFormat("yyyy/MM/dd").parse(date);
-    	if(userType.equals("1")) {
+    	
+    	// Student date 
+    	if(userType.equals("1")) { 
     		System.out.print("ID: ");
     		String id = reader.readLine();
     		int i = 1;
@@ -154,6 +181,7 @@ public class AdminMenu {
 		    		2. Not on grant""");
 		    String isOnGrant = reader.readLine();
 		    boolean grant = false;
+//		    grant = isOnGrant.equals("1") 
 		    if(isOnGrant.equals("1")) {
 		    	grant = true;
 		    } else if(isOnGrant.equals("2")) {
@@ -176,18 +204,22 @@ public class AdminMenu {
 		    		scienceD = ScienceDegree.PHD;
 		    }
 		    user = new Student(name, surname, password, d, id, s, yearOfStudy, grant, scholarship, scienceD);
-    	}
+    	} 
+    	
+    	// Parent date 
 		else if(userType.equals("6")) {
 			for(Student st : Database.getStudents()) {
     			System.out.println(st.getId() + " " + st.getFullName() + " " + st.getDateOfBirth());
     		}
-    		System.out.println("Enter child's ID in the list of students:");
+    		System.out.println("Enter parent's child ID in the list of students:");
     		String idS = reader.readLine();
 //    		Student child = Database.getStudentById(idS);
 //    		if(child != null) {
-//        		user = new Parent(name, surname, password, d, child);
+//        	user = new Parent(name, surname, password, d, child);
 //    		} 
 		}
+    	
+    	// Continue entering employee date 
     	else {
     		System.out.print("ID: ");
     		String id = reader.readLine();
@@ -198,6 +230,9 @@ public class AdminMenu {
     		double salary = Double.parseDouble(reader.readLine());
     		System.out.print("Insurance number: ");
     		String insuranceNumber = reader.readLine();
+    		
+    		// Continue with specific date 
+    		// Teacher date 
     		if(userType.equals("2")) {
     			System.out.println("School: ");
     			int i = 1;
@@ -253,9 +288,9 @@ public class AdminMenu {
     		}
     		else if(userType.equals("7")) {
     			user  = new Admin(name, surname, password, d, id, hireDate, salary, insuranceNumber);
-    		}
-    		
+    		}	
     	}
+    	
     	if(!Database.getUsers().contains(user)) {
     		Database.getUsers().add(user);
     		System.out.println("User has been successfully created.");

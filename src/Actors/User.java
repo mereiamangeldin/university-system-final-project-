@@ -3,7 +3,10 @@ package Actors;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Vector;
+
 import Attributes.Database;
+import Attributes.News;
 
 public abstract class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -39,14 +42,36 @@ public abstract class User implements Serializable {
     	return logged;
     }
 
-    public void viewNews() {
-    	System.out.println(Database.getNews());
+    public Vector<News> viewNews() {
+    	return Database.getNews();
     }
     
-    public final void initializeSystem() {
-    	login(password);
-    	viewNews();
+//    public final void initializeSystem() {
+//    	login(password);
+//    	viewNews();
+//    }
+    
+    // hashCode(), equals(), toString()
+    public String toString() {
+    	return "User username = " + username + ", password=" + password + ", name=" + name + ", surname=" + surname
+    			+ ", dateOfBirth=" + dateOfBirth;
     }
+    
+    public int hashCode() {
+    	return Objects.hash(dateOfBirth, name, password, surname, username);
+    }
+    
+    public boolean equals(Object obj) {
+    	if (this == obj) return true;
+    	if (obj == null) return false;
+    	if (getClass() != obj.getClass()) return false;
+    	User other = (User) obj;
+    	return Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(name, other.name)
+        && Objects.equals(password, other.password) && Objects.equals(surname, other.surname)
+        && Objects.equals(username, other.username);
+    }
+    
+    // getters and setters 
     public String getUsername() {
     	return username;
     }
@@ -87,30 +112,11 @@ public abstract class User implements Serializable {
     	this.dateOfBirth = dateOfBirth;
     }
     
-    public String toString() {
-    	return "User username = " + username + ", password=" + password + ", name=" + name + ", surname=" + surname
-    			+ ", dateOfBirth=" + dateOfBirth;
-    }
-    
     public boolean getLogged() {
     	return this.logged;
     }
     
     public String getFullName() {
     	return name + " " + surname;
-    }
-    
-    public int hashCode() {
-    	return Objects.hash(dateOfBirth, name, password, surname, username);
-    }
-    
-    public boolean equals(Object obj) {
-    	if (this == obj) return true;
-    	if (obj == null) return false;
-    	if (getClass() != obj.getClass()) return false;
-    	User other = (User) obj;
-    	return Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(name, other.name)
-        && Objects.equals(password, other.password) && Objects.equals(surname, other.surname)
-        && Objects.equals(username, other.username);
     }
 }

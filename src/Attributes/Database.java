@@ -7,10 +7,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Vector;
-import java.util.stream.Collectors;
-import java.util.*;
 
-import Actors.*;
+import Actors.Admin;
+import Actors.Dean;
+import Actors.Librarian;
+import Actors.Manager;
+import Actors.Parent;
+import Actors.Student;
+import Actors.Teacher;
+import Actors.TechSupportWorker;
+import Actors.User;
 
 public final class Database {
 	private final static String BASE_PATH = "C:\\temp\\";
@@ -30,6 +36,7 @@ public final class Database {
 	public static Database getInstance() {
 		return instance;
 	}
+	
 	private static Vector<Teacher> teachers;
     private static Vector<Student> students;
     private static Vector<Manager> managers;
@@ -123,12 +130,10 @@ public final class Database {
 //    }
 	
 	public static Vector<Teacher> getTeachers() {
-		Vector <Teacher> teachers = users.stream().filter(x -> x instanceof Teacher).map(x -> (Teacher)x).collect(Collectors.toCollection(Vector::new));
 		return teachers;
 	}
 	
 	public static Vector<Student> getStudents() {
-		Vector <Student> students = users.stream().filter(x -> x instanceof Student).map(x -> (Student)x).collect(Collectors.toCollection(Vector::new));
 		return students;
 	}
 	
@@ -141,7 +146,6 @@ public final class Database {
 	}
 	
 	public static Vector<Manager> getManagers() {
-		Vector <Manager> managers = users.stream().filter(x -> x instanceof Manager).map(x -> (Manager)x).collect(Collectors.toCollection(Vector::new));
 		return managers;
 	}
 	
@@ -158,27 +162,22 @@ public final class Database {
 	}
 	
 	public static Vector<Dean> getDeans() {
-		Vector <Dean> deans = users.stream().filter(x -> x instanceof Dean).map(x -> (Dean)x).collect(Collectors.toCollection(Vector::new));
-		return deans;
+	    return deans;
 	}
 	
 	public static Vector<Librarian> getLibrarians() {
-		Vector <Librarian> librarians = users.stream().filter(x -> x instanceof Librarian).map(x -> (Librarian)x).collect(Collectors.toCollection(Vector::new));
-		return librarians;
+	    return librarians;
 	}
 	
 	public static Vector<Admin> getAdmins() {
-		Vector <Admin> admins = users.stream().filter(x -> x instanceof Admin).map(x -> (Admin)x).collect(Collectors.toCollection(Vector::new));
-		return admins;
+	    return admins;
 	}
 	
 	public static Vector<TechSupportWorker> getTechSupportWorkers() {
-		Vector <TechSupportWorker> techSupportWorkers = users.stream().filter(x -> x instanceof TechSupportWorker).map(x -> (TechSupportWorker)x).collect(Collectors.toCollection(Vector::new));
-		return techSupportWorkers;
+	    return techSupportWorkers;
 	}
 	
 	public static Vector<Parent> getParents(){
-		Vector <Parent> parents = users.stream().filter(x -> x instanceof Parent).map(x -> (Parent)x).collect(Collectors.toCollection(Vector::new));
 		return parents;
 	}
 	
