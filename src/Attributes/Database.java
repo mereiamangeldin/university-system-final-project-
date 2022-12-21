@@ -19,7 +19,7 @@ public final class Database implements Serializable {
     private static Vector<News> news;
     private static Vector<Request> requests;
     private static Vector<Action> userActions;
-//    private static Vector<String> userActions;
+  
 		
     public static Vector<Action> getUserActions(){
     	return userActions;

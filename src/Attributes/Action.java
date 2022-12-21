@@ -36,5 +36,28 @@ public class Action {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(date, description, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Action other = (Action) obj;
+		return Objects.equals(date, other.date) && Objects.equals(description, other.description)
+				&& Objects.equals(user, other.user);
+	}
+
+	@Override
+	public String toString() {
+		return "Action [user=" + user + ", date=" + date + ", description=" + description + "]";
+	}
 	
 }

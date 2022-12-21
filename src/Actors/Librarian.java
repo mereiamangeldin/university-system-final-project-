@@ -44,14 +44,13 @@ public class Librarian extends Employee implements Serializable {
     /**
      * checks if the student owes books to the library
      * */
-    public void checkForDebt(Student student) {	
+    public String checkForDebt(Student student) {	
     	for(Order order: takers) {
     		if(student.equals(order.getStudent())) {
-    			System.out.println("Yes, you have taken book: " + order.getBook().getName() + ", Author: " + order.getBook().getAuthor());
-    			return;
+    			return "Yes, you have taken book: " + order.getBook().getName() + ", Author: " + order.getBook().getAuthor();
     		}
     	}
-    	System.out.println("You have no debts!");
+    	return "You have no debts!";
     }
   
 

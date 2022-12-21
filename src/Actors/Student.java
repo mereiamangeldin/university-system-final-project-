@@ -126,15 +126,7 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     public void setIsBlocked(boolean isBlocked) {
     	this.isBlocked = isBlocked;
     }
-    /**
-     * returns only those courses he have studied or studying in that moment
-     * */
-    public void viewCourses(){
-    	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed courses", getUsername())));
-    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
-    		System.out.println(marks.getKey().getKey());
-    	}
-    }
+
     /**
      * allows to register for specific course
      * */

@@ -25,22 +25,6 @@ public class TeacherDecorator extends UserDecorator {
 	    	decoratedTeacher.setType(type);
 	    }
 	    
-	    public void viewCourses() {
-	    	decoratedTeacher.viewCourses();
-	    }
-
-	    public void viewCourses(String id) {
-	    	decoratedTeacher.viewCourses(id);
-	    }
-
-	    public void addCourse(Course course) {
-	    	decoratedTeacher.addCourse(course);
-	    }
-
-	    public void deleteCourse(Course course) {
-	    	decoratedTeacher.deleteCourse(course);
-	    }
-	 
 	    public void putMark(Course course, Student student, int type, double point) {
 	    	decoratedTeacher.putMark(course, student, type, point);
 	    }

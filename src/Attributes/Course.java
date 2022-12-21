@@ -29,10 +29,6 @@ public class Course implements Serializable {
 		this.teachers = new Vector<Teacher>();
 	}
     
-        
-    public Vector<Course> getCoursesOfTeacher(Teacher t) {
-    	return null;
-    }
     
 	public String getId() {
 		return id;

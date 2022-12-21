@@ -7,7 +7,7 @@ import Interfaces.*;
 /**
  * The main class of our system, other actors of university system extends this class.
  * */
-public abstract class SimpleUser implements Serializable, User {
+public class SimpleUser implements Serializable, User {
 	private static final long serialVersionUID = 1L;
 	private String username;
     private String password;

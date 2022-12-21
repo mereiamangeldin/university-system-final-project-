@@ -75,9 +75,6 @@ public abstract class StudentDecorator extends UserDecorator {
     	return decoratedStudent.getTeachers();
     }
 
-    public void viewCourses(){
-    	decoratedStudent.viewCourses();
-    }
 
     public void registerForCourse(Course course, Teacher t, Manager m){
     	decoratedStudent.registerForCourse(course, t, m);

@@ -43,36 +43,8 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     public void setType(TeacherTypes type) {
     	this.type = type;
     }
-    /**
-     * returns all the courses in university system 
-     * */
-    public void viewCourses() {
-    	System.out.println(Database.getCourses());
-    }
-    /**
-     * returns specific course description
-     * */
-    public void viewCourses(String id) {
-    	for (Course c : Database.getCourses()) {
-    		if(c.getId().equals(id)) System.out.println(c);
-    	}
-    }
-    /**
-     * to add new course for system
-     * */
-    public void addCourse(Course course) {
-    	if(!Database.getCourses().contains(course)) {
-    		Database.getCourses().add(course);
-        }
-    }
-    /**
-     * to delete course from system
-     * */
-    public void deleteCourse(Course course) {
-    	if(Database.getCourses().contains(course)) {
-    		Database.getCourses().remove(course);
-    	}
-    }
+
+
     /**
      * puts mark for specific course and student
      * */
