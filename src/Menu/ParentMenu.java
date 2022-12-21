@@ -39,13 +39,13 @@ public class ParentMenu {
         			System.out.print("Enter id of the course you want to view mark of your child: ");
         			String id = reader.readLine();
         			// Попробовать добавить try-catch с Exception`ом - CourseNotFoundException.
-        			// Course c = Database.getCoursesById(id);
-//        			if(c != null) {
-//        				parent.viewMark(null);
-//        			}
-//        			else {
-//        				System.out.println("Course with this id does not exist.");
-//        			}
+        			Course c = Database.getCourseById(id);
+        			if(c != null) {
+        				parent.viewMark(null);
+        			}
+        			else {
+        				System.out.println("Course with this id does not exist.");
+        			}
         	}
         }
       }

@@ -201,6 +201,10 @@ public class Menu {
 			String id, text;
 			int i = 1;
 			if(option.equals("1")) {
+				if(employee instanceof TechSupportWorker) {
+					System.out.println("You do not have permission for this action.");
+					continue;
+				}
 				for(TechSupportWorker t : Database.getTechSupportWorkers()) {
 					System.out.println(i + ". " + t.getId() + " " + t.getFullName());
 					i += 1;
@@ -235,4 +239,16 @@ public class Menu {
 			}		
 		}	
 	}
+	
+	public static void viewStudent(Employee employee, BufferedReader reader) throws IOException {
+		System.out.println(Database.getStudents());
+		System.out.println("Sort alphabetically - type 1.\nSort by gpa - type 2.\nBack - 3.");
+		String option = reader.readLine();
+		if(option.equals("3")) {
+			return;
+		} else if(option.equals("1") || option.equals("2")) {
+			System.out.println(employee.viewStudentBy(Integer.parseInt(option)));
+		}
+	}
 }
+

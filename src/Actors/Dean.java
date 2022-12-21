@@ -15,7 +15,7 @@ public class Dean extends Employee {
     }
     
     {
-    	Database.getDeans().add(this);
+		Database.getUsers().add(this);
     }
 
     public boolean signRequest(Request r) {

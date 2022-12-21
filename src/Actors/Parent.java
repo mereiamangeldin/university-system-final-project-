@@ -11,6 +11,10 @@ public class Parent extends User implements CanViewTranscript, CanViewMarks {
 	public Parent() {
 		super();
 	}
+	
+	{
+		Database.getUsers().add(this);
+	}
   
 	public Parent(String name, String surname, String password, Date dateOfBirth, Student child) {
 		super(name, surname, password, dateOfBirth);

@@ -23,7 +23,7 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     }    
     
     {
-    	Database.getTeachers().add(this);
+		Database.getUsers().add(this);
     }
     
     public School getSchool() {
@@ -64,29 +64,33 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     	}
     }
  
-    public void putMark(Course course, String studentId, int type, double point) {
-    	Pair<Course, Teacher> p = new Pair<Course, Teacher>(course, this);
-    	for(Student s: Database.getStudents()) {
-    		if(s.getTranscript().containsKey(p) && s.getId().equals(studentId)) {
-    			if(type == 1) {
-    				s.getTranscript().get(p).setFirstAttestation(point);
-    			}
-	            else {
-	            	s.getTranscript().get(p).setSecondAttestation(point);
-	            }
-    			break;
-    		}
-    	}
-    }
+//    public void putMark(Course course, String s, int type, double point) {
+//    	Pair<Course, Teacher> p = new Pair<Course, Teacher>(course, this);
+//    	for(Student s: Database.getStudents()) {
+//    		if(s.getTranscript().containsKey(p) && s.getId().equals(studentId)) {
+//    			if(type == 1) {
+//    				s.getTranscript().get(p).setFirstAttestation(point);
+//    			}
+//	            else {
+//	            	s.getTranscript().get(p).setSecondAttestation(point);
+//	            }
+//    			break;
+//    		}
+//    	}
+//    }
 
    public void viewMark(Course c) {
 	   Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
 	   for(Student s: Database.getStudents()) {
-		   if(s.getTranscript().containsKey(p)) {
-			   s.viewMark(c);
-		   }
+		    for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : s.getTranscript().entrySet()) {
+		    	if(t.getKey().equals(p)) {
+		    		Database.getUserActions().add(String.format("Teacher: %s viewed mark of course: %s", getFullName(), c.getName()));
+		    		System.out.println(s.getFullName() + ": " + t.getValue());
+		    		break;
+		    	}
+		    }
 	   }
-   }
+	}
 
    public String toString() {
 	   return this.getFullName() + " " + this.school.getName() + " " + this.type;

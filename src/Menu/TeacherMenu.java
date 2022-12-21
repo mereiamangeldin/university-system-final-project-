@@ -10,7 +10,7 @@ public class TeacherMenu {
 	public static void menu(User user) throws IOException {
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	    Teacher teacher = (Teacher)user;
-	    String menuTeacher = "\nWelcome, Teacher: " + teacher.getFullName() + """
+	    String menuTeacher = "Welcome, : " + teacher.getFullName() + """
 	    		\n1. Change password.
 	    		2. Manage course and files.
 	    		3. View students. 
@@ -33,70 +33,53 @@ public class TeacherMenu {
 	    	else if(option.equals("1")) {
 	    		Menu.changePassword(teacher, reader);
 	    	}
-	    	else if(option.equals("2")) {
-	    		System.out.println(Database.getStudents());
-	    		System.out.println("Sort alphabetically - type 1.\nSort by gpa - type 2.\nBack - type 3.");
-	    		option = reader.readLine();
-	    		if(option.equals("3")) {
-	    			continue;
-	    		} else {
-	    			teacher.viewStudentBy(Integer.parseInt(option));
-	    		}
-	    	} else if(option.equals("4")) {
-//	    		teacher.putMark(null, option, 0, 0);
+	    	else if(option.equals("3")) {
+	    		Menu.viewStudent(teacher, reader);
+	    	} 
+	    	else if(option.equals("4")) {
+	    		TeacherMenu.putMark(teacher, reader);
 	    	} else if(option.equals("5")) {
-//	    		teacher.viewMark(null);
+	    		System.out.println(Database.getTeachersCourse(teacher));
+	    		System.out.print("Enter course id: ");
+	    		teacher.viewMark(Database.getCourseById(reader.readLine()));
 	    	} else if(option.equals("6")) {
 	    		Menu.sendMessage(teacher, reader);
 	    	} else if(option.equals("7")) {
 	    		System.out.println(teacher.getEmail());
 	    	} else if(option.equals("8")) {
-	    		System.out.println("Who do you want to contanct?"
-	    				+ "\n1. Dean's office."
-	    				+ "\n2. Office of the registration."
-	    				+ "\n3. Tech support office."
-	    				+ "\n0. Cancel.");
-	    		option = reader.readLine();
-	    		if(option.equals("1")) {
-	    			System.out.print("Which department manager you want to write?");
-	    			// 
-	    			System.out.println("Choose the id of manager you want to write: ");
-	    			String id = reader.readLine();
-//	    			Manager m = Database.getManagerById(id);
-	    			System.out.print("Text the desctiption of your request: ");
-	    			String text = reader.readLine();
-//	    			tsw.makeRequest(new Request(text), m);
-	    		} else if(option.equals("2")) {
-//	    			System.out.println(Database.getORManagers)
-	    			System.out.print("Choose the id of manager you want to write: ");
-	    			String id = reader.readLine();
-//	    			Manager m = Database.getORManagerById(id);
-	    			System.out.print("Text the desctiption of your request: ");
-	    			String text = reader.readLine();
-//	    			tsw.makeRequest(new Request(text), m);
-	    		}
+	    		Menu.makeRequest(teacher, reader);
 	    	} else if(option.equals("9")) {
-	    		int i = 1;
-	    		for(News n : Database.getNews()) {
-	    			System.out.println(i + ". " + n);
-	    			i += 1;
-	    		}
-	    		System.out.println("""
-	    				1. Comment news.
-	    				0. Back.""");
-	    		option = reader.readLine();
-	    		if(option.equals("0")) {
-	    			break;
-	    		}
-	    		else if(option.equals("1")) {
-	    			System.out.print("Enter number of news: ");
-	    			int choice = Integer.parseInt(reader.readLine());
-	    			System.out.println("Enter comment: ");
-	    			String comment = reader.readLine();
-	    			teacher.writeComment(comment, Database.getNews().get(choice - 1));
-	    			System.out.println("You commented on the news.");
-	    		}
+	    		Menu.viewNews(teacher, reader);
 	    	}
 	    }
+	}
+	
+	public static void putMark(Teacher teacher, BufferedReader reader) throws IOException {
+		System.out.println(Database.getTeachersCourse(teacher));
+		System.out.println("Enter course id: ");
+		String id = reader.readLine();
+		Course c = Database.getCourseById(id);
+		System.out.println("Enter student id: ");
+		id = reader.readLine();
+		Student s = Database.getStudentById(id);
+		System.out.println("1. Put first attestation.\n2. Put second attestation.\n3. Put score for final.\n0.Cancel");
+		String option = reader.readLine();
+		if(option.equals("0")) {
+			return;
+		} else {
+			System.out.print("Enter mark: ");
+			if(option.equals("1")) {
+//				teacher.putMark(c, s, Integer.parseInt(option), Double.parseDou/ble(reader.readLine()));
+			} 
+		}
+		if(option.equals("1")) {
+//			teacher.putMark(c, s, , 0);
+		} else if(option.equals("2")) {
+			
+		} else if(option.equals("3")) {
+			
+		} else {
+			return;
+		}
 	}
 }

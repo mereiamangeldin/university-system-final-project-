@@ -27,7 +27,7 @@ public class Manager extends Employee implements CanViewMarks {
 	}
   
 	{
-		Database.getManagers().add(this);
+		Database.getUsers().add(this);
 	}
 
 	// Видит оценки студентов определенного курса
@@ -125,16 +125,20 @@ public class Manager extends Employee implements CanViewMarks {
   
 	public boolean assignCourseToTeacher(String courseID, String teacherID) throws IOException {
 		for(Course c : Database.getCourses()) {
-			if(courseID.equals(courseID)) {
+			if(c.getId().equals(courseID)) {
 		        for(Teacher t : Database.getTeachers()) {
-		        	if(teacherID.equals(teacherID)) {
-		        			// ДОБАВИТЬ ПРОВЕРКУ РАВНЫ ЛИ ИХ ШКОЛЫ? 
-		        			c.getTeachers().add(t);
-		        			return true;
+		        	if(t.getId().equals(teacherID)) {
+		        		if(!c.getTeachers().contains(t)) {
+		        			if(c.getSchool().equals(t.getSchool())) {
+		        				c.getTeachers().add(t);
+		        				return true;
+		        			}
+		        			return false;
+		        		}
+		        		return false;
 		        	}
 		        }
-		        return false;
-			}
+		    }
 		}
 		return false;
 	}

@@ -18,26 +18,14 @@ public class TechSupportWorker extends Employee {
 	}
 	
 	{
-		Database.getTechSupportWorkers().add(this);
+		Database.getUsers().add(this);
 	}
 	
 	public void processRequests(int pos) {
-		requests.remove(pos-1);
+		requests.remove(pos - 1);
 	}
 
-	public Vector<Request> getRequests() {
-		return requests;
-	}
-
-	public void setRequests(Vector<Request> requests) {
-		this.requests = requests;
-	}
-
-
-	public String toString() {
-		return "TechSupportWorker [requests=" + requests +"]";
-	}
-
+	// hashCode(), equals() and toString()
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
@@ -51,5 +39,18 @@ public class TechSupportWorker extends Employee {
 		if (getClass() != obj.getClass()) return false;
 		TechSupportWorker other = (TechSupportWorker) obj;
 		return Objects.equals(requests, other.requests);
+	}
+	
+	public String toString() {
+		return "TechSupportWorker [requests=" + requests +"]";
+	}
+	
+	// getters and setters 
+	public Vector<Request> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(Vector<Request> requests) {
+		this.requests = requests;
 	}
 }

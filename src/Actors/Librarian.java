@@ -6,9 +6,7 @@ import java.util.Vector;
 import Attributes.*;
 
 public class Librarian extends Employee {
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private Vector<Order> takers;
   
@@ -22,7 +20,7 @@ public class Librarian extends Employee {
     }
     
     {
-    	Database.getLibrarians().add(this);
+		Database.getUsers().add(this);
     }
     
     public String orderBook(Order o) {

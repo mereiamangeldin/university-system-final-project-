@@ -10,6 +10,7 @@ public final class Questionnaire {
 	public Questionnaire() {
 		rating = new HashMap<Teacher,Vector<Double>>();
 	}
+	
 	private static Questionnaire instance = new Questionnaire();
 	
 	public static Questionnaire getInstance() {

@@ -14,7 +14,7 @@ public class Admin extends Employee {
 	}
 	
 	{
-		Database.getAdmins().add(this);
+		Database.getUsers().add(this);
 	}
 	
     public void addUser(User u) {

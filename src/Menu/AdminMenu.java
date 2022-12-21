@@ -102,8 +102,8 @@ public class AdminMenu {
 				System.out.println(Database.getUsers());
 				System.out.print("Enter the username of the user you want to delete:");
 				option = reader.readLine();
-//				User u = Database.getUserById(option);
-//				admin.removeUser(u);
+				User u = Database.getUserByUsername(option);
+				admin.removeUser(u);
 			}
 	}
 	

@@ -119,6 +119,34 @@ public final class Database {
 //    	}
 //    	return null;
     }
+    
+    public static Book getBookById(String name) {
+    	for(Book b : getBooks()) {
+    		if(b.getName().equals(name)) {
+    			return b;
+    		}
+    	}
+    	return null;
+    }
+    
+    public static Vector<Course> getTeachersCourse(Teacher teacher) {
+    	Vector<Course> v = null;
+    	for(Course c : Database.getCourses()) {
+    		if(c.getTeachers().contains(teacher)) {
+    			v.add(c);
+    		}
+    	}
+    	return v;
+    }
+    
+    public static Course getCourseById(String id) {
+    	for(Course c : getCourses()) {
+    		if(c.getId().equals(id)) {
+    			return c;
+    		}
+    	}
+    	return null;
+    }
  
     public static User getUserByUsername(String username) {
     	for(User u : getUsers()) {

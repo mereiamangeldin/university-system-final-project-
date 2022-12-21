@@ -31,129 +31,153 @@ public class StudentMenu {
 		while(student.getLogged()) {
 			System.out.println(menuStudent);
 			String option = reader.readLine();
-			switch(option) {
-				case "0":
-					student.logout();
-					System.out.println("You logged out.");
-					break;	
-				case "1":
-					Menu.changePassword(student, reader);	
-					break;
-				case "2":
-					student.viewCourses();
-					break;
-				case "3":
-					System.out.println(Database.getBooks());
-					System.out.print("ID of the book you want to order: ");
-					String id = reader.readLine();
-//					Book b = Database.getBookById(id);
-					System.out.println(Database.getLibrarians());
-					System.out.println("Choose the library staff (Enter ID): ");
-//					Librarian l = Database.getLibrarianById(id);
-//					student.makeBookOrder(l, new Order(student, b);
-					break;
-				case "4":
-					System.out.println("Who do you want to contact?"
-							+ "\n1. Dean's office"
-							+ "\n2. Office of the registration"
-							+ "\n3. Tech support office");
-					option = reader.readLine();
-					switch(option) {
-					case "1":
-						for(Manager m : student.getSchool().getManagers()) {
-							System.out.println(m.getId() + " " + m.getFullName());
-						}
-						System.out.print("Choose the id of manager you want to write: ");
-						id = reader.readLine();
-						for(Manager m : student.getSchool().getManagers()){
-							if(m.getId().equals(id)) {
-								System.out.print("Text the description of your request: ");
-								String text = reader.readLine();
-								student.makeRequest(new Request(text), m);
-								break;
-							}
-						}
-						break;
-					case "2":
-						for(Manager m : Database.getManagers()) {
-							if(m.getType().equals(ManagerType.OR)) {
-								System.out.println(m.getId() + " " + m.getFullName());
-							}
-						}
-						System.out.print("Choose the id of OR manager you want to write");
-						id = reader.readLine();
-						for(Manager m : Database.getManagers()) {
-							if(m.getId().equals(id)) {
-								System.out.print("Text the desctiption of your request: ");
-								String text = reader.readLine();
-								student.makeRequest(new Request(text), m);
-								break;
-							}
-						}
-						break;
-					case "3":
-						for(TechSupportWorker t : Database.getTechSupportWorkers()) {
-							System.out.println(t.getId() + " " + t.getFullName());
-						}
-						System.out.print("Choose the id of staff of the tech support you want to write: ");
-						id = reader.readLine();
-						for(TechSupportWorker t : Database.getTechSupportWorkers()) {
-							if(t.getId().equals(id)) {
-								System.out.print("Text the description of your request: ");
-								String text = reader.readLine();
-								student.makeRequest(new Request(text), t);
-								break;
-							}
-						}
-						break;
-					}
-				case "5":
-    				int i = 1; 
-    				for(News n : Database.getNews()) {
-    					System.out.println(i + ". " + n);
-    					i += 1;
-    				}
-    				System.out.println("""
-    						1. Comment news.
-    						0. Back. """);
-    				option = reader.readLine();
-    				switch(option) {
-    					case "1":
-    						System.out.print("Enter number of news: ");
-    						int choice = Integer.parseInt(reader.readLine());
-    						System.out.print("Enter comment: ");
-    						String comment = reader.readLine();
-    						student.writeComment(comment, Database.getNews().get(choice - 1));
-    						System.out.println("You commented on the news.");
-    					case "0":
-    						break;
-    				}
-    				break;
-				case "6":
-					
-					student.viewTranscript();
-					break;
-				case "7":
-					student.viewCourses();
-					System.out.print("Enter course id: ");
-					id = reader.readLine();
-//					Course c = student.getCourseById(id);
-//					student.viewMark(c);
-					break;
-				case "8":
-//					student.registerForCourse(null, null);
-					break;
-				case "9":
-//					System.out.println(student.getTeachers());
-					System.out.print("Teacher id: ");
-					id = reader.readLine();
-//					Teacher t = Database.getTeacherById(id);
-					System.out.print("Rate the teacher on a 10-point scale: ");
-					double mark = Double.parseDouble(reader.readLine());
-//					student.rateTeachers(t, q, mark); - как передать Questionnaire ? 
-					System.out.println("Thank you for your feedback!");
-					break;
+			if(option.equals("0")) {
+				student.logout();
+				System.out.println("You logged out.");
+				break;	
+			}
+			else if(option.equals("1")) {
+				Menu.changePassword(student, reader);
+			}
+			else if(option.equals("3")) {
+				StudentMenu.bookOrdering(student, reader);
+			}
+			else if(option.equals("4")) {
+				StudentMenu.makeRequest(student, reader);
+			} 
+			else if(option.equals("5")) {
+				StudentMenu.viewNews(student, reader);
+			}
+			else if(option.equals("6")) {
+				student.viewTranscript();
+			}
+			else if(option.equals("7")) {
+				StudentMenu.viewMark(student, reader);
+			}
+			else if(option.equals("8")) {
+				StudentMenu.registeringForCourse(student, reader);
+			}
+			else if(option.equals("9")) {
+				StudentMenu.rateTeacher(student, reader);
+			}
 		}
 	}
-}
+					
+		public static void makeRequest(Student student, BufferedReader reader) throws IOException {
+			String requestMenu = "Who do you want to contact?\n1. Technical Support Center.\n2. Dean's office.\n3.Office of the register.\n.0.Back.";
+			String option;
+			while(true) {
+				System.out.println(requestMenu);
+				option = reader.readLine();
+				if(option.equals("0")) {
+					break;
+				}
+				String id, text;
+				int i = 1;
+				if(option.equals("1")) {
+					for(TechSupportWorker t : Database.getTechSupportWorkers()) {
+						System.out.println(i + ". " + t.getId() + " " + t.getFullName());
+						i += 1;
+					}
+					System.out.print("Enter the id of the employee you want to write a request to: ");
+					id = reader.readLine();
+					System.out.print("Text the description of your request: ");
+					text = reader.readLine();
+					student.makeRequest(new Request(student.getId(), RequestType.EmployeeRequest, text), Database.getTechSupportWorkerById(id));
+				}
+				if(option.equals("2")) {
+					i = 1;
+					for(School s : Database.getSchools()) {
+						System.out.println(i + ". " + s.getName());
+						i += 1;
+					}
+					System.out.print("What school do you want to apply to? (enter number): ");
+					System.out.println(Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getManagers());
+					System.out.print(String.format("Enter the id of the manager of %s", Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getName()));
+					id = reader.readLine();
+					System.out.print("Text the description of your request: ");
+					text = reader.readLine();
+					student.makeRequest(new Request(student.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
+				}
+				if(option.equals("3")) {
+					System.out.println(Database.getORManagers());
+					System.out.print("Enter the id of the manager of office of the register: ");
+					id = reader.readLine();
+					System.out.println("Text the description of your request: ");
+					text = reader.readLine();
+					student.makeRequest(new Request(student.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
+				}		
+			}
+		}
+		
+		public static void viewNews(Student student, BufferedReader reader) throws IOException {
+			int newsOrder = 1; 
+			for(News n : Database.getNews()) {
+				System.out.println(newsOrder + ". " + n);
+				newsOrder += 1;
+			}
+			String newsMenu = ("""
+					1. Comment news.
+					0. Back. """);
+			while(true) {
+				System.out.println(newsMenu);
+				String option = reader.readLine();
+				if(option.equals("1")) {
+					System.out.print("Enter number of news: ");
+					newsOrder = Integer.parseInt(reader.readLine());
+					System.out.print("Enter comment: ");
+					String comment = reader.readLine();
+					student.writeComment(comment, Database.getNews().get(newsOrder - 1));
+					System.out.println("You commented on the news.");
+				} else if(option.equals("0")) {
+					return;
+				}
+			}
+		}
+		
+		public static void bookOrdering(Student student, BufferedReader reader) throws IOException {
+			System.out.println(Database.getBooks());
+			System.out.print("Name of the book you want to order: ");
+			String id = reader.readLine();
+			Book b = Database.getBookById(id);
+			System.out.println(Database.getLibrarians());
+			System.out.println("Choose the library staff (Enter ID): ");
+			Librarian l = Database.getLibrarianById(id);
+			student.makeBookOrder(l, new Order(student, b));	
+		}
+		
+		public static void viewMark(Student student, BufferedReader reader) throws IOException {
+			System.out.println(Database.getCourses());
+			System.out.println("Enter id of the course: ");
+			String id = reader.readLine();
+			Course c = Database.getCourseById(id);
+			student.viewMark(c);
+		}
+		
+		public static void registeringForCourse(Student student, BufferedReader reader) throws IOException {
+			System.out.println(Database.getCourses());
+			System.out.print("Enter id of the course: ");
+			String id = reader.readLine();
+			Course c = Database.getCourseById(id);
+			System.out.println(c.getTeachers());
+			System.out.print("Enter teacher id: ");
+			id = reader.readLine();
+			Teacher t = Database.getTeacherById(id);
+			System.out.println(Database.getORManagers());
+			System.out.println("Enter manager id: ");
+			id = reader.readLine();
+			Manager m = Database.getManagerById(id);
+			student.registerForCourse(c, t, m);
+		}
+		
+		public static void rateTeacher(Student student, BufferedReader reader) throws IOException {
+			System.out.println(student.getTeachers());
+			System.out.print("Teacher id: ");
+			String id = reader.readLine();
+			Teacher t = Database.getTeacherById(id);
+			System.out.print("Rate the teacher on a 10-point scale: ");
+			double mark = Double.parseDouble(reader.readLine());
+			student.rateTeacher(t, mark);
+			System.out.println("Thank you for your feedback!");
+		}
 }

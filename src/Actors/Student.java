@@ -37,7 +37,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     }
     
     {
-    	Database.getStudents().add(this);
+		Database.getUsers().add(this);
     }
     
     public String getId() {
@@ -120,19 +120,19 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	Database.getUserActions().add(String.format("User: %s has viewed courses", super.getUsername()));
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
     		System.out.println(marks.getKey().getKey());
-      }
+    	}
     }
 
     public void registerForCourse(Course course, Teacher t, Manager m){
-    	this.makeRequest(new Request(this.getId(), RequestType.CourseRegistration, course.getId()+" "+t.getId()), m);
+    	this.makeRequest(new Request(this.getId(), RequestType.CourseRegistration, course.getId() + " " + t.getId()), m);
     }
 
-    public void rateTeachers(Teacher teacher, Questionnaire q, Double mark){
-    	if(q.getRating().containsKey(teacher)) {
-    		q.getRating().get(teacher).add(mark);
-    	}else {
-    		q.getRating().put(teacher, new Vector<Double>());
-    		q.getRating().get(teacher).add(mark);
+    public void rateTeacher(Teacher teacher, double mark){
+    	if(Questionnaire.getRating().containsKey(teacher)) {
+    		Questionnaire.getRating().get(teacher).add(mark);
+    	} else {
+    		Questionnaire.getRating().put(teacher, new Vector<Double>());
+    		Questionnaire.getRating().get(teacher).add(mark);
     	}
     }
 
