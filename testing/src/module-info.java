@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author Merei
- *
- */
-module testing {
-}

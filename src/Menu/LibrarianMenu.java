@@ -19,7 +19,7 @@ public class LibrarianMenu {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Librarian librarian = (Librarian)user;
         String menuLibrarian = "\nWelcome: " + librarian.getFullName() + """
-        		\n. 1. Change password;
+        		\n1. Change password;
         		2. View students.
         		3. View news.
         		4. View orders.
@@ -32,6 +32,8 @@ public class LibrarianMenu {
         	if(option.equals("0")) {
         		librarian.logout();
         		System.out.println("You logged out.");
+				Database.serializeAll();
+				break;
         	}
         	else if(option.equals("1")) {
         		Menu.changePassword(librarian, reader);

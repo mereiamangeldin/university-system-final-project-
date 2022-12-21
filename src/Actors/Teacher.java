@@ -46,22 +46,21 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     public void viewCourses() {
     	System.out.println(Database.getCourses());
     }
-
-    public void viewCourses(String id) {
-    	for (Course c : Database.getCourses()) {
-    		if(c.getId().equals(id)) System.out.println(c);
-    	}
+    
+    public String addFileToCouse(Course course, File file) {
+    	if(course.getFiles().contains(file)) {
+    		return "Course already have this file";
+    	} 
+    	course.getFiles().add(file);
+    	return "File is added";
     }
-
-    public void addCourse(Course course) {
-    	if(!Database.getCourses().contains(course)) {
-    		Database.getCourses().add(course);
-        }
-    }
-
-    public void deleteCourse(Course course) {
-    	if(Database.getCourses().contains(course)) {
-    		Database.getCourses().remove(course);
+    
+    public String deleteFileFromCourse(Course course, File file){
+    	if(course.getFiles().contains(file)) {
+    		course.getFiles().remove(file);
+    		return "File was deleted succesfully";
+    	} else {
+    		return "Course does not have this file";
     	}
     }
  

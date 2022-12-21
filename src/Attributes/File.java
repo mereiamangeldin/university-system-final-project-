@@ -4,18 +4,34 @@ import java.util.Objects;
 
 import Enums.*;
 public class File {
+	private int id;
 	private String name;
     private TypeOfFile typeOfFile;
     private String content;
+    private static int numberOfFiles;
     
     public File(String name, TypeOfFile typeOfFile, String content) {
 		this.name = name;
 		this.typeOfFile = typeOfFile;
 		this.content = content;
 	}
+    
+    {
+    	numberOfFiles++;
+    	id = numberOfFiles;
+    	
+    }
   
 	public String getName() {
 		return name;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void setName(String name) {

@@ -34,6 +34,7 @@ public class AdminMenu {
         	if(option.equals("0")) {
         		admin.logout();
         		System.out.println("You logged out.");
+        		Database.serializeAll();
         		break;
         	}
         	else if(option.equals("1")) {
@@ -71,7 +72,6 @@ public class AdminMenu {
 				1. Create new user.
 				2. Remove user. 
 				0. Return to main menu.""";
-		System.out.println(adminManageUser);
 		while(true) {
 			System.out.println(adminManageUser);
 			String option = reader.readLine();
@@ -103,7 +103,7 @@ public class AdminMenu {
 				System.out.print("Enter the username of the user you want to delete:");
 				option = reader.readLine();
 				User u = Database.getUserByUsername(option);
-				admin.removeUser(u);
+				System.out.println(admin.removeUser(u));
 			}
 	}
 	
@@ -134,12 +134,13 @@ public class AdminMenu {
     		System.out.print("ID: ");
     		String id = reader.readLine();
     		int i = 1;
-    		System.out.println("Enter the number of student's school: ");
     		for(School s : Database.getSchools()) {
     			System.out.println(i + ". " + s.getName());
 		    	i++;
 		    }
-    		School s = Database.getSchools().get(i - 1);
+    		System.out.print("Enter the number of student's school: ");
+    		int choice = Integer.parseInt(reader.readLine());
+    		School s = Database.getSchools().get(choice - 1);
 		    System.out.print("Year of study: ");
 		    int yearOfStudy = Integer.parseInt(reader.readLine());
 		    System.out.println("""
@@ -154,10 +155,7 @@ public class AdminMenu {
 		    }
 		    System.out.print("Amount of scholarship if exists. (If no - put 0): ");
 		    double scholarship = Double.parseDouble(reader.readLine());
-		    System.out.println("Science degree: "
-		    	+ "1. BACHELOR"
-		    	+ "2. MASTER" 
-		    	+ "3. PHD");
+		    System.out.println("Science degree:\n1. BACHELOR\n2. MASTER\n3. PHD");
 		    String sd = reader.readLine();
 		    ScienceDegree scienceD = null;
 		    switch(sd) {
@@ -230,18 +228,21 @@ public class AdminMenu {
     					+ "1. OR"
     					+ "2. SITE"
     					+ "3. SAM"
-    					+ "4. BS");
+    					+ "4. BS"
+    					+ "5. ISE");
     			String option = reader.readLine();
     			ManagerType m = null;
     			switch(option) {
     				case "1":
     					m = ManagerType.OR;
     				case "2":
-    					m = ManagerType.SITI;
+    					m = ManagerType.SITE;
     				case "3":
     					m = ManagerType.SAM;
     				case "4":
     					m = ManagerType.BS;
+    				case "5":
+    					m = ManagerType.ISE;
     			}
     			user  = new Manager(name, surname, password, d, id, hireDate, salary, insuranceNumber, m);
     		}

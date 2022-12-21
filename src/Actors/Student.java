@@ -125,12 +125,13 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	this.isBlocked = isBlocked;
     }
     
-    public void viewCourses(){
-    	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed courses", getUsername())));
-    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
-    		System.out.println(marks.getKey().getKey());
-    	}
-    }
+//    public void viewCourses(){
+//    	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed courses", getUsername())));
+//    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
+//    		System.out.println(marks.getKey().getKey());
+//    	}
+//    	System.out.println("Courses");
+//    }
 
     public void registerForCourse(Course course, Teacher t, Manager m){
     	this.makeRequest(new Request(this.getId(), RequestType.CourseRegistration, course.getId() + " " + t.getId()), m);
@@ -152,6 +153,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     
     public void makeBookOrder(Librarian librarian, Order order){
     	String answer = librarian.orderBook(order);
+//    	System.out.println(answer);
         if(answer.equals("Accepted")) {
 			Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made order for book: %s", getUsername(), order.getBook().getName())));
         	System.out.println("The order has been done succesfully! "
@@ -191,10 +193,11 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
     		System.out.println(marks.getKey().getKey().getName() + ": " + marks.getValue().getTotal());
         }
+    	System.out.println("Transcript");
     }
     
     public String toString() {
-        return "Student [id=" + id + ", school=" + school + ", yearOfStudy=" + yearOfStudy + ", transcript="
+        return super.toString() + "Student [id=" + id + ", school=" + school.getName() + ", yearOfStudy=" + yearOfStudy + ", transcript="
             + transcript + ", grant=" + grant + ", scholarship=" + scholarship + ", scienceDegree=" + scienceDegree
                 + ", organizations=" + organizations + "]";
     }

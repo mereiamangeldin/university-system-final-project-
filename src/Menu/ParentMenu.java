@@ -13,8 +13,8 @@ public class ParentMenu {
 	public static void menu(User user) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Parent parent = (Parent)user;
-        String menuParent = "Welcome, Parent: " + parent.getFullName() + """
-        		1. Change password.
+        String menuParent = "\nWelcome, Parent: " + parent.getFullName() + """
+        		\n1. Change password.
         		2. View info about child.
         		3. View transcript of child.
         		4. View mark of child.
@@ -26,7 +26,8 @@ public class ParentMenu {
         	if(option.equals("0")) {
         		parent.logout();
         		System.out.println("You logged out.");
-        		break;
+				Database.serializeAll();
+				break;
         	} else if(option.equals("1")){
         		Menu.changePassword(parent, reader);
         	} else if(option.equals("2")) {

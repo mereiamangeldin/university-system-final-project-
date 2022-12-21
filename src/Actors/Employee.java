@@ -25,11 +25,12 @@ public abstract class Employee extends User implements CanMakeRequest, CanWriteC
         this.email = new LinkedHashMap<Employee, Message>();
     }
   
-    public String viewStudent() {
-    	for (Student d : Database.getStudents()) {
-    		return d.toString();
-    	}
-    	return "\n";
+    public Vector<Student> viewStudent() {
+    	return Database.getStudents();
+//    	for (Student s : Database.getStudents()) {
+//    		return s.toString() + "\n";
+//    	}
+//    	return "";
     }
 
   	public void sendMessage(Message message, Employee employee) {

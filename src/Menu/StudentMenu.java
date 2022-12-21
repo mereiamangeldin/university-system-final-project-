@@ -34,10 +34,14 @@ public class StudentMenu {
 			if(option.equals("0")) {
 				student.logout();
 				System.out.println("You logged out.");
-				break;	
+				Database.serializeAll();
+				break;
 			}
 			else if(option.equals("1")) {
 				Menu.changePassword(student, reader);
+			} 
+			else if(option.equals("2")) {
+				System.out.println(student.getCourses());
 			}
 			else if(option.equals("3")) {
 				StudentMenu.bookOrdering(student, reader);
@@ -128,6 +132,7 @@ public class StudentMenu {
 					System.out.print("Enter comment: ");
 					String comment = reader.readLine();
 					student.writeComment(comment, Database.getNews().get(newsOrder - 1));
+					System.out.println(Database.getNews().get(newsOrder - 1));
 					System.out.println("You commented on the news.");
 				} else if(option.equals("0")) {
 					return;
@@ -136,14 +141,25 @@ public class StudentMenu {
 		}
 		
 		public static void bookOrdering(Student student, BufferedReader reader) throws IOException {
-			System.out.println(Database.getBooks());
-			System.out.print("Name of the book you want to order: ");
-			String id = reader.readLine();
+			for(Book b : Database.getBooks()) {
+				System.out.println(b);
+			}
+			System.out.print("Id of the book you want to order: ");
+			int id = Integer.parseInt(reader.readLine());
 			Book b = Database.getBookById(id);
 			System.out.println(Database.getLibrarians());
-			System.out.println("Choose the library staff (Enter ID): ");
-			Librarian l = Database.getLibrarianById(id);
-			student.makeBookOrder(l, new Order(student, b));	
+			System.out.print("Choose the library staff (Enter ID): ");
+			String i = reader.readLine();
+			Librarian l = Database.getLibrarianById(i);
+			if(b != null) {
+				if(l != null) {
+					student.makeBookOrder(l, new Order(student, b));	
+				} else {
+					System.out.println("Librarian does not found");
+				}
+			} else {
+				System.out.println("Book is not found");
+			}
 		}
 		
 		public static void viewMark(Student student, BufferedReader reader) throws IOException {
@@ -155,7 +171,9 @@ public class StudentMenu {
 		}
 		
 		public static void registeringForCourse(Student student, BufferedReader reader) throws IOException {
-			System.out.println(Database.getCourses());
+			for(Course c : Database.getCourses()) {
+				System.out.println(String.format(("Course id: %s, name: %s, number of credits: %s, school: %s, type: %s"), c.getId(), c.getName(), c.getNumberOfCredits(), c.getSchool().getName(), c.getType()));
+			}
 			System.out.print("Enter id of the course: ");
 			String id = reader.readLine();
 			Course c = Database.getCourseById(id);
@@ -167,7 +185,20 @@ public class StudentMenu {
 			System.out.println("Enter manager id: ");
 			id = reader.readLine();
 			Manager m = Database.getManagerById(id);
-			student.registerForCourse(c, t, m);
+			if(c != null) {
+				if(t != null) {
+					if(m != null) {
+						student.registerForCourse(c, t, m);
+					} else {
+						System.out.println("Manager does not found");
+					}
+				} else {
+					System.out.println("Teacher does not found");
+
+				}
+			} else {
+				System.out.println("Course does not found");
+			}
 		}
 		
 		public static void rateTeacher(Student student, BufferedReader reader) throws IOException {

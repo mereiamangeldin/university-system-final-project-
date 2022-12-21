@@ -27,6 +27,7 @@ public class TechSupportWorkerMenu {
 			if(option.equals("0")) {
 				tsw.logout();
 				System.out.println("You logged out");
+				Database.serializeAll();
 				break;
 			} else if(option.equals("1")) {
 				Menu.changePassword(tsw, reader);

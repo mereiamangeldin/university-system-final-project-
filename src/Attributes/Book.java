@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Book implements Serializable {
+	private int id;
     private String name;
     private int quantity;
     private String author;
     private int yearOfPublication;
+    private static int numberOfBooks;
     
     public Book(String name, int quantity, String author, int yearOfPublication) {
     	this.name = name;
@@ -18,6 +20,8 @@ public class Book implements Serializable {
     
     {
     	Database.getBooks().add(this);
+    	numberOfBooks++;
+    	id = numberOfBooks;
     }
     
 	public String getName() {
@@ -30,6 +34,14 @@ public class Book implements Serializable {
 	
 	public int getQuantity() {
 		return quantity;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void setQuantity(int quantity) {
@@ -66,7 +78,6 @@ public class Book implements Serializable {
 	}
 
 	public String toString() {
-		return "Book [name=" + name + ", quantity=" + quantity + ", author=" + author + ", yearOfPublication="
-				+ yearOfPublication + "]";
+		return String.format("Book [id: %s, name: %s, quantity: %s, year of publication: %s", id, name, quantity, yearOfPublication);
 	}
 }

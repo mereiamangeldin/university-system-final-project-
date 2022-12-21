@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import Actors.*;
 import Attributes.*;
+import Enums.CourseType;
+import Enums.ScienceDegree;
 
 public class ManagerMenu {
 	public static void menu(User user) throws IOException {
@@ -16,7 +18,7 @@ public class ManagerMenu {
 				3. Manage news.
 				4. Send message.
 				5. Read message.
-				6. Manage courses (view marks)
+				6. Manage courses
 				7. View teachers.
 				8. View requests.
 				9. Make request.
@@ -27,6 +29,7 @@ public class ManagerMenu {
 			if(option.equals("0")) {
 				manager.logout();
 				System.out.println("You logged out");
+				Database.serializeAll();
 				break;
 			} else if(option.equals("1")) {
 				Menu.changePassword(manager, reader);
@@ -44,6 +47,8 @@ public class ManagerMenu {
 				ManagerMenu.viewTeachers(manager, reader);
 			} else if(option.equals("8")) {
 				ManagerMenu.processRequests(manager, reader);
+			} else if(option.equals("9")) {
+				Menu.makeRequest(manager, reader);
 			}
 		}
 	}
@@ -54,36 +59,106 @@ public class ManagerMenu {
 			System.out.println(i + ". " + n);
 			i += 1;
 		}
-		System.out.println("1. Add news.\n2. Delete news.\n3. Cancel.)");
-		String option = reader.readLine();
-		if(option.equals("1")) {
-			manager.addNews();
-		} else if(option.equals("2")) {
-			System.out.println("Enter number of news: ");
-			int choice = Integer.parseInt(reader.readLine());
-			manager.removeNews(Database.getNews().get(choice - 1));
-		} else if(option.equals("3")) {
-			return;
+		while(true) {
+			System.out.println("\n1. Add news.\n2. Delete news.\n3. Cancel.");
+			String option = reader.readLine();
+			if(option.equals("1")) {
+				System.out.print("Write title: ");
+				String title = reader.readLine();
+				System.out.print("Write text of the news:");
+				String text = reader.readLine();
+				System.out.println(manager.addNews(title, text));
+			} 	else if(option.equals("2")) {
+				i = 1; 
+				for(News n : Database.getNews()) {
+					System.out.println(i + ". " + n);
+					i += 1;
+				}
+				System.out.print("Enter number of news: ");
+				int choice = Integer.parseInt(reader.readLine());
+				System.out.println(manager.removeNews(Database.getNews().get(choice - 1)));
+			} else if(option.equals("3")) {
+				return;
+			}
 		}
 	}
 	
 	public static void manageCourses(Manager manager, BufferedReader reader) throws IOException {
-		System.out.println(Database.getCourses());
+		for(Course c : Database.getCourses()) {
+			System.out.println(String.format(("Course id: %s, name: %s, number of credits: %s, school: %s, type: %s"), c.getId(), c.getName(), c.getNumberOfCredits(), c.getSchool().getName(), c.getType()));
+		}
 		System.out.println("1. Add course for registration.\n2. Assign course to teacher.\n3. Create a course report.\n4. Back");
 		String option = reader.readLine();
 		if(option.equals("1")) {
-			manager.addCoursesForRegistration();
+			System.out.print("Enter id of the course: ");
+			String id = reader.readLine();
+			System.out.print("Enter name of the course: ");
+			String name = reader.readLine();
+			int i = 1;
+			for(Course c : Database.getCourses()) {
+				System.out.println(i + ". " + c.getId() + " " + c.getName());
+				i += 1;
+			}
+			System.out.print("Enter course prerequisite(number) if exists. (If not - put 0): ");
+			option = reader.readLine();
+			Course prerequisite = null;
+			if(!option.equals("0")) {
+				prerequisite = Database.getCourses().get(Integer.parseInt(reader.readLine()) - 1);
+			} 
+			System.out.print("Enter the number of course credits: ");
+			int numberOfCredits = Integer.parseInt(reader.readLine());
+			i = 1;
+			for(School s : Database.getSchools()) {
+				System.out.print("\n" + i + ". " + s.getName());
+				i += 1;
+			}
+			System.out.print("\nEnter the school of the course (number): ");
+			School s = Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1);
+			System.out.print("Science degrees:\n1. Bachelor\n2. Master\n3. PhD\nChoose correct: ");
+			String input = reader.readLine();
+			ScienceDegree scienceDegree = null;
+			switch(input) {
+				case "1" -> scienceDegree = ScienceDegree.BACHELOR;
+				case "2" -> scienceDegree = ScienceDegree.MASTER;
+				case "3" -> scienceDegree = ScienceDegree.PHD;
+			}
+			System.out.println("Choose the course type:\n1. Required\n2. Minor\n3. Major\n4. Free");
+			CourseType c = null;
+			switch(input) {
+				case "1" -> c = CourseType.REQUIRED;
+				case "2" -> c = CourseType.MINOR;
+				case "3" -> c = CourseType.MAJOR;
+				case "4" -> c = CourseType.FREE;
+			}
+			input = reader.readLine();
+			Course newCourse = new Course(id, name, prerequisite, numberOfCredits, s, scienceDegree, c);
+			System.out.println(manager.addCoursesForRegistration(newCourse));
+			
 		} else if(option.equals("2")) {
-			System.out.println(Database.getCourses());
+			for(Course c : Database.getCourses()) {
+				System.out.println(String.format(("Course id: %s, name: %s, number of credits: %s, school: %s, type: %s"), c.getId(), c.getName(), c.getNumberOfCredits(), c.getSchool().getName(), c.getType()));
+			}
 			System.out.print("Enter course id: ");
 			String courseId = reader.readLine();
-			System.out.println(Database.getTeachers());
-			System.out.println("Enter teacher id: ");
+			Course course = Database.getCourseById(courseId);
+			for(Teacher t : Database.getTeachers()){
+				System.out.println(String.format(("Teacher id: %s, name: %s, type: %s, school: %s"), t.getId(), t.getFullName(), t.getType(), t.getSchool().getName()));
+			}
+			System.out.print("Enter teacher id: ");
 			String teacherId = reader.readLine();
-			if(manager.assignCourseToTeacher(courseId, teacherId)) {
-				System.out.println("The course has been successfully assigned to a teacher");
+			Teacher teacher = Database.getTeacherById(teacherId);
+			if(course != null) {
+				if(teacher != null) {
+					if(manager.assignCourseToTeacher(course, teacher)) {
+						System.out.println("The course has been successfully assigned to a teacher");
+					} else {
+						System.out.println("Failed to assign course to teacher");
+					}
+				} else {
+					System.out.println("Teacher not found");
+				}
 			} else {
-				System.out.println("Failed to assign course to teacher");
+				System.out.println("Course not found");
 			}
 		} else if(option.equals("3")) {
 			System.out.println(Database.getCourses());
@@ -100,9 +175,9 @@ public class ManagerMenu {
 		System.out.println("1. Sort alphabetically.\n2. Sort by rate.\n0. Back");
 		String option = reader.readLine();
 		if(option.equals("1")) {
-			manager.viewTeachersAlphabetically();
+			System.out.println(manager.viewTeachersAlphabetically());
 		} else if(option.equals("2")) {
-			manager.viewTeacherByRate();
+			System.out.println(manager.viewTeacherByRate());
 		} else if(option.equals("0")) {
 			return;
 		}

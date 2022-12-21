@@ -17,7 +17,6 @@ public final class Database implements Serializable {
     private static Vector<News> news;
     private static Vector<Request> requests;
     private static Vector<Action> userActions;
-//    private static Vector<String> userActions;
 		
     public static Vector<Action> getUserActions(){
     	return userActions;
@@ -128,9 +127,9 @@ public final class Database implements Serializable {
 //    	return null;
     }
     
-    public static Book getBookById(String name) {
+    public static Book getBookById(int id) {
     	for(Book b : getBooks()) {
-    		if(b.getName().equals(name)) {
+    		if(b.getId() == id) {
     			return b;
     		}
     	}
@@ -167,7 +166,7 @@ public final class Database implements Serializable {
     
     public static Employee getEmployeeById(String id) {
     	for(Employee e : getEmployees()) {
-    		if(e.getUsername().equals(id)) {
+    		if(e.getId().equals(id)) {
     			return e;
     		}
     	}
@@ -234,6 +233,15 @@ public final class Database implements Serializable {
 		return admins;
 	}
 	
+	public static School getSchoolByName(String name) {
+		for(School s : Database.getSchools()) {
+			if(s.getShortName().equals(name)) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
 	public static Vector<TechSupportWorker> getTechSupportWorkers() {
 		Vector <TechSupportWorker> techSupportWorkers = users.stream().filter(x -> x instanceof TechSupportWorker).map(x -> (TechSupportWorker)x).collect(Collectors.toCollection(Vector::new));
 		return techSupportWorkers;
@@ -246,6 +254,15 @@ public final class Database implements Serializable {
 	
 	// Serialization and Deserialization parts
 	// In order to serialize all users of the system and deserialize them.
+	
+    public static void serializeAll() {
+    	Database.serializeUsers();
+    	Database.serializeBooks();
+    	Database.serializeCourses();
+    	Database.serializeNews();
+    	Database.serializeSchools();
+    }
+    
 	public static void serializeUsers() {
 		try {
 			FileOutputStream fos = new FileOutputStream(path + "users.txt");

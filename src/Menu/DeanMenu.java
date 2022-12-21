@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import Actors.*;
+import Attributes.Database;
 
 public class DeanMenu {
 	public static void menu(User user) throws IOException {
@@ -23,6 +24,9 @@ public class DeanMenu {
         	String option = reader.readLine();
         	if(option.equals("0")) {
         		dean.logout();
+        		System.out.println("You logged out.");
+        		Database.serializeAll();
+        		break;
         	} else if(option.equals("1")) {
         		Menu.changePassword(dean, reader);
         	} else if(option.equals("2")) {

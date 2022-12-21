@@ -100,6 +100,15 @@ public class Course implements Serializable {
 	public void setType(CourseType type) {
 		this.type = type;
 	}
+	
+	public File getCourseFile(int id) {
+		for(File f : files) {
+			if(f.getId() == id) {
+				return f;
+			}
+		}
+		return null;
+	}
 
 	public String toString() {
 		return "Course [id=" + id + ", name=" + name + ", prerequisite=" + prerequisite

@@ -13,10 +13,6 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	private Vector<Request> requests;
 	private BufferedReader reader = null;
 	
-	{
-		requests = new Vector<Request>();
-	}
-	
 	public Manager() {
 		super();
 	}
@@ -24,12 +20,22 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	public Manager(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber, ManagerType type) {
 		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
 		this.type = type;
+		requests = new Vector<Request>();
+		if(this.type.equals(ManagerType.SITE)) {
+			Database.getSchoolByName("SITE").getManagers().add(this);
+		} else if(this.type.equals(ManagerType.BS)) {
+			Database.getSchoolByName("BS").getManagers().add(this);
+		} else if(this.type.equals(ManagerType.ISE)) {
+			Database.getSchoolByName("ISE").getManagers().add(this);
+		} else if(this.type.equals(ManagerType.SAM)) {
+			Database.getSchoolByName("SAM").getManagers().add(this);
+		}
 	}
-  
+	
 	{
 		Database.getUsers().add(this);
 	}
-
+	
 	// Видит оценки студентов определенного курса
 	public String viewMark(Course c) {
 		for(Student s: Database.getStudents()) {
@@ -105,86 +111,51 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	}
 	
 	// Managing news part (Adding and removing)
-	public void addNews() throws IOException {
-		System.out.print("Write title: ");
-		String title = reader.readLine();
-		System.out.print("Write text of the news:");
-		String text = reader.readLine();
+	public String addNews(String title, String text) throws IOException {
 		Database.getNews().add(new News(title, text));
-		System.out.println("The news was added successfully.");
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s added news: ", getUsername())));
+		return "The news was added successfully.";
 	}
   
-	public void removeNews(News news) {
+	public String removeNews(News news) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s removed news: ", getUsername(), news.getTitle())));
 		for(News n : Database.getNews()) {
 			if(n.equals(news)) {
 				Database.getNews().remove(n);
-				System.out.println("The news was deleted successfully");
+				return "The news was deleted successfully";
 			}
 		}
+		return "News was not found";
 	}
   
-	public boolean assignCourseToTeacher(String courseID, String teacherID) throws IOException {
-		for(Course c : Database.getCourses()) {
-			if(c.getId().equals(courseID)) {
-		        for(Teacher t : Database.getTeachers()) {
-		        	if(t.getId().equals(teacherID)) {
-		        		if(!c.getTeachers().contains(t)) {
-		        			if(c.getSchool().equals(t.getSchool())) {
-		        				c.getTeachers().add(t);
-		        				return true;
-		        			}
-		        			return false;
-		        		}
-		        		return false;
-		        	}
-		        }
-		    }
+	public boolean assignCourseToTeacher(Course course, Teacher teacher) throws IOException {
+		if(course.getSchool().equals(teacher.getSchool())){
+			if(course.getTeachers().contains(teacher)) {
+				System.out.println("V vectore est uje");
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			System.out.println("Schools are different.");
+			return false;
 		}
-		return false;
 	}
 
-	public void addCoursesForRegistration() throws IOException {
-		System.out.print("Enter id of the course: ");
-		String id = reader.readLine();
-		System.out.print("Enter name of the course: ");
-		String name = reader.readLine();
-		int i = 1;
+	public String addCoursesForRegistration(Course newCourse) throws IOException {
+		boolean found = false;
 		for(Course c : Database.getCourses()) {
-			System.out.println(i + ". " + c.getId() + " " + c.getName());
-			i += 1;
+			if(c.equals(newCourse)) {
+				found = true;
+				break;
+			}
 		}
-		System.out.print("Enter course prerequisite (number): ");
-		Course prerequisite = Database.getCourses().get(Integer.parseInt(reader.readLine()) - 1);
-		System.out.print("Enter the number of course credits:");
-		int numberOfCredits = Integer.parseInt(reader.readLine());
-		System.out.print("Enter the school of the course (number): ");
-		i = 1;
-		for(School s : Database.getSchools()) {
-			System.out.println(i + ". " + s.getName());
-			i += 1;
+		if(!found) {
+			Database.getCourses().add(newCourse);
+			Database.getUserActions().add(new Action(this, new Date(), String.format("Manager %s added new course ($s) for registration", getFullName(), newCourse.getName())));
+			return "Course is successfully added";
 		}
-		School s = Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1);
-		System.out.println("Choose the science degree of the course:\n1. Bachelor\n2. Master\n3.PhD");
-		String input = reader.readLine();
-		ScienceDegree scienceDegree = null;
-		switch(input) {
-			case "1" -> scienceDegree = ScienceDegree.BACHELOR;
-			case "2" -> scienceDegree = ScienceDegree.MASTER;
-			case "3" -> scienceDegree = ScienceDegree.PHD;
-		}
-		System.out.println("Choose the course type: ");
-		input = reader.readLine();
-		CourseType c = null;
-		switch(input) {
-			case "1" -> c = CourseType.REQUIRED;
-			case "2" -> c = CourseType.MINOR;
-			case "3" -> c = CourseType.MAJOR;
-			case "4" -> c = CourseType.FREE;
-		}
-		Course newCourse = new Course(id, name, prerequisite, numberOfCredits, s, scienceDegree, c);
-		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager %s added new course ($s) for registration", getFullName(), newCourse.getName())));
+		return "Course is already exist";
   }
 
 	// Выводим количество студентов, прошедших/изучающих (?) курс, максимальную, минимальную и среднюю оценку

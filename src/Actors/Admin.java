@@ -22,9 +22,14 @@ public class Admin extends Employee implements Serializable  {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s added user: %s", getFullName(), u.getFullName())));
     }
     
-    public void removeUser(User u) {
-		Database.getUsers().remove(u);
-		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s removed user: %s", getFullName(), u.getUsername())));
+    public String removeUser(User u) {
+    	if(Database.getUsers().contains(u)) {
+    		Database.getUsers().remove(u);
+    		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s removed user: %s", getFullName(), u.getUsername())));
+    		return "User was succesfully removed";
+    	} else {
+    		return "User not found";
+    	}
     }
 
     public void updateUser(User u, int type, String toChange) throws Exception {

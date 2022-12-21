@@ -60,7 +60,7 @@ public class Librarian extends Employee implements Serializable {
     }
   
     public String toString() {
-    	return "Librarian takers = " + takers;
+    	return String.format("Id: %s, name: %s, surname: %s, ", getId(), getName(), getSurname());
     }
   
     public int hashCode() {
