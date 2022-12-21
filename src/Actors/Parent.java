@@ -4,22 +4,23 @@ import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Interfaces.*;
+import Decorators.*;
 import javafx.util.Pair;
 
-public class Parent extends User implements CanViewTranscript, CanViewMarks, Serializable {
+public class Parent extends UserDecorator implements CanViewTranscript, CanViewMarks, Serializable {
 	private static final long serialVersionUID = 1L;
 	private Student child;
 
-	public Parent() {
-		super();
+	public Parent(User user) {
+		super(user);
 	}
 	
 	{
 		Database.getUsers().add(this);
 	}
   
-	public Parent(String name, String surname, String password, Date dateOfBirth, Student child) {
-		super(name, surname, password, dateOfBirth);
+	public Parent(User user, Student child) {
+		super(user);
 		this.child = child;
 	}    
   

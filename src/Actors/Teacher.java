@@ -13,12 +13,12 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
 	private School school;
 	private TeacherTypes type;
     
-    public Teacher() {
-    	super();
+    public Teacher(User user) {
+    	super(user);
     }
 
-    public Teacher(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber, School school, TeacherTypes type) {
-    	super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+    public Teacher(User user, String id, Date hireDate, double salary, String insuranceNumber, School school, TeacherTypes type) {
+    	super(user, id, hireDate, salary, insuranceNumber);
     	this.school = school;
       	this.type = type;
     }    

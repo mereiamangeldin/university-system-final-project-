@@ -1,11 +1,9 @@
 package Actors;
 import java.util.Vector;
-
 import Attributes.Database;
 import Attributes.Payment;
-import Enums.SocialStatus;
 import Enums.TypeOfPayment;
-import javafx.util.*;
+
 
 public class Accountant{
 	private Vector <Payment> payments;

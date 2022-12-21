@@ -1,15 +1,11 @@
 package Actors;
-
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.*;
 import Attributes.*;
+import Interfaces.*;
 
-import Attributes.Database;
-import Attributes.News;
 
-public abstract class User implements Serializable {
+public abstract class SimpleUser implements Serializable, User {
 	private static final long serialVersionUID = 1L;
 	private String username;
     private String password;
@@ -18,9 +14,9 @@ public abstract class User implements Serializable {
     private Date dateOfBirth;
     private boolean logged;
     
-    public User(){}
+    public SimpleUser(){}
     
-    public User(String name, String surname, String password, Date dateOfBirth) {
+    public SimpleUser(String name, String surname, String password, Date dateOfBirth) {
     	super();
 		this.name = name;
 		this.surname = surname;
@@ -61,7 +57,7 @@ public abstract class User implements Serializable {
     	if (this == obj) return true;
     	if (obj == null) return false;
     	if (getClass() != obj.getClass()) return false;
-    	User other = (User) obj;
+    	SimpleUser other = (SimpleUser) obj;
     	return Objects.equals(dateOfBirth, other.dateOfBirth) && Objects.equals(name, other.name)
         && Objects.equals(password, other.password) && Objects.equals(surname, other.surname)
         && Objects.equals(username, other.username);

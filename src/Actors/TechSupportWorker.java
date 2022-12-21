@@ -3,18 +3,19 @@ package Actors;
 import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
+import Interfaces.*;
 
 public class TechSupportWorker extends Employee implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	private Vector<Request> requests;
 	
-	public TechSupportWorker() {
-		super();
+	public TechSupportWorker(User user) {
+		super(user);
 	}
 
-	public TechSupportWorker(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
-		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+	public TechSupportWorker(User user, String id, Date hireDate, double salary, String insuranceNumber) {
+		super(user, id, hireDate, salary, insuranceNumber);
 		this.requests = new Vector<Request>();
 	}
 	

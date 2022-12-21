@@ -1,12 +1,12 @@
 package Actors;
-
 import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.RequestType;
 import Interfaces.*;
+import Decorators.*;
 
-public abstract class Employee extends User implements CanMakeRequest, CanWriteComment, Serializable{
+public abstract class Employee extends UserDecorator implements CanMakeRequest, CanWriteComment, Serializable{
 	private static final long serialVersionUID = 1L;
 	private String id;
     private Date hireDate;
@@ -14,10 +14,10 @@ public abstract class Employee extends User implements CanMakeRequest, CanWriteC
     private String insuranceNumber;
     private LinkedHashMap <Employee, Message> email;
     
-    public Employee() {}
+    public Employee(User user) {super(user);}
     
-    public Employee(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
-        super(name, surname, password, dateOfBirth);
+    public Employee(User user, String id, Date hireDate, double salary, String insuranceNumber) {
+        super(user);
         this.id = id;
         this.hireDate = hireDate;
         this.salary = salary;

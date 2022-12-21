@@ -2,13 +2,13 @@ package Actors;
 
 import Interfaces.*;
 import javafx.util.Pair;
-
+import Decorators.*;
 import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.*;
 
-public class Student extends User implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student>, Serializable {
+public class Student extends UserDecorator implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
     private School school;
@@ -20,12 +20,12 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     private HashMap<Organization, Position> organizations;
     private boolean isBlocked;
     
-    public Student() {
-    	super();
+    public Student(User user) {
+    	super(user);
     }
 
-    public Student(String name, String surname, String password, Date dateOfBirth, String id, School school, int yearOfStudy, boolean grant,  double scholarship, ScienceDegree scienceDegree) {
-    	super(name, surname, password, dateOfBirth);
+    public Student(User user, String id, School school, int yearOfStudy, boolean grant,  double scholarship, ScienceDegree scienceDegree) {
+    	super(user);
     	this.id = id;
     	this.school = school;
     	this.yearOfStudy = yearOfStudy;
@@ -150,17 +150,17 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	return transcript;
     }  
     
-    public void makeBookOrder(Librarian librarian, Order order){
+    public String makeBookOrder(Librarian librarian, Order order){
     	String answer = librarian.orderBook(order);
         if(answer.equals("Accepted")) {
 			Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made order for book: %s", getUsername(), order.getBook().getName())));
-        	System.out.println("The order has been done succesfully! "
-        			+ "You can take the order in 5 minutes. Please don't forget to return the book until the deadline!");
+        	return "The order has been done succesfully! "
+        			+ "You can take the order in 5 minutes. Please don't forget to return the book until the deadline!";
         } else if(answer.equals("Books over")) {
-        	System.out.println("Unfortunately, all the copies of the book you ordering have been taken.");
-        } else if(answer.equals("Not accepted")) {
-        	System.out.println("Unfortunately, we don't have this book in our library.");
+        	return "Unfortunately, all the copies of the book you ordering have been taken.";
         }
+        	return "Unfortunately, we don't have this book in our library.";
+
     }
     
     public String makeRequest(Request request, Employee employee) {

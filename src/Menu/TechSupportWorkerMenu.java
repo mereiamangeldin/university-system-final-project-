@@ -7,7 +7,7 @@ import Actors.*;
 import Attributes.*;
 
 public class TechSupportWorkerMenu {
-	public static void menu(User user) throws IOException {
+	public static void menu(SimpleUser user) throws IOException {
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		TechSupportWorker tsw = (TechSupportWorker)user;

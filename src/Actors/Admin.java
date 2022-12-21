@@ -3,15 +3,16 @@ import java.util.*;
 import java.io.Serializable;
 import java.text.*;
 import Attributes.*;
+import Interfaces.*;
 
 public class Admin extends Employee implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 
-	public Admin() {};
+	public Admin(User user) {super(user);};
 	
-	public Admin(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
-		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+	public Admin(User user, String id, Date hireDate, double salary, String insuranceNumber) {
+		super(user, id, hireDate, salary, insuranceNumber);
 	}
 	
 	{
@@ -53,7 +54,7 @@ public class Admin extends Employee implements Serializable  {
     public Vector<Action> seeUserActions(User u) {
     	Vector<Action> v = new Vector<Action>();
     	for(Action a : Database.getUserActions()) {
-    		if(a.equals(u)) {
+    		if(a.getUser().equals(u)) {
     			v.add(a);
     		}
     	}

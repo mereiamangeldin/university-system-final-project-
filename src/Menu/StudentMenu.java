@@ -14,7 +14,7 @@ import Exceptions.*;
 import Interfaces.*;
 
 public class StudentMenu {
-	public static void menu(User user) throws IOException {
+	public static void menu(SimpleUser user) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		Student student = (Student)user;
 		String menuStudent = "\nWelcome, Student: " + student.getFullName() + """

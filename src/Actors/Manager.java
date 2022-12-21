@@ -17,12 +17,12 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 		requests = new Vector<Request>();
 	}
 	
-	public Manager() {
-		super();
+	public Manager(User user) {
+		super(user);
 	}
 
-	public Manager(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber, ManagerType type) {
-		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+	public Manager(User user, String id, Date hireDate, double salary, String insuranceNumber, ManagerType type) {
+		super(user, id, hireDate, salary, insuranceNumber);
 		this.type = type;
 	}
   
@@ -31,13 +31,13 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	}
 
 	// Видит оценки студентов определенного курса
-	public String viewMark(Course c) {
-		for(Student s: Database.getStudents()) {
-	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-				if(marks.getKey().getKey().equals(c)) {
-					System.out.println(s.getId()  + " " + s.getFullName() + " " + marks.getValue().getTotal());
-					Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s viewed mark of course: ", getUsername(), c.getName())));
-					return s.getId()  + " " + s.getFullName() + " " + marks.getValue().getTotal();
+	public String viewMark(Course course) {
+		for(Student student: Database.getStudents()) {
+	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : student.getTranscript().entrySet()) {
+				if(marks.getKey().getKey().equals(course)) {
+					System.out.println(student.getId()  + " " + student.getFullName() + " " + marks.getValue().getTotal());
+					Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s viewed mark of course: ", getUsername(), course.getName())));
+					return student.getId()  + " " + student.getFullName() + " " + marks.getValue().getTotal();
 				}
 	    	}
 		}
@@ -105,24 +105,21 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	}
 	
 	// Managing news part (Adding and removing)
-	public void addNews() throws IOException {
-		System.out.print("Write title: ");
-		String title = reader.readLine();
-		System.out.print("Write text of the news:");
-		String text = reader.readLine();
+	public String addNews(String title, String text) throws IOException {
 		Database.getNews().add(new News(title, text));
-		System.out.println("The news was added successfully.");
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s added news: ", getUsername())));
+		return "The news was added successfully.";
 	}
   
-	public void removeNews(News news) {
+	public String removeNews(News news) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s removed news: ", getUsername(), news.getTitle())));
 		for(News n : Database.getNews()) {
 			if(n.equals(news)) {
 				Database.getNews().remove(n);
-				System.out.println("The news was deleted successfully");
+				return "The news was deleted successfully";
 			}
 		}
+		return "News was not found";
 	}
   
 	public boolean assignCourseToTeacher(String courseID, String teacherID) throws IOException {
@@ -145,50 +142,24 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 		return false;
 	}
 
-	public void addCoursesForRegistration() throws IOException {
-		System.out.print("Enter id of the course: ");
-		String id = reader.readLine();
-		System.out.print("Enter name of the course: ");
-		String name = reader.readLine();
-		int i = 1;
+	public String addCoursesForRegistration(Course newCourse) throws IOException {
+		boolean found = false;
 		for(Course c : Database.getCourses()) {
-			System.out.println(i + ". " + c.getId() + " " + c.getName());
-			i += 1;
+			if(c.equals(newCourse)) {
+				found = true;
+				break;
+			}
 		}
-		System.out.print("Enter course prerequisite (number): ");
-		Course prerequisite = Database.getCourses().get(Integer.parseInt(reader.readLine()) - 1);
-		System.out.print("Enter the number of course credits:");
-		int numberOfCredits = Integer.parseInt(reader.readLine());
-		System.out.print("Enter the school of the course (number): ");
-		i = 1;
-		for(School s : Database.getSchools()) {
-			System.out.println(i + ". " + s.getName());
-			i += 1;
+		if(!found) {
+			Database.getCourses().add(newCourse);
+			Database.getUserActions().add(new Action(this, new Date(), String.format("Manager %s added new course ($s) for registration", getFullName(), newCourse.getName())));
+			return "Course is successfully added";
 		}
-		School s = Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1);
-		System.out.println("Choose the science degree of the course:\n1. Bachelor\n2. Master\n3.PhD");
-		String input = reader.readLine();
-		ScienceDegree scienceDegree = null;
-		switch(input) {
-			case "1" -> scienceDegree = ScienceDegree.BACHELOR;
-			case "2" -> scienceDegree = ScienceDegree.MASTER;
-			case "3" -> scienceDegree = ScienceDegree.PHD;
-		}
-		System.out.println("Choose the course type: ");
-		input = reader.readLine();
-		CourseType c = null;
-		switch(input) {
-			case "1" -> c = CourseType.REQUIRED;
-			case "2" -> c = CourseType.MINOR;
-			case "3" -> c = CourseType.MAJOR;
-			case "4" -> c = CourseType.FREE;
-		}
-		Course newCourse = new Course(id, name, prerequisite, numberOfCredits, s, scienceDegree, c);
-		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager %s added new course ($s) for registration", getFullName(), newCourse.getName())));
+		return "Course is already exist";
   }
 
 	// Выводим количество студентов, прошедших/изучающих (?) курс, максимальную, минимальную и среднюю оценку
-	public void createReport(Course course) {
+	public String createReport(Course course) {
 		double mx = 101, mn = -1, total = 0, n = 0;
 	    for(Student s : Database.getStudents()) {
 	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
@@ -200,12 +171,8 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	    		}
 	    	}
 	    }
-	    System.out.println(course.getName() + ":");
-	    System.out.println("Number of students who have passed: " + n);
-	    System.out.println("Minimum grade: " + mn);
-	    System.out.println("Maximum grade: " + mx);
-	    System.out.println("Average grade: " + total / n);
 	    Database.getUserActions().add(new Action(this, new Date(), String.format("Manager %s created report for course %s", getFullName(), course.getName())));
+	    return String.format("%s:\nNumber of students who have passed: %s\nMinimum grade: %s\nMaximum grade: %s\nAverage grade: %s", course.getName(), n, mn, mx, total/n);
 	 }
 	  
 	  public Vector<Teacher> viewTeachersAlphabetically() {

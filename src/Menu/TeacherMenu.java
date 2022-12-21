@@ -7,7 +7,7 @@ import Actors.*;
 import Attributes.*;
 
 public class TeacherMenu {
-	public static void menu(User user) throws IOException {
+	public static void menu(SimpleUser user) throws IOException {
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	    Teacher teacher = (Teacher)user;
 	    String menuTeacher = "Welcome, : " + teacher.getFullName() + """

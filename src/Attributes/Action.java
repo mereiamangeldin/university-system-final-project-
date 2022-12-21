@@ -1,7 +1,6 @@
 package Attributes;
-
-import Actors.*;
 import java.util.*;
+import Interfaces.*;
 
 public class Action {
 	private User user;

@@ -3,16 +3,17 @@ package Actors;
 import java.io.Serializable;
 import java.util.Date;
 import Attributes.*;
+import Interfaces.*;
 
 public class Dean extends Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public Dean() {
-    	super();
+	public Dean(User user) {
+    	super(user);
     }
     
-    public Dean(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
-		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+    public Dean(User user, String id, Date hireDate, double salary, String insuranceNumber) {
+		super(user, id, hireDate, salary, insuranceNumber);
     }
     
     {

@@ -3,6 +3,7 @@ package Attributes;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import Interfaces.*;
 
 import Actors.*;
 import Enums.ManagerType;

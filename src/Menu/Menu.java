@@ -82,7 +82,7 @@ public class Menu {
 					7. Parent 
 					8. Admin""");
 				input = reader.readLine();
-				User user = findUser(input, reader);
+				SimpleUser user = findUser(input, reader);
 				if(user != null) {
 					System.out.println(user);
 					if(user instanceof Student) StudentMenu.menu(user);
@@ -102,12 +102,12 @@ public class Menu {
 		}
 	}
 	
-	public static User findUser(String input, BufferedReader reader) throws IOException {
+	public static SimpleUser findUser(String input, BufferedReader reader) throws IOException {
 		System.out.print("Enter your username: ");
 		String username = reader.readLine();
 		System.out.print("Enter your password: ");
 		String password = reader.readLine();
-		for(User u : Database.getUsers()) {
+		for(SimpleUser u : Database.getUsers()) {
 			if(u.getUsername().equals(username)) {
 				if(u.login(password)) {
 					return u;
@@ -122,7 +122,7 @@ public class Menu {
 		return null;
 	}
 	
-	public static boolean checkLogin(User u, String username, String password) {
+	public static boolean checkLogin(SimpleUser u, String username, String password) {
 		if(u.getUsername().equals(username)) {
 			if(u.login(password)) {
 				return true;
@@ -134,7 +134,7 @@ public class Menu {
 		return false;
 	}
 	
-	public static void changePassword(User user, BufferedReader reader) throws IOException {
+	public static void changePassword(SimpleUser user, BufferedReader reader) throws IOException {
 		System.out.print("Enter your password: ");
 		String oldPassword = reader.readLine();
 		if(oldPassword.equals(user.getPassword())) {
