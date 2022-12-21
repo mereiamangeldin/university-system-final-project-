@@ -1,16 +1,19 @@
 package Actors;
+import java.util.Date;
 import java.util.Vector;
 import Attributes.Database;
 import Attributes.Payment;
 import Enums.TypeOfPayment;
+import Interfaces.User;
 
 /**Accountant responsible for financial part of university.*/
 
-public class Accountant{
+public class Accountant extends Employee{
 	private Vector <Payment> payments;
 	private Vector<Student> notPayForStudentFee;
 
-	public Accountant(Vector<Payment> payments) {
+	public Accountant(User user, String id, Date hireDate, double salary, String insuranceNumber) {
+		super(user, id, hireDate, salary, insuranceNumber);
 		this.payments = new Vector<Payment>();
 		this.notPayForStudentFee = new Vector<Student>();
 	}
