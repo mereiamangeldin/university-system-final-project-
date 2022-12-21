@@ -1,11 +1,12 @@
 package Actors;
 
+import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.RequestType;
 import Interfaces.*;
 
-public abstract class Employee extends User implements CanMakeRequest, CanWriteComment {
+public abstract class Employee extends User implements CanMakeRequest, CanWriteComment, Serializable{
 	private static final long serialVersionUID = 1L;
 	private String id;
     private Date hireDate;
@@ -41,7 +42,7 @@ public abstract class Employee extends User implements CanMakeRequest, CanWriteC
     		if(request.getDescription().length() > 20 && request.getTitle().equals(RequestType.EmployeeRequest)) {
     			TechSupportWorker t = (TechSupportWorker)employee;
     			t.getRequests().add(request);
-    			Database.getUserActions().add(String.format("User: %s made request to Tech support worker %s", getFullName(), t.getFullName()));
+    			Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made request to Tech support worker %s", getFullName(), t.getFullName())));
     			return "Your request has been sended to tech support worker";
     		} 
     		else {
@@ -52,7 +53,7 @@ public abstract class Employee extends User implements CanMakeRequest, CanWriteC
     	else if(employee instanceof Manager) {
     		Manager m = (Manager)employee;
     		m.getRequests().add(request);
-    		Database.getUserActions().add(String.format("User: %s made request to manager %s", getFullName(), getFullName()));
+    		Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made request to manager %s", getFullName(), getFullName())));
     		return "Your request has been sended to manager";
     	}
     	return "";

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import Actors.*;
 import Enums.ManagerType;
 
-public final class Database {
+public final class Database implements Serializable {
 	private final static String BASE_PATH = "C:\\temp\\";
 	private static String path;
     private static Vector<User> users;
@@ -16,8 +16,16 @@ public final class Database {
     private static Vector<Course> courses;
     private static Vector<News> news;
     private static Vector<Request> requests;
-    private static Vector<String> userActions;
+    private static Vector<Action> userActions;
+//    private static Vector<String> userActions;
 		
+    public static Vector<Action> getUserActions(){
+    	return userActions;
+    }
+    
+    public static void setUserActions(Vector<Action> userActions) {
+    	Database.userActions = userActions;
+    }
     private Database(String path) {
     	Database.path = path;
     };
@@ -39,7 +47,7 @@ public final class Database {
     	news = new Vector<News>();
     	requests = new Vector<Request>();
     	users = new Vector<User>();
-    	setUserActions(new Vector<String>()); 
+    	userActions = new Vector<Action>(); 
     }
     
     public static Vector<User> getUsers() {
@@ -182,7 +190,7 @@ public final class Database {
 	}
 	
 	public static Vector<Student> getStudents() {
-		Vector <Student> students = users.stream().filter(x -> x instanceof Student).map(x -> (Student)x).collect(Collectors.toCollection(Vector::new));
+		Vector<Student> students = users.stream().filter(x -> x instanceof Student).map(x -> (Student)x).collect(Collectors.toCollection(Vector::new));
 		return students;
 	}
 	
@@ -407,12 +415,4 @@ public final class Database {
 			schools = new Vector<School>();
 		}
 	}	
-
-	public static Vector<String> getUserActions() {
-		return userActions;
-	}
-
-	public static void setUserActions(Vector<String> userActions) {
-		Database.userActions = userActions;
-	}
 }

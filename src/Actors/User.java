@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Vector;
+import Attributes.*;
 
 import Attributes.Database;
 import Attributes.News;
@@ -30,14 +31,14 @@ public abstract class User implements Serializable {
     
     public boolean login(String password) {
     	if(this.password.equals(password)) {
-    		Database.getUserActions().add(String.format("User: %s has logged", username));
+    		Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s has logged", username)));
     		logged = true;
     	}
     	return logged;
     }
 
     public boolean logout() {
-    	Database.getUserActions().add(String.format("User: %s has logged out", username));
+    	Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s has logged out", username)));
     	logged = false;
     	return logged;
     }
@@ -45,11 +46,6 @@ public abstract class User implements Serializable {
     public Vector<News> viewNews() {
     	return Database.getNews();
     }
-    
-//    public final void initializeSystem() {
-//    	login(password);
-//    	viewNews();
-//    }
     
     // hashCode(), equals(), toString()
     public String toString() {

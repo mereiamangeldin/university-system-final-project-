@@ -1,11 +1,12 @@
 package Actors;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Vector;
 import Attributes.*;
 
-public class Librarian extends Employee {
+public class Librarian extends Employee implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Vector<Order> takers;

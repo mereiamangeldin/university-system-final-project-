@@ -69,17 +69,12 @@ public class TeacherMenu {
 		} else {
 			System.out.print("Enter mark: ");
 			if(option.equals("1")) {
-//				teacher.putMark(c, s, Integer.parseInt(option), Double.parseDou/ble(reader.readLine()));
-			} 
-		}
-		if(option.equals("1")) {
-//			teacher.putMark(c, s, , 0);
-		} else if(option.equals("2")) {
-			
-		} else if(option.equals("3")) {
-			
-		} else {
-			return;
+				teacher.putMark(c, s, Integer.parseInt(option), Double.parseDouble(reader.readLine()));
+			} else if(option.equals("2")) {
+				teacher.putMark(c, s, Integer.parseInt(option), Double.parseDouble(reader.readLine()));
+			} else if(option.equals("3")) {
+				teacher.putMark(c, s, Integer.parseInt(option), 0);
+		}			
 		}
 	}
 }

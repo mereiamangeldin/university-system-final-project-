@@ -1,9 +1,11 @@
 package Attributes;
 
 import Actors.*;
+
+import java.io.Serializable;
 import java.util.Vector;
 
-public class School {
+public class School implements Serializable {
 	private String name;
     private Vector<Speciality> specialities;
     private Vector<Manager> managers;

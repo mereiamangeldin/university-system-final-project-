@@ -1,10 +1,12 @@
 package Actors;
 
+import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Interfaces.*;
+import javafx.util.Pair;
 
-public class Parent extends User implements CanViewTranscript, CanViewMarks {
+public class Parent extends User implements CanViewTranscript, CanViewMarks, Serializable {
 	private static final long serialVersionUID = 1L;
 	private Student child;
 
@@ -23,12 +25,17 @@ public class Parent extends User implements CanViewTranscript, CanViewMarks {
   
     public void viewTranscript() {
     	child.viewTranscript();
-    	Database.getUserActions().add(String.format("Parent %s viewed the transcript of the child", getFullName()));
+    	Database.getUserActions().add(new Action(this, new Date(), String.format("Parent %s viewed the transcript of the child", getFullName())));
     }
 
-    public void viewMark(Course c) {
-    	child.viewMark(c);
-    	Database.getUserActions().add(String.format("Parent %s viewed the mark of the child %s for the course %s", getFullName(), child.getFullName(), c.getName()));
+    public String viewMark(Course c) {
+    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : getChild().getTranscript().entrySet()) {
+    		if(t.getKey().getKey().equals(c)) {
+    	    	Database.getUserActions().add(new Action(this, new Date(), String.format("Parent %s viewed the mark of the child %s for the course %s", getFullName(), child.getFullName(), c.getName())));
+    			return c.getName() + ": " + t.getValue();
+    		}
+        }
+    	return null;
     }
     
     public Student getChild() {

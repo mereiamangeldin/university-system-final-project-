@@ -3,11 +3,12 @@ package Actors;
 import Interfaces.*;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.*;
 
-public class Student extends User implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student> {
+public class Student extends User implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
     private School school;
@@ -112,12 +113,20 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	return isBlocked;
     }
     
+    public Vector<Course> getCourses(){
+    	Vector<Course> v = new Vector<Course>();
+	    for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : this.transcript.entrySet()) {
+	    	v.add(t.getKey().getKey());
+	    }
+    	return v;
+    }
+    
     public void setIsBlocked(boolean isBlocked) {
     	this.isBlocked = isBlocked;
     }
     
     public void viewCourses(){
-    	Database.getUserActions().add(String.format("User: %s has viewed courses", super.getUsername()));
+    	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed courses", getUsername())));
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
     		System.out.println(marks.getKey().getKey());
     	}
@@ -125,6 +134,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
 
     public void registerForCourse(Course course, Teacher t, Manager m){
     	this.makeRequest(new Request(this.getId(), RequestType.CourseRegistration, course.getId() + " " + t.getId()), m);
+    	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s sended request for registration to the course %s:", getFullName(), course.getName())));
     }
 
     public void rateTeacher(Teacher teacher, double mark){
@@ -143,7 +153,7 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     public void makeBookOrder(Librarian librarian, Order order){
     	String answer = librarian.orderBook(order);
         if(answer.equals("Accepted")) {
-			Database.getUserActions().add(String.format("User: %s made order for book: %s", super.getUsername(), order.getBook().getName()));
+			Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made order for book: %s", getUsername(), order.getBook().getName())));
         	System.out.println("The order has been done succesfully! "
         			+ "You can take the order in 5 minutes. Please don't forget to return the book until the deadline!");
         } else if(answer.equals("Books over")) {
@@ -158,26 +168,26 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
         if(request.getDescription().length() > 20 && request.getTitle().equals(RequestType.EmployeeRequest)) {
         	TechSupportWorker t = (TechSupportWorker)employee;
         	t.getRequests().add(request);
-    		Database.getUserActions().add(String.format("User: %s made request to Tech support worker", super.getUsername()));
+    		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s made request to Tech support worker", getUsername())));
         	return "Your request has been sended to Tech Support worker";
         }else {
         	return "Your request is rejected: description size is less than 20 and sended by employee";	
         }
       }
       else if(employee instanceof Manager) {
-		Database.getUserActions().add(String.format("User: %s made request to manager", super.getUsername()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s made request to manager", getUsername())));
     	return "Your request has been sended to manager";
       }
     	return "Request can be sended only to manager or tech support worker";
    }
 
     public void writeComment(String comment, News n) {
-		Database.getUserActions().add(String.format("User: %s writed comment to news %s", super.getUsername(), n.getTitle()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s writed comment to news %s", getUsername(), n.getTitle())));
     	n.getComments().add(comment);
     }
 
     public void viewTranscript() {
-		Database.getUserActions().add(String.format("User: %s has viewed transcript", super.getUsername()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed transcript", getUsername())));
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
     		System.out.println(marks.getKey().getKey().getName() + ": " + marks.getValue().getTotal());
         }
@@ -209,14 +219,14 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
             && Objects.equals(transcript, other.transcript) && yearOfStudy == other.yearOfStudy;
       }
 
-    public void viewMark(Course c) {
+    public String viewMark(Course c) {
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : transcript.entrySet()) {
     		if(t.getKey().getKey().equals(c)) {
-    			Database.getUserActions().add(String.format("User: %s viewed mark of course: %s", getFullName(), c.getName()));
-    			System.out.println(c.getName() + ": " + t.getValue());
-    			break;
+    			Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s viewed mark of course: %s", getFullName(), c.getName())));
+    			return c.getName() + ": " + t.getValue();
     		}
         }
+    	return null;
     }
     
     public int compareTo(Student s) {

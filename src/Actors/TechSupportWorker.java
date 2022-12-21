@@ -1,9 +1,10 @@
 package Actors;
 
+import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 
-public class TechSupportWorker extends Employee {
+public class TechSupportWorker extends Employee implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	private Vector<Request> requests;
