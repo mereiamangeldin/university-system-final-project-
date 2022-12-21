@@ -1,12 +1,14 @@
 package Actors;
-
 import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.RequestType;
 import Interfaces.*;
+import Decorators.*;
 
-public abstract class Employee extends User implements CanMakeRequest, CanWriteComment, Serializable{
+/**All employees can view students, can send messages within each other, also they can make request to Managers or TechSupportWorkers.*/
+
+public abstract class Employee extends UserDecorator implements CanMakeRequest, CanWriteComment, Serializable{
 	private static final long serialVersionUID = 1L;
 	private String id;
     private Date hireDate;
@@ -14,29 +16,31 @@ public abstract class Employee extends User implements CanMakeRequest, CanWriteC
     private String insuranceNumber;
     private LinkedHashMap <Employee, Message> email;
     
-    public Employee() {}
+    public Employee(User user) {super(user);}
     
-    public Employee(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
-        super(name, surname, password, dateOfBirth);
+    public Employee(User user, String id, Date hireDate, double salary, String insuranceNumber) {
+        super(user);
         this.id = id;
         this.hireDate = hireDate;
         this.salary = salary;
         this.insuranceNumber = insuranceNumber;
         this.email = new LinkedHashMap<Employee, Message>();
     }
-  
+    
+    /**
+     * returns all the students of university*/
     public Vector<Student> viewStudent() {
     	return Database.getStudents();
-//    	for (Student s : Database.getStudents()) {
-//    		return s.toString() + "\n";
-//    	}
-//    	return "";
     }
-
+    
+    /**
+     * to send message to another employee*/
   	public void sendMessage(Message message, Employee employee) {
   		employee.getEmail().put(this, message);
   	}
-
+  	/**
+  	 * to make request to Manager or TechSupportWorker
+  	 * */
     public String makeRequest(Request request, Employee employee) {
     	// Запрос в центр технической поддержки 
     	if(employee instanceof TechSupportWorker) { 
@@ -59,12 +63,17 @@ public abstract class Employee extends User implements CanMakeRequest, CanWriteC
     	}
     	return "";
     }
-
+    /**
+     * to write a comment under the news
+     * */
   	public void writeComment(String comment, News n) {
   		n.getComments().add(comment);
   	}
   	
   	// ПРОВЕРИТЬ
+  	/**
+  	 * returns all student in requested order alphabetically or by gpa
+  	 * */
   	public Vector<Student> viewStudentBy(int viewBy) {
   		Vector<Student> v = Database.getStudents();
   		if(viewBy == 1){ // Alphabetically

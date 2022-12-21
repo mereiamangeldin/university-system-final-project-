@@ -3,25 +3,32 @@ import java.util.*;
 import java.io.Serializable;
 import java.text.*;
 import Attributes.*;
+import Interfaces.*;
+/**Admin is responsible for technical part of university system.*/
 
 public class Admin extends Employee implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 
-	public Admin() {};
+	public Admin(User user) {super(user);};
 	
-	public Admin(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
-		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+	public Admin(User user, String id, Date hireDate, double salary, String insuranceNumber) {
+		super(user, id, hireDate, salary, insuranceNumber);
 	}
 	
 	{
 		Database.getUsers().add(this);
 	}
-
+	/**
+	 * to add user to university system
+	 * */
     public void addUser(User u) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s added user: %s", getFullName(), u.getFullName())));
     }
-    
+
+	/**
+	 * to remove user from university system
+	 * */
     public String removeUser(User u) {
     	if(Database.getUsers().contains(u)) {
     		Database.getUsers().remove(u);
@@ -31,7 +38,10 @@ public class Admin extends Employee implements Serializable  {
     		return "User not found";
     	}
     }
-
+    
+    /**
+     * to update user's information
+     * */
     public void updateUser(User u, int type, String toChange) throws Exception {
     	if(type == 1) {              // change username
     		u.setUsername(toChange);
@@ -50,7 +60,9 @@ public class Admin extends Employee implements Serializable  {
     	}
 		Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s updated user: %s", getFullName(), u.getFullName())));
     }
-    
+    /**
+     * allows to see all user actions
+     * */
     public Vector<Action> seeUsersActions() {
     	return Database.getUserActions();
     }
@@ -58,13 +70,15 @@ public class Admin extends Employee implements Serializable  {
     public Vector<Action> seeUserActions(User u) {
     	Vector<Action> v = new Vector<Action>();
     	for(Action a : Database.getUserActions()) {
-    		if(a.equals(u)) {
+    		if(a.getUser().equals(u)) {
     			v.add(a);
     		}
     	}
     	return v;
     }
-   
+    /**
+     * to block the student, if he has not made the required payments
+     * */
     public void blockStudentsWhoNotPayForSf(Accountant a) {
     	for(Student s : a.getNotPayForStudentFee()) {
     		s.setIsBlocked(true);

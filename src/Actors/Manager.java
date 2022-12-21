@@ -7,18 +7,25 @@ import Attributes.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Manager can add/remove news, add courses for registration, and assign courses to teacher. Manager sends students’ requests to dean and also it can see employees’ requests. */
 public class Manager extends Employee implements CanViewMarks, Serializable {
 	private static final long serialVersionUID = 1L;
 	private ManagerType type;
 	private Vector<Request> requests;
 	private BufferedReader reader = null;
 	
-	public Manager() {
-		super();
+
+	{
+		requests = new Vector<Request>();
+	}
+	
+	public Manager(User user) {
+		super(user);
 	}
 
-	public Manager(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber, ManagerType type) {
-		super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+	public Manager(User user, String id, Date hireDate, double salary, String insuranceNumber, ManagerType type) {
+		super(user, id, hireDate, salary, insuranceNumber);
 		this.type = type;
 		requests = new Vector<Request>();
 		if(this.type.equals(ManagerType.SITE)) {
@@ -37,13 +44,16 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	}
 	
 	// Видит оценки студентов определенного курса
-	public String viewMark(Course c) {
-		for(Student s: Database.getStudents()) {
-	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-				if(marks.getKey().getKey().equals(c)) {
-					System.out.println(s.getId()  + " " + s.getFullName() + " " + marks.getValue().getTotal());
-					Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s viewed mark of course: ", getUsername(), c.getName())));
-					return s.getId()  + " " + s.getFullName() + " " + marks.getValue().getTotal();
+	/**
+	 * returns Student id, name and mark from specific required course
+	 * */
+	public String viewMark(Course course) {
+		for(Student student: Database.getStudents()) {
+	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : student.getTranscript().entrySet()) {
+				if(marks.getKey().getKey().equals(course)) {
+					System.out.println(student.getId()  + " " + student.getFullName() + " " + marks.getValue().getTotal());
+					Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s viewed mark of course: ", getUsername(), course.getName())));
+					return student.getId()  + " " + student.getFullName() + " " + marks.getValue().getTotal();
 				}
 	    	}
 		}
@@ -51,6 +61,9 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	}
 	
 	// Обработка запроса менеджера под определенным индексом в векторе запросов 
+	/**
+	 * processing a manager request at a specific index in the request list, where requests divided to requests from Employees and Students(for registration) 
+	 * */
 	public void processRequests(int pos) {
 		if(pos > this.requests.size()) return;
 		Request r = requests.elementAt(pos - 1);
@@ -78,7 +91,7 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 									int amountOfCredits = 0;
 									// Тут высчитываем количество кредитов, сколько у студента сейчас 
 							    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-							    		if(marks.getValue().getFinalScore() == 0 && marks.getValue().getLetterGrade() != 'F') {
+							    		if(marks.getValue().getFinalScore() == 0 && !marks.getValue().getLetterGrade().equals("F")) {
 							    			amountOfCredits += marks.getKey().getKey().getNumberOfCredits();
 							    		}
 							    	}
@@ -86,7 +99,7 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 							    		if(c.getPrerequisite() != null) { // Если у курса есть пререквизит, то проверяем, прошел ли он этот пререквизит (не на ритейк)
 							    			for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
 							    				if(marks.getKey().getKey().equals(c.getPrerequisite())) {
-							    					if(marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
+							    					if(!marks.getValue().getLetterGrade().equals("F") && !marks.getValue().getLetterGrade().equals("N")) {
 							    						Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
 							    						s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
 							    						break;
@@ -111,12 +124,20 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	}
 	
 	// Managing news part (Adding and removing)
+
+	/**
+	 * to add news to news news feed
+	 * */
 	public String addNews(String title, String text) throws IOException {
 		Database.getNews().add(new News(title, text));
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s added news: ", getUsername())));
 		return "The news was added successfully.";
 	}
-  
+
+
+	/**
+	 * to remove news from news feed
+	 * */
 	public String removeNews(News news) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s removed news: ", getUsername(), news.getTitle())));
 		for(News n : Database.getNews()) {
@@ -127,7 +148,10 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 		}
 		return "News was not found";
 	}
-  
+
+	/**
+	 * to assign course to specific teacher
+	 * */  
 	public boolean assignCourseToTeacher(Course course, Teacher teacher) throws IOException {
 		if(course.getSchool().equals(teacher.getSchool())){
 			if(course.getTeachers().contains(teacher)) {
@@ -142,6 +166,9 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 		}
 	}
 
+	/**
+	 * add courses for registration 
+	 * */
 	public String addCoursesForRegistration(Course newCourse) throws IOException {
 		boolean found = false;
 		for(Course c : Database.getCourses()) {
@@ -159,11 +186,14 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
   }
 
 	// Выводим количество студентов, прошедших/изучающих (?) курс, максимальную, минимальную и среднюю оценку
-	public void createReport(Course course) {
+	/**
+	 * creates report on the progress of students in a particular course, the number of students, the maximum, minimum and average scores for the course
+	 * */
+	public String createReport(Course course) {
 		double mx = 101, mn = -1, total = 0, n = 0;
 	    for(Student s : Database.getStudents()) {
 	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-	    		if(marks.getKey().getKey().equals(course) && marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
+	    		if(marks.getKey().getKey().equals(course) && !marks.getValue().getLetterGrade().equals("F") && !marks.getValue().getLetterGrade().equals("N")) {
 	    			total += marks.getValue().getTotal();
 	    			n += 1;
 	    			if(mx < marks.getValue().getTotal()) mx = marks.getValue().getTotal();
@@ -171,25 +201,27 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	    		}
 	    	}
 	    }
-	    System.out.println(course.getName() + ":");
-	    System.out.println("Number of students who have passed: " + n);
-	    System.out.println("Minimum grade: " + mn);
-	    System.out.println("Maximum grade: " + mx);
-	    System.out.println("Average grade: " + total / n);
 	    Database.getUserActions().add(new Action(this, new Date(), String.format("Manager %s created report for course %s", getFullName(), course.getName())));
+	    return String.format("%s:\nNumber of students who have passed: %s\nMinimum grade: %s\nMaximum grade: %s\nAverage grade: %s", course.getName(), n, mn, mx, total/n);
 	 }
-	  
+	/**
+	   * allows to see teachers in alphabetical order
+	   * */
 	  public Vector<Teacher> viewTeachersAlphabetically() {
 		  Vector<Teacher> v = Database.getTeachers();
 		  Collections.sort(v);
 		  return v;
 	  }
-	  
+	  /**
+	   * allows to see teachers in order of their rate
+	   * */
 	  public Vector<Pair<Teacher, Double>> viewTeacherByRate(){
 		  Vector<Pair<Teacher, Double>> v = Questionnaire.getTeachersRate();
 		  return v;
 	  }
-	  
+	  /**
+	   * to send request from students to dean
+	   * */
 	  public boolean sendRequestToDean(Dean d, Request r) {
 	    return d.signRequest(r);
 	  }

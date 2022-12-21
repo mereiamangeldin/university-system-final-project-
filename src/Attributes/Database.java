@@ -3,9 +3,11 @@ package Attributes;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import Interfaces.*;
 
 import Actors.*;
 import Enums.ManagerType;
+/**Storage of university system.*/
 
 public final class Database implements Serializable {
 	private final static String BASE_PATH = "C:\\temp\\";
@@ -34,7 +36,9 @@ public final class Database implements Serializable {
 	public String getPath() {
 		return Database.path;
 	}
-	
+	/**
+	 * returns instance of Database
+	 * */
 	public static Database getInstance() {
 		return instance;
 	}

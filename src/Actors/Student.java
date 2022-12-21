@@ -2,13 +2,15 @@ package Actors;
 
 import Interfaces.*;
 import javafx.util.Pair;
-
+import Decorators.*;
 import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.*;
 
-public class Student extends User implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student>, Serializable {
+/**Student one of the main roles, can do all the staff with his courses, view news, rate teachers and etc.*/
+
+public class Student extends UserDecorator implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
     private School school;
@@ -20,12 +22,12 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     private HashMap<Organization, Position> organizations;
     private boolean isBlocked;
     
-    public Student() {
-    	super();
+    public Student(User user) {
+    	super(user);
     }
 
-    public Student(String name, String surname, String password, Date dateOfBirth, String id, School school, int yearOfStudy, boolean grant,  double scholarship, ScienceDegree scienceDegree) {
-    	super(name, surname, password, dateOfBirth);
+    public Student(User user, String id, School school, int yearOfStudy, boolean grant,  double scholarship, ScienceDegree scienceDegree) {
+    	super(user);
     	this.id = id;
     	this.school = school;
     	this.yearOfStudy = yearOfStudy;
@@ -113,6 +115,9 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	return isBlocked;
     }
     
+    /**
+     * returns only those courses he have studied or studying in that moment
+     * */
     public Vector<Course> getCourses(){
     	Vector<Course> v = new Vector<Course>();
 	    for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : this.transcript.entrySet()) {
@@ -124,20 +129,19 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     public void setIsBlocked(boolean isBlocked) {
     	this.isBlocked = isBlocked;
     }
-    
-//    public void viewCourses(){
-//    	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed courses", getUsername())));
-//    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
-//    		System.out.println(marks.getKey().getKey());
-//    	}
-//    	System.out.println("Courses");
-//    }
 
+
+    /**
+     * allows to register for specific course
+     * */
     public void registerForCourse(Course course, Teacher t, Manager m){
     	this.makeRequest(new Request(this.getId(), RequestType.CourseRegistration, course.getId() + " " + t.getId()), m);
     	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s sended request for registration to the course %s:", getFullName(), course.getName())));
     }
-
+    
+    /**
+     * allows to rate specific teacher
+     * */
     public void rateTeacher(Teacher teacher, double mark){
     	if(Questionnaire.getRating().containsKey(teacher)) {
     		Questionnaire.getRating().get(teacher).add(mark);
@@ -150,21 +154,24 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     public HashMap<Pair<Course, Teacher>, Mark> getTranscript() {
     	return transcript;
     }  
-    
-    public void makeBookOrder(Librarian librarian, Order order){
+    /**
+     * makes book order to Librarian
+     * */
+    public String makeBookOrder(Librarian librarian, Order order){
     	String answer = librarian.orderBook(order);
 //    	System.out.println(answer);
         if(answer.equals("Accepted")) {
 			Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made order for book: %s", getUsername(), order.getBook().getName())));
-        	System.out.println("The order has been done succesfully! "
-        			+ "You can take the order in 5 minutes. Please don't forget to return the book until the deadline!");
+        	return "The order has been done succesfully! "
+        			+ "You can take the order in 5 minutes. Please don't forget to return the book until the deadline!";
         } else if(answer.equals("Books over")) {
-        	System.out.println("Unfortunately, all the copies of the book you ordering have been taken.");
-        } else if(answer.equals("Not accepted")) {
-        	System.out.println("Unfortunately, we don't have this book in our library.");
+        	return "Unfortunately, all the copies of the book you ordering have been taken.";
         }
+        	return "Unfortunately, we don't have this book in our library.";
+
     }
-    
+    /**
+     * makes request to TechSupport worker for technical issues or Manager for academic issues*/ 
     public String makeRequest(Request request, Employee employee) {
     	if(employee instanceof TechSupportWorker) {
         if(request.getDescription().length() > 20 && request.getTitle().equals(RequestType.EmployeeRequest)) {
@@ -182,12 +189,16 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
       }
     	return "Request can be sended only to manager or tech support worker";
    }
-
+    /**
+     * to write comment under the news
+     * */
     public void writeComment(String comment, News n) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s writed comment to news %s", getUsername(), n.getTitle())));
     	n.getComments().add(comment);
     }
-
+    /**
+     * to view his own transcript
+     * */
     public void viewTranscript() {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed transcript", getUsername())));
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
@@ -221,7 +232,9 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
             && Objects.equals(school, other.school) && scienceDegree == other.scienceDegree
             && Objects.equals(transcript, other.transcript) && yearOfStudy == other.yearOfStudy;
       }
-
+    /**
+     * to view mark of specified course
+     * */
     public String viewMark(Course c) {
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : transcript.entrySet()) {
     		if(t.getKey().getKey().equals(c)) {
@@ -237,5 +250,16 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	if(resultByName != 0) return resultByName;
     	int resultBySurname = this.getSurname().compareTo(s.getSurname());
     	return resultBySurname;
-    }     
+    } 
+    public double getGpa() {
+    	double total = 0;
+    	int cnt = 0;
+    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> x : transcript.entrySet()) {
+    		if(!x.getValue().getLetterGrade().equals("N")) {
+    			total += x.getValue().getGpa();
+    			cnt++;
+    		}
+    	}
+    	return total/cnt;
+    }
 }

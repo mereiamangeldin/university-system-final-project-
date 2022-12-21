@@ -7,7 +7,7 @@ import Actors.*;
 import Attributes.Database;
 
 public class DeanMenu {
-	public static void menu(User user) throws IOException {
+	public static void menu(SimpleUser user) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Dean dean = (Dean)user;
         String menuDean = "\nWelcome: " + dean.getFullName() + """

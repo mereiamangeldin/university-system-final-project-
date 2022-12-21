@@ -7,18 +7,19 @@ import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.*;
+/** Teacher view courses, which he teaches, add/delete course files, put students’ mark.*/
 
 public class Teacher extends Employee implements CanViewMarks, Comparable<Teacher>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private School school;
 	private TeacherTypes type;
     
-    public Teacher() {
-    	super();
+    public Teacher(User user) {
+    	super(user);
     }
 
-    public Teacher(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber, School school, TeacherTypes type) {
-    	super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+    public Teacher(User user, String id, Date hireDate, double salary, String insuranceNumber, School school, TeacherTypes type) {
+    	super(user, id, hireDate, salary, insuranceNumber);
     	this.school = school;
       	this.type = type;
     }    
@@ -42,10 +43,13 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     public void setType(TeacherTypes type) {
     	this.type = type;
     }
-    
+    /**
+     * returns all the courses in university system 
+     * */
     public void viewCourses() {
     	System.out.println(Database.getCourses());
     }
+
     
     public String addFileToCouse(Course course, File file) {
     	if(course.getFiles().contains(file)) {
@@ -63,7 +67,10 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     		return "Course does not have this file";
     	}
     }
- 
+
+    /**
+     * puts mark for specific course and student
+     * */
     public void putMark(Course course, Student s, int type, double point) {
     	Pair<Course, Teacher> p = new Pair<Course, Teacher>(course, this);
     	if(s.getTranscript().containsKey(p)) {
@@ -76,7 +83,9 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     		}
     	}
     }
-
+    /**
+     * to view mark of specific course he teaches
+     * */
    public String viewMark(Course c) {
 	   Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
 	   for(Student s: Database.getStudents()) {

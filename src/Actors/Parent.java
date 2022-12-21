@@ -4,30 +4,37 @@ import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Interfaces.*;
+import Decorators.*;
 import javafx.util.Pair;
 
-public class Parent extends User implements CanViewTranscript, CanViewMarks, Serializable {
+/**
+ *  Parent can view his/her child marks, transcript.*/
+public class Parent extends UserDecorator implements CanViewTranscript, CanViewMarks, Serializable {
 	private static final long serialVersionUID = 1L;
 	private Student child;
 
-	public Parent() {
-		super();
+	public Parent(User user) {
+		super(user);
 	}
 	
 	{
 		Database.getUsers().add(this);
 	}
   
-	public Parent(String name, String surname, String password, Date dateOfBirth, Student child) {
-		super(name, surname, password, dateOfBirth);
+	public Parent(User user, Student child) {
+		super(user);
 		this.child = child;
 	}    
-  
+	/**
+	 * allows to see his/her child's transcript
+	 * */
     public void viewTranscript() {
     	child.viewTranscript();
     	Database.getUserActions().add(new Action(this, new Date(), String.format("Parent %s viewed the transcript of the child", getFullName())));
     }
-
+    /**
+     * allows to see his/her child's marks
+     * */
     public String viewMark(Course c) {
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : getChild().getTranscript().entrySet()) {
     		if(t.getKey().getKey().equals(c)) {

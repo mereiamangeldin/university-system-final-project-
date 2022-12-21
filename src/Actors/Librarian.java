@@ -1,34 +1,36 @@
 package Actors;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.*;
 import Attributes.*;
+import Interfaces.*;
+/**Librarian takes order of Students, checking students for debt.*/
 
 public class Librarian extends Employee implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private Vector<Order> takers;
   
-    public Librarian() {
-        super();
+    public Librarian(User user) {
+        super(user);
     }
 
-    public Librarian(String name, String surname, String password, Date dateOfBirth, String id, Date hireDate, double salary, String insuranceNumber) {
-        super(name, surname, password, dateOfBirth, id, hireDate, salary, insuranceNumber);
+    public Librarian(User user, String id, Date hireDate, double salary, String insuranceNumber) {
+        super(user, id, hireDate, salary, insuranceNumber);
         this.takers = new Vector<Order>();
     }
     
     {
 		Database.getUsers().add(this);
     }
-    
-    public String orderBook(Order o) {
-    	if(Database.getBooks().contains(o.getBook())) {
-    		if(o.getBook().getQuantity() > 0) {
-    			o.getBook().setQuantity(o.getBook().getQuantity() - 1);
-    			takers.add(o);
+    /**
+     * receives order from Student, checks for containing of book in Database
+     * */
+    public String orderBook(Order order) {
+    	if(Database.getBooks().contains(order.getBook())) {
+    		if(order.getBook().getQuantity() > 0) {
+    			order.getBook().setQuantity(order.getBook().getQuantity() - 1);
+    			takers.add(order);
     			return "Accepted";
         }
     	else {
@@ -39,11 +41,13 @@ public class Librarian extends Employee implements Serializable {
     		return "Not accepted";
       }
     }
-  
-    public void checkForDebt(Student s) {	
-    	for(Order o: takers) {
-    		if(s.equals(o.getStudent())) {
-    			System.out.println("Yes, you have taken book: " + o.getBook().getName() + ", Author: " + o.getBook().getAuthor());
+    /**
+     * checks if the student owes books to the library
+     * */
+    public void checkForDebt(Student student) {	
+    	for(Order order: takers) {
+    		if(student.equals(order.getStudent())) {
+    			System.out.println("Yes, you have taken book: " + order.getBook().getName() + ", Author: " + order.getBook().getAuthor());
     			return;
     		}
     	}

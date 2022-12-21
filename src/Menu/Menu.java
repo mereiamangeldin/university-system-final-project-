@@ -122,10 +122,14 @@ public class Menu {
 					8. Admin
 					0. Cancel""");
 				input = reader.readLine();
+<<<<<<< HEAD
 				if(input.equals("0")) {
 					break;
 				}
 				User user = findUser(input, reader);
+=======
+				SimpleUser user = findUser(input, reader);
+>>>>>>> 36cd0c15dda4ce3b0826fd0d6901165189e85e2e
 				if(user != null) {
 					if(user instanceof Student) StudentMenu.menu(user);
 					else if(user instanceof Teacher) TeacherMenu.menu(user);
@@ -144,12 +148,12 @@ public class Menu {
 		}
 	}
 	
-	public static User findUser(String input, BufferedReader reader) throws IOException {
+	public static SimpleUser findUser(String input, BufferedReader reader) throws IOException {
 		System.out.print("Enter your username: ");
 		String username = reader.readLine();
 		System.out.print("Enter your password: ");
 		String password = reader.readLine();
-		for(User u : Database.getUsers()) {
+		for(SimpleUser u : Database.getUsers()) {
 			if(u.getUsername().equals(username)) {
 				if(u.login(password)) {
 					return u;
@@ -164,7 +168,7 @@ public class Menu {
 		return null;
 	}
 	
-	public static boolean checkLogin(User u, String username, String password) {
+	public static boolean checkLogin(SimpleUser u, String username, String password) {
 		if(u.getUsername().equals(username)) {
 			if(u.login(password)) {
 				return true;
@@ -176,6 +180,7 @@ public class Menu {
 		return false;
 	}
 	
+<<<<<<< HEAD
 	public static void changePassword(User user, BufferedReader reader) throws IOException {
 		String option;
 		while(true) {
@@ -193,6 +198,19 @@ public class Menu {
 						user.setPassword(newPassword);
 						System.out.println("Password was changed succesfully.");
 					}
+=======
+	public static void changePassword(SimpleUser user, BufferedReader reader) throws IOException {
+		System.out.print("Enter your password: ");
+		String oldPassword = reader.readLine();
+		if(oldPassword.equals(user.getPassword())) {
+			System.out.println("Enter new password: ");
+			String newPassword = reader.readLine();
+			System.out.println("Enter new password again: ");
+			String newPassword2 = reader.readLine();
+			if(newPassword.equals(newPassword2)) {
+				if(newPassword.equals(user.getPassword())) {
+					System.out.println("The new password is the same as the present one.");
+>>>>>>> 36cd0c15dda4ce3b0826fd0d6901165189e85e2e
 				} else {
 					System.out.println("New passwords don't match");
 				}

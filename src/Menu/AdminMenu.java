@@ -14,7 +14,7 @@ import Interfaces.*;
 
 public class AdminMenu {
     
-    public static void menu(User user) throws IOException, ParseException {
+    public static void menu(SimpleUser user) throws IOException, ParseException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     	Admin admin = (Admin)user;
     	String menuAdmin = "\nWelcome, : " + admin.getFullName() + """
@@ -102,8 +102,13 @@ public class AdminMenu {
 				System.out.println(Database.getUsers());
 				System.out.print("Enter the username of the user you want to delete:");
 				option = reader.readLine();
+<<<<<<< HEAD
 				User u = Database.getUserByUsername(option);
 				System.out.println(admin.removeUser(u));
+=======
+				SimpleUser u = Database.getUserByUsername(option);
+				admin.removeUser(u);
+>>>>>>> 36cd0c15dda4ce3b0826fd0d6901165189e85e2e
 			}
 	}
 	
@@ -111,7 +116,7 @@ public class AdminMenu {
     public static void addUser(String userType, BufferedReader r) throws IOException, ParseException {
     	String name, surname, password, date;
     	Date d;
-    	User user = null;
+    	SimpleUser user = null;
         BufferedReader reader = r;
         
         // General date 
