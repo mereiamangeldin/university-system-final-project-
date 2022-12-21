@@ -1,9 +1,10 @@
 package Attributes;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Vector;
 
-public class News {
+public class News implements Serializable {
 	private String title;
     private String text;
     private Vector<String> comments;

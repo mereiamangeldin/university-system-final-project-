@@ -1,8 +1,9 @@
 package Attributes;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Book {
+public class Book implements Serializable {
     private String name;
     private int quantity;
     private String author;

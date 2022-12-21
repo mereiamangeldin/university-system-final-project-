@@ -1,9 +1,10 @@
 package Actors;
 import java.util.*;
+import java.io.Serializable;
 import java.text.*;
 import Attributes.*;
 
-public class Admin extends Employee {
+public class Admin extends Employee implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -14,16 +15,16 @@ public class Admin extends Employee {
 	}
 	
 	{
-		Database.getAdmins().add(this);
+		Database.getUsers().add(this);
 	}
-	
+
     public void addUser(User u) {
-		Database.getUserActions().add(String.format("Admin: %s added user: %s", getFullName(), u.getFullName()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s added user: %s", getFullName(), u.getFullName())));
     }
     
     public void removeUser(User u) {
 		Database.getUsers().remove(u);
-		Database.getUserActions().add(String.format("Admin: %s removed user: %s", getFullName(), u.getUsername()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s removed user: %s", getFullName(), u.getUsername())));
     }
 
     public void updateUser(User u, int type, String toChange) throws Exception {
@@ -42,16 +43,27 @@ public class Admin extends Employee {
     	else if(type == 5) {        // change date date of birth 
     		u.setDateOfBirth(new SimpleDateFormat("yyyy/MM/dd").parse(toChange));
     	}
-		Database.getUserActions().add(String.format("User: %s updated user: %s", getFullName(), u.getFullName()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s updated user: %s", getFullName(), u.getFullName())));
     }
-
-//    public void seeUserActions(User u) {
-//    	for(String s : Database.getUserActions()) {
-//    		System.out.println(s);
-//    	}
-//    }
     
-    public Vector<String> seeUsersActions() {
+    public Vector<Action> seeUsersActions() {
     	return Database.getUserActions();
+    }
+    
+    public Vector<Action> seeUserActions(User u) {
+    	Vector<Action> v = new Vector<Action>();
+    	for(Action a : Database.getUserActions()) {
+    		if(a.equals(u)) {
+    			v.add(a);
+    		}
+    	}
+    	return v;
+    }
+   
+    public void blockStudentsWhoNotPayForSf(Accountant a) {
+    	for(Student s : a.getNotPayForStudentFee()) {
+    		s.setIsBlocked(true);
+    		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s blocked student: %s", getFullName(), s.getFullName())));
+    	}
     }
 }

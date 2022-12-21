@@ -8,9 +8,10 @@ import Attributes.*;
 
 public class TechSupportWorkerMenu {
 	public static void menu(User user) throws IOException {
+
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		TechSupportWorker tsw = (TechSupportWorker)user;
-		String menuTechSupportWorker = "\nWelcome, Tech Support Worker: " + tsw.getFullName() + """
+		String menuTechSupportWorker = "\nWelcome: " + tsw.getFullName() + """
 				\n1. Change password.
 				2. View students.
 				3. Send message.
@@ -25,54 +26,48 @@ public class TechSupportWorkerMenu {
 			String option = reader.readLine();
 			if(option.equals("0")) {
 				tsw.logout();
-				System.out.println("You loggout out");
-				continue;
+				System.out.println("You logged out");
+				break;
 			} else if(option.equals("1")) {
-				System.out.println(tsw.viewStudent());
-				System.out.println("Sort alphabetically - type 1.\nSort by gpa - type 2.\nBack - 3.");
-				option = reader.readLine();
-				if(option.equals("3")) {
-					continue;
-				} else if(option.equals("1") || option.equals("2")) {
-					tsw.viewStudentBy(Integer.parseInt(option));
-				}
+				Menu.changePassword(tsw, reader);
+			} else if(option.equals("2")) {
+				Menu.viewStudent(tsw, reader);
 			} else if(option.equals("3")) {
 				Menu.sendMessage(tsw, reader);
 			} else if(option.equals("4")) {
 				System.out.println(tsw.getEmail());
 			} else if(option.equals("5")) {
-				int i = 1;
-				for(News n : Database.getNews()) {
-					System.out.println(i + ". " + n);
-					i += 1;
-				}
-				System.out.println("""
-						1. Comment news.
-						0. Back.""");
-				option = reader.readLine();
-				if(option.equals("1")) {
-					System.out.print("Enter number of news: ");
-					int choice = Integer.parseInt(reader.readLine());
-					System.out.print("Enter comment: ");
-					String comment = reader.readLine();
-					tsw.writeComment(comment , Database.getNews().get(choice - 1));
-					System.out.println("You commmented on the news.");
-				}
+				Menu.viewNews(tsw, reader);
 			} else if(option.equals("6")) {
-				System.out.println(tsw.getRequests());
+				TechSupportWorkerMenu.processRequest(tsw, reader);
 			} else if(option.equals("7")) {
-				System.out.println(Database.getManagers());
-				System.out.print("Enter id of the manager you want to send a reqest: ");
-				String id = reader.readLine();
-				for(Manager m : Database.getManagers()) {
-					if(m.getId().equals(id)) {
-						System.out.print("Enter text of your request: ");
-						String text = reader.readLine();
-						tsw.makeRequest(new Request(text), m);
-						break;
-					}
-				}
+				Menu.makeRequest(tsw, reader);
 			}
+		}
+	}
+	
+	public static void processRequest(TechSupportWorker t, BufferedReader reader) throws IOException {
+		String option;
+		int i = 1;
+		for(Request r : t.getRequests()) {
+			System.out.println(i + ". " + "Request from: " + r.getUserID() + ", description: " + r.getDescription() + ", date: " + r.getDateOfRequest());
+		}
+		while(true) {
+			System.out.println("Choose option:\nProcess request - 1\nBack - 2.");
+			option = reader.readLine();
+			if(option.equals("1")) {
+				System.out.print("Choose the request. Enter number of request (by ordering order): ");
+				int choice = Integer.parseInt(reader.readLine());
+				System.out.println("Request: " + t.getRequests().get(choice - 1).getDescription() + ".\nAccept request - 1.\n.Reject request - 2.\nBack - 0.");
+				option = reader.readLine();
+				if(option.equals("0")) {
+					break;
+				} else if(option.equals("1") || option.equals("2")) {
+					t.processRequests(choice - 1);
+				}
+				} else if(option.equals("2")) {
+					break;
+				}
 		}
 	}
 }

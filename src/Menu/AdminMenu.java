@@ -34,6 +34,7 @@ public class AdminMenu {
         	if(option.equals("0")) {
         		admin.logout();
         		System.out.println("You logged out.");
+        		break;
         	}
         	else if(option.equals("1")) {
         		AdminMenu.manageUsersMenu(admin, reader);
@@ -60,45 +61,10 @@ public class AdminMenu {
         		Menu.changePassword(admin, reader);
         	}
         	else if(option.equals("9")) {
-        		String requestMenu = "Who do you want to contact?\n1. Technical Support Center.\n2. Dean's office.\n3.Office of the register.\n.0.Back.";
-        		while(true) {
-        			System.out.println(requestMenu);
-        			option = reader.readLine();
-        			if(option.equals("0")) {
-        				break;
-        			}
-        			String id, text;
-        			if(option.equals("1")) {
-//        				Database.showTechSupportWorkers();
-        				System.out.print("Enter the id of the employee you want to write a request to: ");
-        				id = reader.readLine();
-        				System.out.print("Text the description of your request: ");
-        				text = reader.readLine();
-//        				admin.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getTechSupportWorkerById(id));
-        			}
-        			if(option.equals("2")) {
-//        				Database.showSchools();
-        				System.out.print("What school do you want to apply to? (enter number): ");
-        				System.out.println(Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getManagers());
-        				System.out.print(String.format("Enter the id of the manager of %s", Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getName()));
-        				id = reader.readLine();
-        				System.out.print("Text the description of your request: ");
-        				text = reader.readLine();
-//        				admin.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
-        			}
-        			if(option.equals("3")) {
-//        				System.out.println(Database.getORManagers());
-        				System.out.print("Enter the id of the manager of office of the register: ");
-        				id = reader.readLine();
-        				System.out.println("Text the description of your request: ");
-        				text = reader.readLine();
-//        				admin.makeRequest(new Request(admin.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id));
-        			}		
-        		}			
+        		Menu.makeRequest(admin, reader);
         	}
     	}
     }
-    	
     	
 	public static void manageUsersMenu(Admin admin, BufferedReader reader) throws IOException, ParseException {
 		String adminManageUser = """
@@ -134,10 +100,10 @@ public class AdminMenu {
 			}
 			else if(option.equals("2"))
 				System.out.println(Database.getUsers());
-				System.out.print("Enter the id of the user you want to delete:");
+				System.out.print("Enter the username of the user you want to delete:");
 				option = reader.readLine();
-//				User u = Database.getUserById(option);
-//				admin.removeUser(u);
+				User u = Database.getUserByUsername(option);
+				admin.removeUser(u);
 			}
 	}
 	
@@ -181,7 +147,6 @@ public class AdminMenu {
 		    		2. Not on grant""");
 		    String isOnGrant = reader.readLine();
 		    boolean grant = false;
-//		    grant = isOnGrant.equals("1") 
 		    if(isOnGrant.equals("1")) {
 		    	grant = true;
 		    } else if(isOnGrant.equals("2")) {
@@ -213,10 +178,10 @@ public class AdminMenu {
     		}
     		System.out.println("Enter parent's child ID in the list of students:");
     		String idS = reader.readLine();
-//    		Student child = Database.getStudentById(idS);
-//    		if(child != null) {
-//        	user = new Parent(name, surname, password, d, child);
-//    		} 
+    		Student child = Database.getStudentById(idS);
+    		if(child != null) {
+        	user = new Parent(name, surname, password, d, child);
+    		} 
 		}
     	
     	// Continue entering employee date 

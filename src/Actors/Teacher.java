@@ -3,11 +3,12 @@ package Actors;
 import Interfaces.*;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.*;
 
-public class Teacher extends Employee implements CanViewMarks, Comparable<Teacher> {
+public class Teacher extends Employee implements CanViewMarks, Comparable<Teacher>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private School school;
 	private TeacherTypes type;
@@ -23,7 +24,7 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     }    
     
     {
-    	Database.getTeachers().add(this);
+		Database.getUsers().add(this);
     }
     
     public School getSchool() {
@@ -64,29 +65,31 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     	}
     }
  
-    public void putMark(Course course, String studentId, int type, double point) {
+    public void putMark(Course course, Student s, int type, double point) {
     	Pair<Course, Teacher> p = new Pair<Course, Teacher>(course, this);
-    	for(Student s: Database.getStudents()) {
-    		if(s.getTranscript().containsKey(p) && s.getId().equals(studentId)) {
-    			if(type == 1) {
-    				s.getTranscript().get(p).setFirstAttestation(point);
-    			}
-	            else {
-	            	s.getTranscript().get(p).setSecondAttestation(point);
-	            }
-    			break;
+    	if(s.getTranscript().containsKey(p)) {
+    		if(type == 1) {
+    			s.getTranscript().get(p).setFirstAttestation(point);
+    		} else if(type == 2) {
+    			s.getTranscript().get(p).setSecondAttestation(point);
+    		} else if(type == 3) {
+    			s.getTranscript().get(p).setFinalScore(point);
     		}
     	}
     }
 
-   public void viewMark(Course c) {
+   public String viewMark(Course c) {
 	   Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
 	   for(Student s: Database.getStudents()) {
-		   if(s.getTranscript().containsKey(p)) {
-			   s.viewMark(c);
-		   }
+		    for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : s.getTranscript().entrySet()) {
+		    	if(t.getKey().equals(p)) {
+		    		Database.getUserActions().add(new Action(this, new Date(), String.format("Teacher: %s viewed mark of course: %s", getFullName(), c.getName())));
+		    		return s.getFullName() + ": " + t.getValue();
+		    	}
+		    }
 	   }
-   }
+	   return null;
+	}
 
    public String toString() {
 	   return this.getFullName() + " " + this.school.getName() + " " + this.type;

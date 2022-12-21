@@ -1,9 +1,10 @@
 package Actors;
 
+import java.io.Serializable;
 import java.util.Date;
 import Attributes.*;
 
-public class Dean extends Employee {
+public class Dean extends Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public Dean() {
@@ -15,11 +16,11 @@ public class Dean extends Employee {
     }
     
     {
-    	Database.getDeans().add(this);
+		Database.getUsers().add(this);
     }
 
     public boolean signRequest(Request r) {
-		Database.getUserActions().add(String.format("Dean: %s signed request of date: %s", getUsername(), r.getDateOfRequest()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Dean: %s signed request of date: %s", getUsername(), r.getDateOfRequest())));
         if(r.getDescription().length() >= 25) return true;
         	return false;
     }

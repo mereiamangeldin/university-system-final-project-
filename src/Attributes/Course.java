@@ -1,10 +1,12 @@
 package Attributes;
 
 import Actors.*;
+
+import java.io.Serializable;
 import java.util.Vector;
 import Enums.*;
 
-public class Course {
+public class Course implements Serializable {
 	private String id;
     private String name;
     private Course prerequisite;

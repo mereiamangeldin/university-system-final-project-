@@ -7,7 +7,7 @@ import Attributes.*;
 import java.io.*;
 import java.util.*;
 
-public class Manager extends Employee implements CanViewMarks {
+public class Manager extends Employee implements CanViewMarks, Serializable {
 	private static final long serialVersionUID = 1L;
 	private ManagerType type;
 	private Vector<Request> requests;
@@ -27,19 +27,21 @@ public class Manager extends Employee implements CanViewMarks {
 	}
   
 	{
-		Database.getManagers().add(this);
+		Database.getUsers().add(this);
 	}
 
 	// Видит оценки студентов определенного курса
-	public void viewMark(Course c) {
+	public String viewMark(Course c) {
 		for(Student s: Database.getStudents()) {
 	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
 				if(marks.getKey().getKey().equals(c)) {
 					System.out.println(s.getId()  + " " + s.getFullName() + " " + marks.getValue().getTotal());
+					Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s viewed mark of course: ", getUsername(), c.getName())));
+					return s.getId()  + " " + s.getFullName() + " " + marks.getValue().getTotal();
 				}
 	    	}
 		}
-		Database.getUserActions().add(String.format("Manager: %s viewed mark of course: ", getUsername(), c.getName()));
+		return null;
 	}
 	
 	// Обработка запроса менеджера под определенным индексом в векторе запросов 
@@ -79,7 +81,7 @@ public class Manager extends Employee implements CanViewMarks {
 							    			for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
 							    				if(marks.getKey().getKey().equals(c.getPrerequisite())) {
 							    					if(!marks.getValue().getLetterGrade().equals("F") && !marks.getValue().getLetterGrade().equals("N")) {
-							    						Database.getUserActions().add(String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName()));
+							    						Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
 							    						s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
 							    						break;
 							    					}
@@ -87,7 +89,7 @@ public class Manager extends Employee implements CanViewMarks {
 							    			}
 							    		}
 								        else { // Если у курса нет пререквизита, то регистрируем студента на курс
-								        	Database.getUserActions().add(String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName()));
+								        	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
 								        	s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
 								        }
 								}
@@ -110,11 +112,11 @@ public class Manager extends Employee implements CanViewMarks {
 		String text = reader.readLine();
 		Database.getNews().add(new News(title, text));
 		System.out.println("The news was added successfully.");
-		Database.getUserActions().add(String.format("Manager: %s added news: ", getUsername()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s added news: ", getUsername())));
 	}
   
 	public void removeNews(News news) {
-		Database.getUserActions().add(String.format("Manager: %s removed news: ", getUsername(), news.getTitle()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager: %s removed news: ", getUsername(), news.getTitle())));
 		for(News n : Database.getNews()) {
 			if(n.equals(news)) {
 				Database.getNews().remove(n);
@@ -125,16 +127,20 @@ public class Manager extends Employee implements CanViewMarks {
   
 	public boolean assignCourseToTeacher(String courseID, String teacherID) throws IOException {
 		for(Course c : Database.getCourses()) {
-			if(courseID.equals(courseID)) {
+			if(c.getId().equals(courseID)) {
 		        for(Teacher t : Database.getTeachers()) {
-		        	if(teacherID.equals(teacherID)) {
-		        			// ДОБАВИТЬ ПРОВЕРКУ РАВНЫ ЛИ ИХ ШКОЛЫ? 
-		        			c.getTeachers().add(t);
-		        			return true;
+		        	if(t.getId().equals(teacherID)) {
+		        		if(!c.getTeachers().contains(t)) {
+		        			if(c.getSchool().equals(t.getSchool())) {
+		        				c.getTeachers().add(t);
+		        				return true;
+		        			}
+		        			return false;
+		        		}
+		        		return false;
 		        	}
 		        }
-		        return false;
-			}
+		    }
 		}
 		return false;
 	}
@@ -178,9 +184,9 @@ public class Manager extends Employee implements CanViewMarks {
 			case "4" -> c = CourseType.FREE;
 		}
 		Course newCourse = new Course(id, name, prerequisite, numberOfCredits, s, scienceDegree, c);
-		Database.getUserActions().add(String.format("Manager %s added new course ($s) for registration", getFullName(), newCourse.getName()));
+		Database.getUserActions().add(new Action(this, new Date(), String.format("Manager %s added new course ($s) for registration", getFullName(), newCourse.getName())));
   }
-  
+
 	// Выводим количество студентов, прошедших/изучающих (?) курс, максимальную, минимальную и среднюю оценку
 	public void createReport(Course course) {
 		double mx = 101, mn = -1, total = 0, n = 0;
@@ -199,6 +205,7 @@ public class Manager extends Employee implements CanViewMarks {
 	    System.out.println("Minimum grade: " + mn);
 	    System.out.println("Maximum grade: " + mx);
 	    System.out.println("Average grade: " + total / n);
+	    Database.getUserActions().add(new Action(this, new Date(), String.format("Manager %s created report for course %s", getFullName(), course.getName())));
 	 }
 	  
 	  public Vector<Teacher> viewTeachersAlphabetically() {
@@ -207,10 +214,10 @@ public class Manager extends Employee implements CanViewMarks {
 		  return v;
 	  }
 	  
-//	  public Vector<Pair<Teacher, Double>> viewTeacherByRate(){
-//		  Vector<Pair<Teacher, Double>> v = Questionnaire.getTeacherRate();
-//		  return v;
-//	  }
+	  public Vector<Pair<Teacher, Double>> viewTeacherByRate(){
+		  Vector<Pair<Teacher, Double>> v = Questionnaire.getTeachersRate();
+		  return v;
+	  }
 	  
 	  public boolean sendRequestToDean(Dean d, Request r) {
 	    return d.signRequest(r);

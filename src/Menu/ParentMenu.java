@@ -23,29 +23,22 @@ public class ParentMenu {
         while(parent.getLogged()) {
         	System.out.println(menuParent);
         	String option = reader.readLine();
-        	switch(option) {
-        		case "0":
-        			parent.logout();
-        			System.out.println("You logged out.");
-        			break;
-        		case "1":
-        			// Implementation for changind the password;
-        		case "2":
-        			parent.getChild().toString();
-        		case "3":
-        			parent.viewTranscript();
-        		case "4":
-        			parent.getChild().viewCourses();
-        			System.out.print("Enter id of the course you want to view mark of your child: ");
-        			String id = reader.readLine();
-        			// Попробовать добавить try-catch с Exception`ом - CourseNotFoundException.
-        			// Course c = Database.getCoursesById(id);
-//        			if(c != null) {
-//        				parent.viewMark(null);
-//        			}
-//        			else {
-//        				System.out.println("Course with this id does not exist.");
-//        			}
+        	if(option.equals("0")) {
+        		parent.logout();
+        		System.out.println("You logged out.");
+        		break;
+        	} else if(option.equals("1")){
+        		Menu.changePassword(parent, reader);
+        	} else if(option.equals("2")) {
+        		System.out.println(parent.getChild());
+        	} else if(option.equals("3")) {
+        		System.out.println(parent.getChild().getTranscript());
+        	} else if(option.equals("4")) {
+        		System.out.println(parent.getChild().getCourses());
+        		System.out.print("Enter course id: ");
+        		String id = reader.readLine();
+        		Course c = Database.getCourseById(id);
+        		parent.viewMark(c);
         	}
         }
       }
