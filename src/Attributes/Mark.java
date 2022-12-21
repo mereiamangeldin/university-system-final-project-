@@ -2,7 +2,7 @@ package Attributes;
 
 public class Mark {
 	private int grade;
-    private char letterGrade;
+    private String letterGrade;
     private double firstAttestation;
     private double secondAttestation;
     private double finalScore;
@@ -16,7 +16,7 @@ public class Mark {
     	finalScore = 0;
     	total = 0;
     	gpa = 0;
-    	letterGrade = 'N';
+    	letterGrade = "N";
     }
     
     public int getGrade() {
@@ -27,11 +27,11 @@ public class Mark {
     	this.grade = grade;
     }
     
-    public char getLetterGrade() {
+    public String getLetterGrade() {
     	return letterGrade;
     }
     
-    public void setLetterGrade(char letterGrade) {
+    public void setLetterGrade(String letterGrade) {
     	this.letterGrade = letterGrade;
     }
     
@@ -49,6 +49,10 @@ public class Mark {
     
     public void setSecondAttestation(double secondAttestation) {
     	this.secondAttestation = secondAttestation;
+    	if(firstAttestation + secondAttestation < 30) {
+    		setLetterGrade("F");
+    		setGpa(0);
+    	}
     }
     
     public double getFinalScore() {
@@ -56,7 +60,54 @@ public class Mark {
     }
     
     public void setFinalScore(double finalScore) {
-    	this.finalScore = finalScore;
+    	if(letterGrade.equals("N")) {
+	    	this.finalScore = finalScore;
+	    	double sum = firstAttestation + secondAttestation + finalScore;
+	    	if(sum >= 95) {
+	    		setLetterGrade("A");
+	    		setGpa(4.00);
+	    	}
+	    	else if(sum >= 90) {
+	    		setLetterGrade("A-");
+	    		setGpa(3.67);
+	    	}
+	    	else if(sum >= 85) {
+	    		setLetterGrade("B+");
+	    		setGpa(3.33);
+	    	}
+	    	else if(sum >= 80) {
+	    		setLetterGrade("B");
+	    		setGpa(3.00);
+	    	}
+	    	else if(sum >= 75) {
+	    		setLetterGrade("B-");
+	    		setGpa(2.67);
+	    	}
+	    	else if(sum >= 70) {
+	    		setLetterGrade("C+");
+	    		setGpa(2.33);
+	    	}
+	    	else if(sum >= 65) {
+	    		setLetterGrade("C");
+	    		setGpa(2.00);
+	    	}
+	    	else if(sum >= 70) {
+	    		setLetterGrade("C-");
+	    		setGpa(1.67);
+	    	}
+	    	else if(sum >= 55) {
+	    		setLetterGrade("D+");
+	    		setGpa(1.33);
+	    	}
+	    	else if(sum >= 50) {
+	    		setLetterGrade("D");
+	    		setGpa(1.00);
+	    	}
+	    	else {
+	    		setLetterGrade("F");
+	    		setGpa(0);
+	    	}
+    	}
     }
     
     public double getTotal() {
@@ -86,7 +137,7 @@ public class Mark {
     	temp = Double.doubleToLongBits(gpa);
     	result = prime * result + (int) (temp ^ (temp >>> 32));
     	result = prime * result + grade;
-    	result = prime * result + letterGrade;
+    	result = prime * result;
     	temp = Double.doubleToLongBits(secondAttestation);
     	result = prime * result + (int) (temp ^ (temp >>> 32));
     	temp = Double.doubleToLongBits(total);

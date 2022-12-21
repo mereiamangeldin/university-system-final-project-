@@ -70,7 +70,7 @@ public class Manager extends Employee implements CanViewMarks {
 									int amountOfCredits = 0;
 									// Тут высчитываем количество кредитов, сколько у студента сейчас 
 							    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-							    		if(marks.getValue().getFinalScore() == 0 && marks.getValue().getLetterGrade() != 'F') {
+							    		if(marks.getValue().getFinalScore() == 0 && !marks.getValue().getLetterGrade().equals("F")) {
 							    			amountOfCredits += marks.getKey().getKey().getNumberOfCredits();
 							    		}
 							    	}
@@ -78,7 +78,7 @@ public class Manager extends Employee implements CanViewMarks {
 							    		if(c.getPrerequisite() != null) { // Если у курса есть пререквизит, то проверяем, прошел ли он этот пререквизит (не на ритейк)
 							    			for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
 							    				if(marks.getKey().getKey().equals(c.getPrerequisite())) {
-							    					if(marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
+							    					if(!marks.getValue().getLetterGrade().equals("F") && !marks.getValue().getLetterGrade().equals("N")) {
 							    						Database.getUserActions().add(String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName()));
 							    						s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
 							    						break;
@@ -186,7 +186,7 @@ public class Manager extends Employee implements CanViewMarks {
 		double mx = 101, mn = -1, total = 0, n = 0;
 	    for(Student s : Database.getStudents()) {
 	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-	    		if(marks.getKey().getKey().equals(course) && marks.getValue().getLetterGrade() != 'F' && marks.getValue().getLetterGrade() != 'N') {
+	    		if(marks.getKey().getKey().equals(course) && !marks.getValue().getLetterGrade().equals("F") && !marks.getValue().getLetterGrade().equals("N")) {
 	    			total += marks.getValue().getTotal();
 	    			n += 1;
 	    			if(mx < marks.getValue().getTotal()) mx = marks.getValue().getTotal();

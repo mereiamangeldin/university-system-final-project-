@@ -214,5 +214,16 @@ public class Student extends User implements CanWriteComment, CanMakeRequest, Ca
     	if(resultByName != 0) return resultByName;
     	int resultBySurname = this.getSurname().compareTo(s.getSurname());
     	return resultBySurname;
-    }     
+    } 
+    public double getGpa() {
+    	double total = 0;
+    	int cnt = 0;
+    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> x : transcript.entrySet()) {
+    		if(!x.getValue().getLetterGrade().equals("N")) {
+    			total += x.getValue().getGpa();
+    			cnt++;
+    		}
+    	}
+    	return total/cnt;
+    }
 }
