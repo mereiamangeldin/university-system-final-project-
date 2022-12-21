@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Interfaces.*;
+/**TechSupportWorker handles technical requests from employees and students.*/
 
 public class TechSupportWorker extends Employee implements Serializable  {
 
@@ -22,7 +23,9 @@ public class TechSupportWorker extends Employee implements Serializable  {
 	{
 		Database.getUsers().add(this);
 	}
-	
+	/**
+	 * proccess of accepted requests
+	 * */
 	public void processRequests(int pos) {
 		requests.remove(pos - 1);
 	}

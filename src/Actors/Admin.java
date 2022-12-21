@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.*;
 import Attributes.*;
 import Interfaces.*;
+/**Admin is responsible for technical part of university system.*/
 
 public class Admin extends Employee implements Serializable  {
 
@@ -18,16 +19,22 @@ public class Admin extends Employee implements Serializable  {
 	{
 		Database.getUsers().add(this);
 	}
-
+	/**
+	 * to add user to university system
+	 * */
     public void addUser(User u) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s added user: %s", getFullName(), u.getFullName())));
     }
-    
+    /**
+     * to remove user from university system
+     * */
     public void removeUser(User u) {
 		Database.getUsers().remove(u);
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s removed user: %s", getFullName(), u.getUsername())));
     }
-
+    /**
+     * to update user's information
+     * */
     public void updateUser(User u, int type, String toChange) throws Exception {
     	if(type == 1) {              // change username
     		u.setUsername(toChange);
@@ -46,7 +53,9 @@ public class Admin extends Employee implements Serializable  {
     	}
 		Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s updated user: %s", getFullName(), u.getFullName())));
     }
-    
+    /**
+     * allows to see all user actions
+     * */
     public Vector<Action> seeUsersActions() {
     	return Database.getUserActions();
     }
@@ -60,7 +69,9 @@ public class Admin extends Employee implements Serializable  {
     	}
     	return v;
     }
-   
+    /**
+     * to block the student, if he has not made the required payments
+     * */
     public void blockStudentsWhoNotPayForSf(Accountant a) {
     	for(Student s : a.getNotPayForStudentFee()) {
     		s.setIsBlocked(true);

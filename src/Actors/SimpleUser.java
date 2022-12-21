@@ -4,7 +4,9 @@ import java.util.*;
 import Attributes.*;
 import Interfaces.*;
 
-
+/**
+ * The main class of our system, other actors of university system extends this class.
+ * */
 public abstract class SimpleUser implements Serializable, User {
 	private static final long serialVersionUID = 1L;
 	private String username;
@@ -24,7 +26,9 @@ public abstract class SimpleUser implements Serializable, User {
 		this.password = password;
 		this.dateOfBirth = dateOfBirth;
 	}
-    
+    /**
+     * to authenticate a user with a specified login account
+     * */
     public boolean login(String password) {
     	if(this.password.equals(password)) {
     		Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s has logged", username)));
@@ -32,13 +36,17 @@ public abstract class SimpleUser implements Serializable, User {
     	}
     	return logged;
     }
-
+    /**
+     *  to explicitly terminate the user's session
+     *  */
     public boolean logout() {
     	Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s has logged out", username)));
     	logged = false;
     	return logged;
     }
-
+    /**
+     * allows to see all the news
+     * */
     public Vector<News> viewNews() {
     	return Database.getNews();
     }

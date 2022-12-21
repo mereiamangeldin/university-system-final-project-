@@ -3,6 +3,8 @@ import Decorators.*;
 import Interfaces.*;
 import Attributes.*;
 import java.util.*;
+/**for decorating Student*/
+
 public class WithStudentResearcher extends StudentDecorator implements CanResearch{
 	private Vector<ResearchPaper> researchPapers;
 	private Vector<ResearchProject> researchProjects;
@@ -10,14 +12,16 @@ public class WithStudentResearcher extends StudentDecorator implements CanResear
 		super((Student)user);
 	}
 	// researcher methods
+	/**adds research paper*/
 
 	public void addResearchPaper(ResearchPaper researchPaper) {
 		getResearchPapers().add(researchPaper);
 	}
-
+	/**adds research project*/
 	public void addResearchProject(ResearchProject researchProject) {
 		getResearchProjects().add(researchProject);
 	}
+	/**calculates h-index*/
 
 	public int getHindex() {
 		int hIndex = 0;

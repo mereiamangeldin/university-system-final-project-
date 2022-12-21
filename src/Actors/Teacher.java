@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.*;
+/** Teacher view courses, which he teaches, add/delete course files, put students’ mark.*/
 
 public class Teacher extends Employee implements CanViewMarks, Comparable<Teacher>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -42,29 +43,39 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     public void setType(TeacherTypes type) {
     	this.type = type;
     }
-    
+    /**
+     * returns all the courses in university system 
+     * */
     public void viewCourses() {
     	System.out.println(Database.getCourses());
     }
-
+    /**
+     * returns specific course description
+     * */
     public void viewCourses(String id) {
     	for (Course c : Database.getCourses()) {
     		if(c.getId().equals(id)) System.out.println(c);
     	}
     }
-
+    /**
+     * to add new course for system
+     * */
     public void addCourse(Course course) {
     	if(!Database.getCourses().contains(course)) {
     		Database.getCourses().add(course);
         }
     }
-
+    /**
+     * to delete course from system
+     * */
     public void deleteCourse(Course course) {
     	if(Database.getCourses().contains(course)) {
     		Database.getCourses().remove(course);
     	}
     }
- 
+    /**
+     * puts mark for specific course and student
+     * */
     public void putMark(Course course, Student s, int type, double point) {
     	Pair<Course, Teacher> p = new Pair<Course, Teacher>(course, this);
     	if(s.getTranscript().containsKey(p)) {
@@ -77,7 +88,9 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     		}
     	}
     }
-
+    /**
+     * to view mark of specific course he teaches
+     * */
    public String viewMark(Course c) {
 	   Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
 	   for(Student s: Database.getStudents()) {

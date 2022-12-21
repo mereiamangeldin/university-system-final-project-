@@ -8,6 +8,8 @@ import java.util.*;
 import Attributes.*;
 import Enums.*;
 
+/**Student one of the main roles, can do all the staff with his courses, view news, rate teachers and etc.*/
+
 public class Student extends UserDecorator implements CanWriteComment, CanMakeRequest, CanViewTranscript, CanViewMarks, Comparable<Student>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
@@ -124,19 +126,25 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     public void setIsBlocked(boolean isBlocked) {
     	this.isBlocked = isBlocked;
     }
-    
+    /**
+     * returns only those courses he have studied or studying in that moment
+     * */
     public void viewCourses(){
     	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed courses", getUsername())));
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
     		System.out.println(marks.getKey().getKey());
     	}
     }
-
+    /**
+     * allows to register for specific course
+     * */
     public void registerForCourse(Course course, Teacher t, Manager m){
     	this.makeRequest(new Request(this.getId(), RequestType.CourseRegistration, course.getId() + " " + t.getId()), m);
     	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s sended request for registration to the course %s:", getFullName(), course.getName())));
     }
-
+    /**
+     * allows to rate specific teacher
+     * */
     public void rateTeacher(Teacher teacher, double mark){
     	if(Questionnaire.getRating().containsKey(teacher)) {
     		Questionnaire.getRating().get(teacher).add(mark);
@@ -149,7 +157,9 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     public HashMap<Pair<Course, Teacher>, Mark> getTranscript() {
     	return transcript;
     }  
-    
+    /**
+     * makes book order to Librarian
+     * */
     public String makeBookOrder(Librarian librarian, Order order){
     	String answer = librarian.orderBook(order);
         if(answer.equals("Accepted")) {
@@ -162,7 +172,8 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
         	return "Unfortunately, we don't have this book in our library.";
 
     }
-    
+    /**
+     * makes request to TechSupport worker for technical issues or Manager for academic issues*/ 
     public String makeRequest(Request request, Employee employee) {
     	if(employee instanceof TechSupportWorker) {
         if(request.getDescription().length() > 20 && request.getTitle().equals(RequestType.EmployeeRequest)) {
@@ -180,12 +191,16 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
       }
     	return "Request can be sended only to manager or tech support worker";
    }
-
+    /**
+     * to write comment under the news
+     * */
     public void writeComment(String comment, News n) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s writed comment to news %s", getUsername(), n.getTitle())));
     	n.getComments().add(comment);
     }
-
+    /**
+     * to view his own transcript
+     * */
     public void viewTranscript() {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed transcript", getUsername())));
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
@@ -218,7 +233,9 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
             && Objects.equals(school, other.school) && scienceDegree == other.scienceDegree
             && Objects.equals(transcript, other.transcript) && yearOfStudy == other.yearOfStudy;
       }
-
+    /**
+     * to view mark of specified course
+     * */
     public String viewMark(Course c) {
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : transcript.entrySet()) {
     		if(t.getKey().getKey().equals(c)) {

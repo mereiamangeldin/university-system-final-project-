@@ -4,6 +4,7 @@ import Attributes.Database;
 import Attributes.Payment;
 import Enums.TypeOfPayment;
 
+/**Accountant responsible for financial part of university.*/
 
 public class Accountant{
 	private Vector <Payment> payments;
@@ -33,14 +34,18 @@ public class Accountant{
 	public String toString() {
 		return "Accountant payments = " + payments + " Students who did not pay for student fee : " + notPayForStudentFee;
 	}	
-	
+	/**
+	 * allows to see all the payments
+	 * */
 	public String viewAllPayments() {
 		for(Payment p : payments) {
 			return p.toString();
 		}
 		return "\n";
 	}
-
+	/**
+	 * to save students, who have not made a payment
+	 * */
 	public void getStudentWhoNotPayForSF() {
 		for(Student s : Database.getStudents()) {
 			boolean check = false;

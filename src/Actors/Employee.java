@@ -6,6 +6,8 @@ import Enums.RequestType;
 import Interfaces.*;
 import Decorators.*;
 
+/**All employees can view students, can send messages within each other, also they can make request to Managers or TechSupportWorkers.*/
+
 public abstract class Employee extends UserDecorator implements CanMakeRequest, CanWriteComment, Serializable{
 	private static final long serialVersionUID = 1L;
 	private String id;
@@ -24,18 +26,22 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
         this.insuranceNumber = insuranceNumber;
         this.email = new LinkedHashMap<Employee, Message>();
     }
-  
+    /**
+     * returns all the students of university*/
     public String viewStudent() {
     	for (Student d : Database.getStudents()) {
     		return d.toString();
     	}
     	return "\n";
     }
-
+    /**
+     * to send message to another employee*/
   	public void sendMessage(Message message, Employee employee) {
   		employee.getEmail().put(this, message);
   	}
-
+  	/**
+  	 * to make request to Manager or TechSupportWorker
+  	 * */
     public String makeRequest(Request request, Employee employee) {
     	// Запрос в центр технической поддержки 
     	if(employee instanceof TechSupportWorker) { 
@@ -58,12 +64,17 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
     	}
     	return "";
     }
-
+    /**
+     * to write a comment under the news
+     * */
   	public void writeComment(String comment, News n) {
   		n.getComments().add(comment);
   	}
   	
   	// ПРОВЕРИТЬ
+  	/**
+  	 * returns all student in requested order alphabetically or by gpa
+  	 * */
   	public Vector<Student> viewStudentBy(int viewBy) {
   		Vector<Student> v = Database.getStudents();
   		if(viewBy == 1){ // Alphabetically

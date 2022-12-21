@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import Attributes.*;
 import Interfaces.*;
+/**Dean signs official documents.*/
 
 public class Dean extends Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,7 +20,9 @@ public class Dean extends Employee implements Serializable {
     {
 		Database.getUsers().add(this);
     }
-
+    /**
+     * gets request from Manager and decides to sign or not
+     * */
     public boolean signRequest(Request r) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Dean: %s signed request of date: %s", getUsername(), r.getDateOfRequest())));
         if(r.getDescription().length() >= 25) return true;

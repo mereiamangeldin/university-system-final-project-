@@ -5,21 +5,26 @@ import Attributes.ResearchPaper;
 import Attributes.ResearchProject;
 import Decorators.*;
 import Interfaces.*;
-public class withTeacherResearcher extends TeacherDecorator implements CanResearch {
+/**for decorating Teacher*/
+
+public class WithTeacherResearcher extends TeacherDecorator implements CanResearch {
 	private Vector<ResearchPaper> researchPapers;
 	private Vector<ResearchProject> researchProjects;
-	public withTeacherResearcher(User user) {
+	public WithTeacherResearcher(User user) {
 		super((Teacher)user);
 	}
 	//research methods
+	/**adds research paper*/
 
 	public void addResearchPaper(ResearchPaper researchPaper) {
 		getResearchPapers().add(researchPaper);
 	}
+	/**adds research project*/
 
 	public void addResearchProject(ResearchProject researchProject) {
 		getResearchProjects().add(researchProject);
 	}
+	/**calculates h-index*/
 
 	public int getHindex() {
 		int hIndex = 0;

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Interfaces.*;
+/**Librarian takes order of Students, checking students for debt.*/
 
 public class Librarian extends Employee implements Serializable {
 
@@ -22,7 +23,9 @@ public class Librarian extends Employee implements Serializable {
     {
 		Database.getUsers().add(this);
     }
-    
+    /**
+     * receives order from Student, checks for containing of book in Database
+     * */
     public String orderBook(Order order) {
     	if(Database.getBooks().contains(order.getBook())) {
     		if(order.getBook().getQuantity() > 0) {
@@ -38,7 +41,9 @@ public class Librarian extends Employee implements Serializable {
     		return "Not accepted";
       }
     }
-  
+    /**
+     * checks if the student owes books to the library
+     * */
     public void checkForDebt(Student student) {	
     	for(Order order: takers) {
     		if(student.equals(order.getStudent())) {

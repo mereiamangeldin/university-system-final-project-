@@ -7,6 +7,8 @@ import Interfaces.*;
 import Decorators.*;
 import javafx.util.Pair;
 
+/**
+ *  Parent can view his/her child marks, transcript.*/
 public class Parent extends UserDecorator implements CanViewTranscript, CanViewMarks, Serializable {
 	private static final long serialVersionUID = 1L;
 	private Student child;
@@ -23,12 +25,16 @@ public class Parent extends UserDecorator implements CanViewTranscript, CanViewM
 		super(user);
 		this.child = child;
 	}    
-  
+	/**
+	 * allows to see his/her child's transcript
+	 * */
     public void viewTranscript() {
     	child.viewTranscript();
     	Database.getUserActions().add(new Action(this, new Date(), String.format("Parent %s viewed the transcript of the child", getFullName())));
     }
-
+    /**
+     * allows to see his/her child's marks
+     * */
     public String viewMark(Course c) {
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : getChild().getTranscript().entrySet()) {
     		if(t.getKey().getKey().equals(c)) {
