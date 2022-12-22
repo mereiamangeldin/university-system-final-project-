@@ -29,6 +29,10 @@ public class Course implements Serializable {
 		this.teachers = new Vector<Teacher>();
 	}
     
+    {
+    	Database.getCourses().add(this);
+    }
+    
         
     public Vector<Course> getCoursesOfTeacher(Teacher t) {
     	return null;

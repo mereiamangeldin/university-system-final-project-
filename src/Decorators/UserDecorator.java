@@ -1,10 +1,12 @@
 package Decorators;
 import Interfaces.*;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Vector;
 import Attributes.News;
 
-public class UserDecorator implements User {
+public class UserDecorator implements User, Serializable {
 	protected final User DecoratedUser;
 	public UserDecorator(User u) {
 		this.DecoratedUser = u;

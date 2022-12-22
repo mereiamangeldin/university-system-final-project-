@@ -1,6 +1,8 @@
 package Attributes;
 
-public class Mark {
+import java.io.Serializable;
+
+public class Mark implements Serializable {
 	private int grade;
     private String letterGrade;
     private double firstAttestation;

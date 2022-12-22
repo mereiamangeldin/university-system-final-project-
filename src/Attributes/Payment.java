@@ -68,11 +68,4 @@ public class Payment {
 				&& Objects.equals(dateOfPayment, other.dateOfPayment) && Objects.equals(student, other.student)
 				&& typeOfPayment == other.typeOfPayment;
 	}
-	
-	
-	
-	
-	
-	
-	
 }

@@ -4,10 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import Actors.*;
+import Interfaces.*;
 import Attributes.Database;
 
 public class DeanMenu {
-	public static void menu(SimpleUser user) throws IOException {
+	public static void menu(User user) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Dean dean = (Dean)user;
         String menuDean = "\nWelcome: " + dean.getFullName() + """

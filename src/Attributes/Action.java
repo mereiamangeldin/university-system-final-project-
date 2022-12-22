@@ -1,8 +1,9 @@
 package Attributes;
+import java.io.Serializable;
 import java.util.*;
 import Interfaces.*;
 
-public class Action {
+public class Action implements Serializable {
 	private User user;
 	private Date date;
 	private String description;

@@ -185,6 +185,7 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
       }
       else if(employee instanceof Manager) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s made request to manager", getUsername())));
+		((Manager) employee).getRequests().add(request);
     	return "Your request has been sended to manager";
       }
     	return "Request can be sended only to manager or tech support worker";

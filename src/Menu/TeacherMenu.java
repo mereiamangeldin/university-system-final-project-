@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import Actors.*;
 import Attributes.*;
+import Interfaces.*;
 import Enums.*;
 
 public class TeacherMenu {
-	public static void menu(SimpleUser user) throws IOException {
+	public static void menu(User user) throws IOException {
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	    Teacher teacher = (Teacher)user;
 	    String menuTeacher = "\nWelcome, " + teacher.getFullName() + "!" + """
@@ -83,6 +84,10 @@ public class TeacherMenu {
 	}
 	
 	public static void manageCourseFiles(Teacher teacher, BufferedReader reader) throws IOException {
+		if(Database.getTeachersCourse(teacher) == null) {
+			System.out.println("You don't have courses.");
+			return;
+		}
 		for(Course c : Database.getTeachersCourse(teacher)) {
 			System.out.println(String.format(("Course id: %s, name %s, school : %s, number of credits: %s"), c.getId(), c.getName(), c.getSchool(), c.getNumberOfCredits()));
 		}

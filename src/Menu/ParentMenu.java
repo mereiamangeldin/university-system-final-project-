@@ -10,7 +10,7 @@ import Interfaces.*;
 import Exceptions.*;
 
 public class ParentMenu {
-	public static void menu(SimpleUser user) throws IOException {
+	public static void menu(User user) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Parent parent = (Parent)user;
         String menuParent = "\nWelcome, Parent: " + parent.getFullName() + """

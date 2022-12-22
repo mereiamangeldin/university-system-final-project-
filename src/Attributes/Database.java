@@ -53,6 +53,14 @@ public final class Database implements Serializable {
     	userActions = new Vector<Action>(); 
     }
     
+    public static void loadAttributes() {
+		Database.deserializeUsers();
+		Database.deserializeNews();
+		Database.deserializeBooks();
+		Database.deserializeCourses();
+		Database.deserializeSchools();
+    }
+    
     public static Vector<User> getUsers() {
     	return users;
     }
@@ -60,45 +68,21 @@ public final class Database implements Serializable {
     public static Employee getEmployeeByUsername(String username) {
     	Employee e = getEmployees().stream().filter(x -> x.getUsername().equals(username)).findFirst().orElse(null);
     	return e;
-//    	for(Employee e: getEmployees()) {
-//    		if(e.getUsername().equals(username)) {
-//    			return e;
-//    		}
-//    	}
-//    	return null;
     }
 
     public static Student getStudentById(String id) {
         Student s = getStudents().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
         return s;
-//    	for(Student s : getStudents()) {
-//    		if(s.getId().equals(id)) {
-//    			return s;
-//    		}
-//    	}
-//    	return null;
     }
 
     public static Manager getManagerById(String id) {
     	Manager m = getManagers().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
     	return m;
-//    	for(Manager m: getManagers()) {
-//    		if(m.getId().equals(id)) {
-//    			return m;
-//    		}
-//    	}
-//    	return null;
     }
     
     public static Librarian getLibrarianById(String id) {
     	Librarian l = getLibrarians().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
         return l;
-//    	for(Librarian l: getLibrarians()) {
-//    		if(l.getId().equals(id)) {
-//    			return l;
-//    		}
-//    	}
-//    	return null;
     }
     
     public static Teacher getTeacherById(String id) {
@@ -108,12 +92,6 @@ public final class Database implements Serializable {
     		}
     	}
     	return null;
-//    	for(Teacher t: getTeachers()) {
-//    		if(t.getId().equals(id)) {
-//    			return t;
-//    		}
-//    	}
-//    	return null;
     }
     
     public static TechSupportWorker getTechSupportWorkerById(String id) {
@@ -123,12 +101,6 @@ public final class Database implements Serializable {
     		}
     	}
     	return null;
-//    	for(TechSupportWorker  t: getTechSupportWorkers()) {
-//    		if(t.getId().equals(id)) {
-//    			return t;
-//    		}
-//    	}
-//    	return null;
     }
     
     public static Book getBookById(int id) {

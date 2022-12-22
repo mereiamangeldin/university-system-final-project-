@@ -1,11 +1,13 @@
 package Attributes;
 
 import Enums.*;
+
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Vector;
 import Actors.*;
 
-public class Lesson {
+public class Lesson implements Serializable  {
 	private Format format;
     private TypeOfLesson type;
     private int durationMinutes;

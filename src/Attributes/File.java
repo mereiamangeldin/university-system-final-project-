@@ -1,9 +1,10 @@
 package Attributes;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import Enums.*;
-public class File {
+public class File implements Serializable {
 	private int id;
 	private String name;
     private TypeOfFile typeOfFile;

@@ -1,7 +1,8 @@
 package Attributes;
 
+import java.io.Serializable;
 import java.util.*;
-public class Message {
+public class Message implements Serializable {
 	private Date date;
     private String text;
     

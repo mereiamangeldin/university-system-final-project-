@@ -1,9 +1,10 @@
 package Attributes;
 
+import java.io.Serializable;
 import java.util.*;
 import Enums.*;
 
-public class Request {
+public class Request implements Serializable{
 	private String userID;
 	private RequestType title;
 	private String description;

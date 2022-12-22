@@ -1,10 +1,11 @@
 package Attributes;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import Actors.*;
 
-public class Order {
+public class Order implements Serializable {
 	private Student student;
     private Book book;
     private int monthLeft;

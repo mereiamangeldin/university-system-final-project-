@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import Actors.*;
 import Attributes.*;
+import Interfaces.*;
 
 public class TechSupportWorkerMenu {
-	public static void menu(SimpleUser user) throws IOException {
+	public static void menu(User user) throws IOException {
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		TechSupportWorker tsw = (TechSupportWorker)user;
@@ -59,12 +60,12 @@ public class TechSupportWorkerMenu {
 			if(option.equals("1")) {
 				System.out.print("Choose the request. Enter number of request (by ordering order): ");
 				int choice = Integer.parseInt(reader.readLine());
-				System.out.println("Request: " + t.getRequests().get(choice - 1).getDescription() + ".\nAccept request - 1.\n.Reject request - 2.\nBack - 0.");
+				System.out.println("Request: " + t.getRequests().get(choice - 1).getDescription() + ".\nAccept request - 1.\nReject request - 2.\nBack - 0.");
 				option = reader.readLine();
 				if(option.equals("0")) {
 					break;
 				} else if(option.equals("1") || option.equals("2")) {
-					t.processRequests(choice - 1);
+					t.processRequests(choice);
 				}
 				} else if(option.equals("2")) {
 					break;

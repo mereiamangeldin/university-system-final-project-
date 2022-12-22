@@ -1,6 +1,7 @@
 package Actors;
 
 import Enums.*;
+
 import Interfaces.*;
 import javafx.util.Pair;
 import Attributes.*;
@@ -14,11 +15,6 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	private ManagerType type;
 	private Vector<Request> requests;
 	private BufferedReader reader = null;
-	
-
-	{
-		requests = new Vector<Request>();
-	}
 	
 	public Manager(User user) {
 		super(user);
@@ -124,7 +120,6 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	}
 	
 	// Managing news part (Adding and removing)
-
 	/**
 	 * to add news to news news feed
 	 * */
@@ -155,7 +150,6 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	public boolean assignCourseToTeacher(Course course, Teacher teacher) throws IOException {
 		if(course.getSchool().equals(teacher.getSchool())){
 			if(course.getTeachers().contains(teacher)) {
-				System.out.println("V vectore est uje");
 				return false;
 			} else {
 				return true;

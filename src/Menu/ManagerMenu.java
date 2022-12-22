@@ -5,11 +5,14 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import Actors.*;
 import Attributes.*;
+import Interfaces.*;
 import Enums.CourseType;
 import Enums.ScienceDegree;
+import javafx.util.Pair;
+
 
 public class ManagerMenu {
-	public static void menu(SimpleUser user) throws IOException {
+	public static void menu(User user) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		Manager manager = (Manager)user;
 		String menuManager = "\nWelcome: " + manager.getFullName() + """
@@ -150,6 +153,8 @@ public class ManagerMenu {
 			if(course != null) {
 				if(teacher != null) {
 					if(manager.assignCourseToTeacher(course, teacher)) {
+						course.getTeachers().add(teacher);
+						System.out.println(course.getTeachers());
 						System.out.println("The course has been successfully assigned to a teacher");
 					} else {
 						System.out.println("Failed to assign course to teacher");
@@ -193,7 +198,7 @@ public class ManagerMenu {
 		String option = reader.readLine();
 		if(option.equals("1")) {
 			System.out.print("Enter number of request: ");
-			manager.processRequests(Integer.parseInt(reader.readLine()) - 1);
+			manager.processRequests(Integer.parseInt(reader.readLine()));
 		} else if(option.equals("0")) {
 			return;
 		}

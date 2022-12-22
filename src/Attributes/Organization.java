@@ -1,8 +1,9 @@
 package Attributes;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Organization {
+public class Organization implements Serializable {
 	private String name;
     private int yearOfCreation;
     

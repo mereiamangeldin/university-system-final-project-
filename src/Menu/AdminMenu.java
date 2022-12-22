@@ -14,7 +14,7 @@ import Interfaces.*;
 
 public class AdminMenu {
     
-    public static void menu(SimpleUser user) throws IOException, ParseException {
+    public static void menu(User user) throws IOException, ParseException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     	Admin admin = (Admin)user;
     	String menuAdmin = "\nWelcome, : " + admin.getFullName() + """
@@ -102,13 +102,10 @@ public class AdminMenu {
 				System.out.println(Database.getUsers());
 				System.out.print("Enter the username of the user you want to delete:");
 				option = reader.readLine();
-<<<<<<< HEAD
+
 				User u = Database.getUserByUsername(option);
 				System.out.println(admin.removeUser(u));
-=======
-				SimpleUser u = Database.getUserByUsername(option);
-				admin.removeUser(u);
->>>>>>> 36cd0c15dda4ce3b0826fd0d6901165189e85e2e
+
 			}
 	}
 	
@@ -116,7 +113,7 @@ public class AdminMenu {
     public static void addUser(String userType, BufferedReader r) throws IOException, ParseException {
     	String name, surname, password, date;
     	Date d;
-    	SimpleUser user = null;
+    	User user = null;
         BufferedReader reader = r;
         
         // General date 
@@ -171,7 +168,7 @@ public class AdminMenu {
 		    	case "3":
 		    		scienceD = ScienceDegree.PHD;
 		    }
-		    user = new Student(name, surname, password, d, id, s, yearOfStudy, grant, scholarship, scienceD);
+		    user = new Student(new SimpleUser(name, surname, password, d), id, s, yearOfStudy, grant, scholarship, scienceD);
     	} 
     	
     	// Parent date 
@@ -183,7 +180,7 @@ public class AdminMenu {
     		String idS = reader.readLine();
     		Student child = Database.getStudentById(idS);
     		if(child != null) {
-        	user = new Parent(name, surname, password, d, child);
+        	user = new Parent(new SimpleUser(name, surname, password, d), child);
     		} 
 		}
     	
@@ -226,7 +223,7 @@ public class AdminMenu {
         			case "4":
         				t = TeacherTypes.PROFESSOR;
         		}
-        		user = new Teacher(name, surname, password, d, id, hireDate, salary, insuranceNumber, s, t);
+        		user = new Teacher(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber, s, t);
     		} 
     		else if(userType.equals("3")) {
     			System.out.print("Manager type:"
@@ -249,16 +246,16 @@ public class AdminMenu {
     				case "5":
     					m = ManagerType.ISE;
     			}
-    			user  = new Manager(name, surname, password, d, id, hireDate, salary, insuranceNumber, m);
+    			user  = new Manager(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber, m);
     		}
     		else if(userType.equals("4")) {
-    			user = new Librarian(name, surname, password, d, id, hireDate, salary, insuranceNumber);
+    			user = new Librarian(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber);
     		}
     		else if(userType.equals("5")) {
-    			user = new TechSupportWorker(name, surname, password, d, id, hireDate, salary, insuranceNumber);
+    			user = new TechSupportWorker(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber);
     		}
     		else if(userType.equals("7")) {
-    			user  = new Admin(name, surname, password, d, id, hireDate, salary, insuranceNumber);
+    			user  = new Admin(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber);
     		}	
     	}
     	

@@ -14,7 +14,7 @@ import Exceptions.*;
 import Interfaces.*;
 
 public class StudentMenu {
-	public static void menu(SimpleUser user) throws IOException {
+	public static void menu(User user) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		Student student = (Student)user;
 		String menuStudent = "\nWelcome, Student: " + student.getFullName() + """
@@ -177,6 +177,10 @@ public class StudentMenu {
 			System.out.print("Enter id of the course: ");
 			String id = reader.readLine();
 			Course c = Database.getCourseById(id);
+			if(c == null) {
+				System.out.println("Course not found");
+				return;
+			}
 			System.out.println(c.getTeachers());
 			System.out.print("Enter teacher id: ");
 			id = reader.readLine();

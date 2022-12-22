@@ -15,7 +15,7 @@ import Exceptions.*;
 import Interfaces.*;
 
 public class LibrarianMenu {
-	public static void menu(SimpleUser user) throws IOException {
+	public static void menu(User user) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Librarian librarian = (Librarian)user;
         String menuLibrarian = "\nWelcome: " + librarian.getFullName() + """
