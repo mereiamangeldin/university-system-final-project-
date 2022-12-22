@@ -16,7 +16,11 @@ import Interfaces.*;
 public class Menu {
 	public static void main(String[] args) throws IOException, ParseException {	
 		
-		Database.loadAttributes();
+//		Database.loadAttributes();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Dean d = new Dean(new SimpleUser("Alibek", "Bisembayev", "sitetop", dateFormat.parse("1986/06/02")), "D1", dateFormat.parse("2006/02/28"), 800000, "203-139");
+		School SITE = new School("School of Information Technologies and Engineering", d, "SITE");
+		Student s = new Student(new SimpleUser("Assem", "Abay", "assem", dateFormat.parse("2005/12/01")), "21B030944", SITE, 1, true, 36500, ScienceDegree.BACHELOR);
 
 		InputStreamReader myStream = new InputStreamReader(System.in);        
 		BufferedReader reader = new BufferedReader(myStream);		

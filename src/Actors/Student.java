@@ -130,7 +130,6 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     	this.isBlocked = isBlocked;
     }
 
-
     /**
      * allows to register for specific course
      * */
@@ -209,9 +208,10 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     }
     
     public String toString() {
-        return super.toString() + "Student [id=" + id + ", school=" + school.getName() + ", yearOfStudy=" + yearOfStudy + ", transcript="
-            + transcript + ", grant=" + grant + ", scholarship=" + scholarship + ", scienceDegree=" + scienceDegree
-                + ", organizations=" + organizations + "]";
+    	return super.toString() + String.format(", id: %s, school: %s, year of study: %s, science degree: %S", this.getId(), this.school.getShortName(), this.scienceDegree);
+//        return super.toString() + "Student [id=" + id + ", school=" + school.getName() + ", yearOfStudy=" + yearOfStudy + ", transcript="
+//            + transcript + ", grant=" + grant + ", scholarship=" + scholarship + ", scienceDegree=" + scienceDegree
+//                + ", organizations=" + organizations + "]";
     }
 
     public int hashCode() {

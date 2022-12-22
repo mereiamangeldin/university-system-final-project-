@@ -43,14 +43,14 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     public void setType(TeacherTypes type) {
     	this.type = type;
     }
+
     /**
      * returns all the courses in university system 
      * */
-    public void viewCourses() {
-    	System.out.println(Database.getCourses());
-    }
+	public Vector<Course> getCourses(){
+		return Database.getCourses();
+	}
 
-    
     public String addFileToCouse(Course course, File file) {
     	if(course.getFiles().contains(file)) {
     		return "Course already have this file";
@@ -67,12 +67,12 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     		return "Course does not have this file";
     	}
     }
-
+    
     /**
      * puts mark for specific course and student
      * */
     public void putMark(Course course, Student s, int type, double point) {
-    	Pair<Course, Teacher> p = new Pair<Course, Teacher>(course, this);
+		Pair<Course, Teacher> p = new Pair<Course, Teacher>(course, this);
     	if(s.getTranscript().containsKey(p)) {
     		if(type == 1) {
     			s.getTranscript().get(p).setFirstAttestation(point);
@@ -83,15 +83,16 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     		}
     	}
     }
+
     /**
      * to view mark of specific course he teaches
      * */
-   public String viewMark(Course c) {
-	   Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
-	   for(Student s: Database.getStudents()) {
-		    for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : s.getTranscript().entrySet()) {
-		    	if(t.getKey().equals(p)) {
-		    		Database.getUserActions().add(new Action(this, new Date(), String.format("Teacher: %s viewed mark of course: %s", getFullName(), c.getName())));
+	public String viewMark(Course c) {
+		Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
+		for(Student s: Database.getStudents()) {
+			for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : s.getTranscript().entrySet()) {
+				if(t.getKey().equals(p)) {
+					Database.getUserActions().add(new Action(this, new Date(), String.format("Teacher: %s viewed mark of course: %s", getFullName(), c.getName())));
 		    		return s.getFullName() + ": " + t.getValue();
 		    	}
 		    }
@@ -100,7 +101,8 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
 	}
 
    public String toString() {
-	   return this.getFullName() + " " + this.school.getName() + " " + this.type;
+	   return String.format("Teacher: %s, ID: %s, position: %s, school: %s", this.getFullName(), this.getId(), this.getType().name(), this.getSchool().getShortName());
+//	   return this.getFullName() + " " + this.school.getName() + " " + this.type;
    }
 
    public int hashCode() {

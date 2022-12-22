@@ -38,6 +38,7 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
   	public void sendMessage(Message message, Employee employee) {
   		employee.getEmail().put(this, message);
   	}
+  	
   	/**
   	 * to make request to Manager or TechSupportWorker
   	 * */
@@ -47,7 +48,7 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
     		if(request.getDescription().length() > 20 && request.getTitle().equals(RequestType.EmployeeRequest)) {
     			TechSupportWorker t = (TechSupportWorker)employee;
     			t.getRequests().add(request);
-    			Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made request to Tech support worker %s", getFullName(), t.getFullName())));
+    			Database.getUserActions().add(new Action(this, new Date(), String.format("Employee: %s made request to Tech support worker %s", getFullName(), t.getFullName())));
     			return "Your request has been sended to tech support worker";
     		} 
     		else {
@@ -58,11 +59,12 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
     	else if(employee instanceof Manager) {
     		Manager m = (Manager)employee;
     		m.getRequests().add(request);
-    		Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made request to manager %s", getFullName(), getFullName())));
+    		Database.getUserActions().add(new Action(this, new Date(), String.format("Employee: %s made request to manager %s", getFullName(), getFullName())));
     		return "Your request has been sended to manager";
     	}
     	return "";
     }
+    
     /**
      * to write a comment under the news
      * */
@@ -70,7 +72,6 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
   		n.getComments().add(comment);
   	}
   	
-  	// ПРОВЕРИТЬ
   	/**
   	 * returns all student in requested order alphabetically or by gpa
   	 * */
@@ -101,8 +102,7 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
   	}  
   	
     public String toString() {
-    	return "Employee [id=" + id + ", hireDate=" + hireDate + ", salary=" + salary + ", insuranceNumber="
-    			+ insuranceNumber + ", email=" + email + "]";
+    	return String.format("Employee: %s, ID: %s", this.getFullName(), this.getId());
     }
   	
   	// getters and setters

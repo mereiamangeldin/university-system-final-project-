@@ -48,7 +48,8 @@ public class TechSupportWorker extends Employee implements Serializable  {
 	}
 	
 	public String toString() {
-		return "TechSupportWorker [requests=" + requests +"]";
+		return String.format("Tech support worker: %s, ID: %s", this.getFullName(), this.getId());
+//		return "TechSupportWorker [requests=" + requests +"]";
 	}
 	
 	// getters and setters 

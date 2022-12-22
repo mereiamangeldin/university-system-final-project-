@@ -32,29 +32,28 @@ public class Librarian extends Employee implements Serializable {
     			order.getBook().setQuantity(order.getBook().getQuantity() - 1);
     			takers.add(order);
     			return "Accepted";
-        }
-    	else {
-    		return "Books over";
-        }
+    		} 
+    		else {
+    			return "Books over";
+        	}
     	}
     	else {
     		return "Not accepted";
-      }
+    	}
     }
+    
     /**
      * checks if the student owes books to the library
      * */
-    public void checkForDebt(Student student) {	
+    public String checkForDebt(Student student) {	
     	for(Order order: takers) {
     		if(student.equals(order.getStudent())) {
-    			System.out.println("Yes, you have taken book: " + order.getBook().getName() + ", Author: " + order.getBook().getAuthor());
-    			return;
+    			return "Yes, you have taken book: " + order.getBook().getName() + ", Author: " + order.getBook().getAuthor();
     		}
     	}
-    	System.out.println("You have no debts!");
+    	return "You have no debts!";
     }
   
-
     public Vector<Order> getTakers() {
     	return takers;
     }
@@ -64,7 +63,7 @@ public class Librarian extends Employee implements Serializable {
     }
   
     public String toString() {
-    	return String.format("Id: %s, name: %s, surname: %s, ", getId(), getName(), getSurname());
+    	return String.format("Librarian: %s, ID: %s", this.getFullName(), this.getId());
     }
   
     public int hashCode() {

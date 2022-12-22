@@ -10,9 +10,11 @@ import Interfaces.*;
 public class WithTeacherResearcher extends TeacherDecorator implements CanResearch {
 	private Vector<ResearchPaper> researchPapers;
 	private Vector<ResearchProject> researchProjects;
+	
 	public WithTeacherResearcher(User user) {
 		super((Teacher)user);
 	}
+	
 	//research methods
 	/**adds research paper*/
 

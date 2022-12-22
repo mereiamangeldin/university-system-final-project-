@@ -20,6 +20,7 @@ public class Dean extends Employee implements Serializable {
     {
 		Database.getUsers().add(this);
     }
+    
     /**
      * gets request from Manager and decides to sign or not
      * */
@@ -29,14 +30,17 @@ public class Dean extends Employee implements Serializable {
         	return false;
     }
     
+    public School getSchool() {
+    	for(School s : Database.getSchools()) {
+    		if(s.getDean().equals(this)) {
+    			return s;
+    		}
+    	}
+    	return null;
+    }
+    
 	public String toString() {
-		return "Dean [viewStudent()=" + viewStudent() + ", getId()=" + getId() + ", getHireDate()=" + getHireDate()
-				+ ", getSalary()=" + getSalary() + ", getInsuranceNumber()=" + getInsuranceNumber() + ", getEmail()="
-				+ getEmail() + ", toString()=" + super.toString() + ", hashCode()=" + hashCode() + ", logout()="
-				+ logout() + ", getUsername()=" + getUsername() + ", getPassword()=" + getPassword() + ", getName()="
-				+ getName() + ", getSurname()=" + getSurname() + ", getDateOfBirth()=" + getDateOfBirth()
-				+ ", getLogged()=" + getLogged() + ", getFullName()=" + getFullName() + ", getClass()=" + getClass()
-				+ "]";
+		return String.format("Dean: %s, ID: %s, school: %s", this.getFullName(), this.getId(), this.getSchool());
 	}
 
 	public boolean equals(Object obj) {

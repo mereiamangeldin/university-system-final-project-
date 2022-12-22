@@ -19,9 +19,7 @@ public class News implements Serializable {
     	Database.getNews().add(this);
     }
     
-    public void addComment(String comment) {
-    }
-    
+
 	public String getTitle() {
 		return title;
 	}

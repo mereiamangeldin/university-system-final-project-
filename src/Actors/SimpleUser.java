@@ -53,8 +53,9 @@ public class SimpleUser implements Serializable, User {
     
     // hashCode(), equals(), toString()
     public String toString() {
-    	return "User username = " + username + ", password=" + password + ", name=" + name + ", surname=" + surname
-    			+ ", dateOfBirth=" + dateOfBirth;
+    	return String.format("Name: %s, username: %s", this.getFullName(), this.getUsername());
+//    	return "User username = " + username + ", password=" + password + ", name=" + name + ", surname=" + surname
+//    			+ ", dateOfBirth=" + dateOfBirth;
     }
     
     public int hashCode() {

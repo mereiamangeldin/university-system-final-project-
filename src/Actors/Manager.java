@@ -129,7 +129,6 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 		return "The news was added successfully.";
 	}
 
-
 	/**
 	 * to remove news from news feed
 	 * */
@@ -239,7 +238,8 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 
 	  // hashCode(), toString() and equals()
 	  public String toString() {
-	    return "Manager type = " + type + ", requests=" + requests;
+		  return String.format("Manager: %s, ID: %s, department: %s", this.getFullName(), this.getId(), this.getType().name());
+//	    return "Manager type = " + type + ", requests=" + requests;
 	  }
 
 	  public int hashCode() {

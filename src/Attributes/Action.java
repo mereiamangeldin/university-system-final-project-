@@ -37,5 +37,21 @@ public class Action implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public int hashCode() {
+		return Objects.hash(date, description, user);
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Action other = (Action) obj;
+		return Objects.equals(date, other.date) && Objects.equals(description, other.description)
+				&& Objects.equals(user, other.user);
+	}
+
+	public String toString() {
+		return String.format("Action of user: %s, date: %s, description: %s", this.getUser().getFullName(), this.getDate(), this.getDescription());
+	}
 }

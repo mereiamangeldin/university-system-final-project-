@@ -19,14 +19,7 @@ public final class Database implements Serializable {
     private static Vector<News> news;
     private static Vector<Request> requests;
     private static Vector<Action> userActions;
-		
-    public static Vector<Action> getUserActions(){
-    	return userActions;
-    }
-    
-    public static void setUserActions(Vector<Action> userActions) {
-    	Database.userActions = userActions;
-    }
+
     private Database(String path) {
     	Database.path = path;
     };
@@ -36,9 +29,11 @@ public final class Database implements Serializable {
 	public String getPath() {
 		return Database.path;
 	}
+	
 	/**
 	 * returns instance of Database
 	 * */
+	
 	public static Database getInstance() {
 		return instance;
 	}
@@ -59,6 +54,14 @@ public final class Database implements Serializable {
 		Database.deserializeBooks();
 		Database.deserializeCourses();
 		Database.deserializeSchools();
+    }
+    
+    public static Vector<Action> getUserActions(){
+    	return userActions;
+    }
+    
+    public static void setUserActions(Vector<Action> userActions) {
+    	Database.userActions = userActions;
     }
     
     public static Vector<User> getUsers() {
@@ -86,67 +89,43 @@ public final class Database implements Serializable {
     }
     
     public static Teacher getTeacherById(String id) {
-    	for(Teacher t: getTeachers()) {
-    		if(t.getId().equals(id)) {
-    			return t;
-    		}
-    	}
-    	return null;
+    	Teacher t = getTeachers().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
+    	return t;
     }
     
     public static TechSupportWorker getTechSupportWorkerById(String id) {
-    	for(TechSupportWorker  t: getTechSupportWorkers()) {
-    		if(t.getId().equals(id)) {
-    			return t;
-    		}
-    	}
-    	return null;
+    	TechSupportWorker t = getTechSupportWorkers().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
+    	return t;
     }
     
     public static Book getBookById(int id) {
-    	for(Book b : getBooks()) {
-    		if(b.getId() == id) {
-    			return b;
-    		}
-    	}
-    	return null;
+    	Book b = Database.getBooks().stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+    	return b;
+    }
+    
+    public static Course getCourseById(String id) {
+    	Course c = Database.getCourses().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
+    	return c;
+    }
+    
+    public static User getUserByUsername(String username) {
+    	User u = Database.getUsers().stream().filter(x -> x.getUsername().equals(username)).findFirst().orElse(null);
+    	return u;
+    }
+    
+    public static Employee getEmployeeById(String id) {
+    	Employee e = Database.getEmployees().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
+    	return e;
     }
     
     public static Vector<Course> getTeachersCourse(Teacher teacher) {
-    	Vector<Course> v = null;
+    	Vector<Course> v = new Vector<Course>();
     	for(Course c : Database.getCourses()) {
     		if(c.getTeachers().contains(teacher)) {
     			v.add(c);
     		}
     	}
     	return v;
-    }
-    
-    public static Course getCourseById(String id) {
-    	for(Course c : getCourses()) {
-    		if(c.getId().equals(id)) {
-    			return c;
-    		}
-    	}
-    	return null;
-    }
- 
-    public static User getUserByUsername(String username) {
-    	for(User u : getUsers()) {
-    		if(u.getUsername().equals(username)) {
-    			return u;
-        	}
-    	}
-    	return null;
-    }
-    
-    public static Employee getEmployeeById(String id) {
-    	for(Employee e : getEmployees()) {
-    		if(e.getId().equals(id)) {
-    			return e;
-    		}
-    	}
-    	return null;
     }
     
     public static Vector<Manager> getORManagers() {
@@ -195,31 +174,27 @@ public final class Database implements Serializable {
 	}
 	
 	public static Vector<Dean> getDeans() {
-		Vector <Dean> deans = users.stream().filter(x -> x instanceof Dean).map(x -> (Dean)x).collect(Collectors.toCollection(Vector::new));
+		Vector <Dean> deans = Database.getUsers().stream().filter(x -> x instanceof Dean).map(x -> (Dean)x).collect(Collectors.toCollection(Vector::new));
 		return deans;
 	}
 	
 	public static Vector<Librarian> getLibrarians() {
-		Vector <Librarian> librarians = users.stream().filter(x -> x instanceof Librarian).map(x -> (Librarian)x).collect(Collectors.toCollection(Vector::new));
+		Vector <Librarian> librarians = Database.getUsers().stream().filter(x -> x instanceof Librarian).map(x -> (Librarian)x).collect(Collectors.toCollection(Vector::new));
 		return librarians;
 	}
 	
 	public static Vector<Admin> getAdmins() {
-		Vector <Admin> admins = users.stream().filter(x -> x instanceof Admin).map(x -> (Admin)x).collect(Collectors.toCollection(Vector::new));
+		Vector <Admin> admins = Database.getUsers().stream().filter(x -> x instanceof Admin).map(x -> (Admin)x).collect(Collectors.toCollection(Vector::new));
 		return admins;
 	}
 	
 	public static School getSchoolByName(String name) {
-		for(School s : Database.getSchools()) {
-			if(s.getShortName().equals(name)) {
-				return s;
-			}
-		}
-		return null;
+		School s = Database.getSchools().stream().filter(x -> x.getShortName().equals(name)).findFirst().orElse(null);
+		return s;
 	}
 	
 	public static Vector<TechSupportWorker> getTechSupportWorkers() {
-		Vector <TechSupportWorker> techSupportWorkers = users.stream().filter(x -> x instanceof TechSupportWorker).map(x -> (TechSupportWorker)x).collect(Collectors.toCollection(Vector::new));
+		Vector <TechSupportWorker> techSupportWorkers = Database.getUsers().stream().filter(x -> x instanceof TechSupportWorker).map(x -> (TechSupportWorker)x).collect(Collectors.toCollection(Vector::new));
 		return techSupportWorkers;
 	}
 	
@@ -230,7 +205,6 @@ public final class Database implements Serializable {
 	
 	// Serialization and Deserialization parts
 	// In order to serialize all users of the system and deserialize them.
-	
     public static void serializeAll() {
     	Database.serializeUsers();
     	Database.serializeBooks();

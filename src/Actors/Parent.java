@@ -25,6 +25,7 @@ public class Parent extends UserDecorator implements CanViewTranscript, CanViewM
 		super(user);
 		this.child = child;
 	}    
+	
 	/**
 	 * allows to see his/her child's transcript
 	 * */
@@ -32,6 +33,7 @@ public class Parent extends UserDecorator implements CanViewTranscript, CanViewM
     	child.viewTranscript();
     	Database.getUserActions().add(new Action(this, new Date(), String.format("Parent %s viewed the transcript of the child", getFullName())));
     }
+    
     /**
      * allows to see his/her child's marks
      * */
@@ -54,7 +56,8 @@ public class Parent extends UserDecorator implements CanViewTranscript, CanViewM
     }
     
     public String toString() {
-    	return "Parent [child=" + child + "]";
+    	return String.format("Parent: %s, child: %s", this.getFullName(), this.getChild().getFullName());
+//    	return "Parent [child=" + child + "]";
     }
     
     public int hashCode() {

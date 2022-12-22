@@ -19,6 +19,7 @@ public class Admin extends Employee implements Serializable  {
 	{
 		Database.getUsers().add(this);
 	}
+	
 	/**
 	 * to add user to university system
 	 * */
@@ -84,5 +85,9 @@ public class Admin extends Employee implements Serializable  {
     		s.setIsBlocked(true);
     		Database.getUserActions().add(new Action(this, new Date(), String.format("Admin: %s blocked student: %s", getFullName(), s.getFullName())));
     	}
+    }
+    
+    public String toString() {
+    	return String.format("Admin: %s, ID: %s", this.getFullName(), this.getId());
     }
 }

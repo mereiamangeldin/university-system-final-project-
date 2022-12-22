@@ -84,7 +84,7 @@ public class TeacherMenu {
 	}
 	
 	public static void manageCourseFiles(Teacher teacher, BufferedReader reader) throws IOException {
-		if(Database.getTeachersCourse(teacher) == null) {
+		if(Database.getTeachersCourse(teacher).size() == 0) {
 			System.out.println("You don't have courses.");
 			return;
 		}

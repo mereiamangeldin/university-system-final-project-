@@ -32,10 +32,9 @@ public class Course implements Serializable {
     {
     	Database.getCourses().add(this);
     }
-    
         
     public Vector<Course> getCoursesOfTeacher(Teacher t) {
-    	return null;
+    	return Database.getTeachersCourse(t);
     }
     
 	public String getId() {
@@ -112,9 +111,8 @@ public class Course implements Serializable {
 	}
 
 	public String toString() {
-		return "Course [id=" + id + ", name=" + name + ", prerequisite=" + prerequisite
-				+ ", numberOfCredits=" + numberOfCredits + ", school=" + school + ", scienceDegree=" + scienceDegree
-				+ ", files=" + files + ", type=" + type + "]";
+		return String.format("Course: %s, id: %s, prerequisite: %s, number of credits: %s, school: %s, science degree: %s, type: %s",
+				this.getName(), this.getId(), this.getPrerequisite().getName(), this.getSchool().getShortName(), this.getScienceDegree().name(), this.getType().name());
 	}
 
 	public Vector<Teacher> getTeachers() {
