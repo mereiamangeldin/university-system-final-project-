@@ -24,6 +24,8 @@ public class LibrarianMenu {
         		3. View news.
         		4. View orders.
         		5. Make request.
+        		6. Send messages.
+        		7. Read messages.
         		0. Logout.
         		""";
         while(librarian.getLogged()) {
@@ -45,11 +47,19 @@ public class LibrarianMenu {
         		Menu.viewNews(librarian, reader);
         	}
         	else if(option.equals("4")) {
-        		System.out.println(librarian.getTakers());
+        		for(Order o : librarian.getTakers()) {
+        			System.out.println(o);
+        		}
         	}
         	else if(option.equals("5")) {
         		Menu.makeRequest(librarian, reader);
-        	}  		
+        	}
+        	else if(option.equals("6")) {
+        		Menu.sendMessage(librarian, reader);
+        	}
+        	else if(option.equals("7")) {
+        		Menu.readMessages(librarian, reader);
+        	}
         }	
 	}
 }

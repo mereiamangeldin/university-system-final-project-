@@ -78,6 +78,7 @@ public class Book implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("Book: %s, ID: %s, quantity: %s, year of publication: %s", name, id, quantity, yearOfPublication);
+    	String answer = String.format("Book: %s, ID: %s, quantity: %s, year of publication: %s", name, id, quantity, yearOfPublication);
+    	return answer;
 	}
 }

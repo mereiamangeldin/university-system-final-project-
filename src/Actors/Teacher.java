@@ -101,8 +101,8 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
 	}
 
    public String toString() {
-	   return String.format("Teacher: %s, ID: %s, position: %s, school: %s", this.getFullName(), this.getId(), this.getType().name(), this.getSchool().getShortName());
-//	   return this.getFullName() + " " + this.school.getName() + " " + this.type;
+   		String answer = String.format("Teacher: %s, ID: %s, username: %s, position: %s, school: %s", this.getFullName(), this.getId(), this.getUsername(), getType().name(), this.getSchool().getShortName());
+   		return answer;
    }
 
    public int hashCode() {

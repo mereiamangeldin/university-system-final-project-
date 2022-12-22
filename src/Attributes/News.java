@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Vector;
 
 public class News implements Serializable {
+	private static final long serialVersionUID = -3348292068574858848L;
 	private String title;
     private String text;
     private Vector<String> comments;

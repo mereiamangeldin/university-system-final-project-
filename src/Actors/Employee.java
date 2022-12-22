@@ -45,7 +45,7 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
     public String makeRequest(Request request, Employee employee) {
     	// Запрос в центр технической поддержки 
     	if(employee instanceof TechSupportWorker) { 
-    		if(request.getDescription().length() > 20 && request.getTitle().equals(RequestType.EmployeeRequest)) {
+    		if(request.getDescription().length() > 10 && request.getTitle().equals(RequestType.SimpleRequest)) {
     			TechSupportWorker t = (TechSupportWorker)employee;
     			t.getRequests().add(request);
     			Database.getUserActions().add(new Action(this, new Date(), String.format("Employee: %s made request to Tech support worker %s", getFullName(), t.getFullName())));
@@ -102,7 +102,8 @@ public abstract class Employee extends UserDecorator implements CanMakeRequest, 
   	}  
   	
     public String toString() {
-    	return String.format("Employee: %s, ID: %s", this.getFullName(), this.getId());
+    	String answer = String.format("Employee: %s, ID: %s, username: %s", this.getFullName(), this.getId(), this.getUsername());
+    	return answer;
     }
   	
   	// getters and setters

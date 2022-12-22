@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashMap;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;  
 import Actors.*;
@@ -11,6 +12,7 @@ import Attributes.*;
 import Enums.*;
 import Exceptions.*;
 import Interfaces.*;
+import javafx.util.Pair;
 
 public class AdminMenu {
     
@@ -27,6 +29,7 @@ public class AdminMenu {
     			7. View news.
     			8. Change password.
     			9. Make request.
+    			10. Save changes.
     			0. Logout.""";
     	while(admin.getLogged()) {
         	System.out.println(menuAdmin);
@@ -41,19 +44,23 @@ public class AdminMenu {
         		AdminMenu.manageUsersMenu(admin, reader);
         	}
         	else if(option.equals("2")) {
-        		System.out.println(admin.seeUsersActions());
+        		for(Action a : admin.seeUsersActions()) {
+        			System.out.println(a);
+        		}
         	}
         	else if(option.equals("3")) {
-        		System.out.println(admin.viewStudent());
+        		Menu.viewStudent(admin, reader);
         	}
         	else if(option.equals("4")) {
-        		System.out.println(Database.getUsers());
+        		for(User u : Database.getUsers()) {
+        			System.out.println(u);
+        		}
         	}
         	else if(option.equals("5")) {
         		Menu.sendMessage(admin, reader);
         	}
         	else if(option.equals("6")) {
-        		System.out.println(admin.getEmail());
+        		Menu.readMessages(admin, reader);
         	}
         	else if(option.equals("7")) {
         		Menu.viewNews(admin, reader);
@@ -63,6 +70,9 @@ public class AdminMenu {
         	}
         	else if(option.equals("9")) {
         		Menu.makeRequest(admin, reader);
+        	} else if(option.equals("10")) {
+        		Database.serializeAll();
+        		System.out.println("Your changes ase saved");
         	}
     	}
     }
@@ -99,8 +109,10 @@ public class AdminMenu {
 				}
 			}
 			else if(option.equals("2"))
-				System.out.println(Database.getUsers());
-				System.out.print("Enter the username of the user you want to delete:");
+        		for(User u : Database.getUsers()) {
+        			System.out.println(u);
+        		}
+				System.out.print("Enter the username of the user you want to delete: ");
 				option = reader.readLine();
 
 				User u = Database.getUserByUsername(option);
@@ -128,8 +140,12 @@ public class AdminMenu {
     	
     	System.out.print("Date of Birth in format yyyy/MM/dd: ");
     	date = reader.readLine();
-    	
-    	d = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+    	try {
+        	d = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+    	} catch(ParseException p) {
+    		System.out.println("Incorrect date. Pleasy retry again.");
+    		return;
+    	}
     	
     	// Student date 
     	if(userType.equals("1")) { 
@@ -160,13 +176,12 @@ public class AdminMenu {
 		    System.out.println("Science degree:\n1. BACHELOR\n2. MASTER\n3. PHD");
 		    String sd = reader.readLine();
 		    ScienceDegree scienceD = null;
-		    switch(sd) {
-		    	case "1": 
-		    		scienceD = ScienceDegree.BACHELOR;
-		    	case "2":
-		    		scienceD = ScienceDegree.MASTER;
-		    	case "3":
-		    		scienceD = ScienceDegree.PHD;
+		    if(sd.equals("1")) {
+		    	scienceD = ScienceDegree.BACHELOR;
+		    } else if(sd.equals("2")) {
+		    	scienceD = ScienceDegree.MASTER;
+		    } else if(sd.equals("3")) {
+		    	scienceD = ScienceDegree.PHD;
 		    }
 		    user = new Student(new SimpleUser(name, surname, password, d), id, s, yearOfStudy, grant, scholarship, scienceD);
     	} 
@@ -174,7 +189,7 @@ public class AdminMenu {
     	// Parent date 
 		else if(userType.equals("6")) {
 			for(Student st : Database.getStudents()) {
-    			System.out.println(st.getId() + " " + st.getFullName() + " " + st.getDateOfBirth());
+    			System.out.println(st);
     		}
     		System.out.println("Enter parent's child ID in the list of students:");
     		String idS = reader.readLine();
@@ -190,7 +205,13 @@ public class AdminMenu {
     		String id = reader.readLine();
     		System.out.print("Hire date in format yyyy/MM/dd: ");
     		String hd = reader.readLine();
-    		Date hireDate = new SimpleDateFormat("yyyy/MM/dd").parse(hd);
+    		Date hireDate;
+        	try {
+        		hireDate = new SimpleDateFormat("yyyy/MM/dd").parse(hd);
+        	} catch(ParseException p) {
+        		System.out.println("Incorrect date. Pleasy retry again.");
+        		return;
+        	}
     		System.out.print("Salary: ");
     		double salary = Double.parseDouble(reader.readLine());
     		System.out.print("Insurance number: ");
@@ -205,12 +226,13 @@ public class AdminMenu {
         			System.out.println(i + ". " + s.getName());
     		    	i++;
     		    }
-        		School s = Database.getSchools().get(i - 1);
+        		System.out.print("Enter number of school: ");
+        		School s = Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1);
         		System.out.println("Job title: "
         				+ "1. Lecturer."
         				+ "2. Senior lecturer."
         				+ "3. Tutor."
-        				+ "4. Professor)");
+        				+ "4. Professor");
         		String option = reader.readLine();
         		TeacherTypes t = null;
         		switch(option) {
@@ -226,12 +248,7 @@ public class AdminMenu {
         		user = new Teacher(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber, s, t);
     		} 
     		else if(userType.equals("3")) {
-    			System.out.print("Manager type:"
-    					+ "1. OR"
-    					+ "2. SITE"
-    					+ "3. SAM"
-    					+ "4. BS"
-    					+ "5. ISE");
+    			System.out.print("Manager type:\n1. OR\n2. SITE\n3. SAM\n4. BS\n5. ISE");
     			String option = reader.readLine();
     			ManagerType m = null;
     			switch(option) {

@@ -20,6 +20,7 @@ public class TechSupportWorkerMenu {
 				5. View news.
 				6. View requests.
 				7. Make request.
+				8. Save changes.
 				0. Logout.
 				""";
 		while(tsw.getLogged()) {
@@ -37,7 +38,7 @@ public class TechSupportWorkerMenu {
 			} else if(option.equals("3")) {
 				Menu.sendMessage(tsw, reader);
 			} else if(option.equals("4")) {
-				System.out.println(tsw.getEmail());
+				Menu.readMessages(tsw, reader);
 			} else if(option.equals("5")) {
 				Menu.viewNews(tsw, reader);
 			} else if(option.equals("6")) {
@@ -60,7 +61,7 @@ public class TechSupportWorkerMenu {
 			if(option.equals("1")) {
 				System.out.print("Choose the request. Enter number of request (by ordering order): ");
 				int choice = Integer.parseInt(reader.readLine());
-				System.out.println("Request: " + t.getRequests().get(choice - 1).getDescription() + ".\nAccept request - 1.\nReject request - 2.\nBack - 0.");
+				System.out.println("Request: " + t.getRequests().get(choice - 1).getDescription() + "\nAccept request - 1.\nReject request - 2.\nBack - 0.");
 				option = reader.readLine();
 				if(option.equals("0")) {
 					break;

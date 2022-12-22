@@ -52,6 +52,7 @@ public class Action implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("Action of user: %s, date: %s, description: %s", this.getUser().getFullName(), this.getDate(), this.getDescription());
+    	String answer = String.format("Action of user: %s, date: %s, description: %s", this.getUser().getFullName(), this.getDate(), this.getDescription());
+    	return answer;
 	}
 }

@@ -1,4 +1,6 @@
 package Decorators;
+import java.util.Vector;
+
 import Actors.*;
 import Attributes.*;
 import Enums.*;
@@ -25,14 +27,10 @@ public class TeacherDecorator extends UserDecorator {
 	    	decoratedTeacher.setType(type);
 	    }
 	    
-<<<<<<< HEAD
-	    public void viewCourses() {
-	    	decoratedTeacher.viewCourses();
+	    public Vector<Course> getCourses(){
+	    	return decoratedTeacher.getCourses();
 	    }
 
-	 
-=======
->>>>>>> b7178203b650ab3f3307e9a8447e3bf6e5784264
 	    public void putMark(Course course, Student student, int type, double point) {
 	    	decoratedTeacher.putMark(course, student, type, point);
 	    }

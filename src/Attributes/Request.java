@@ -60,7 +60,11 @@ public class Request implements Serializable{
 	}
 
 	public String toString() {
-		return "Request [Description=" + description + ", dateOfRequest=" + dateOfRequest + "]";
+		if(title.equals(RequestType.CourseRegistration)){
+			return "Request for registration from student: " + this.getUserID() + ", date: " + this.getDateOfRequest();
+		} 
+    	String answer = String.format("Request from: %s, description: %s, date: %s, title: %s", this.getUserID(), this.getDescription(), this.getDateOfRequest(), this.getTitle().name());
+    	return answer;
 	}
 
 	public RequestType getTitle() {

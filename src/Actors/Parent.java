@@ -56,8 +56,8 @@ public class Parent extends UserDecorator implements CanViewTranscript, CanViewM
     }
     
     public String toString() {
-    	return String.format("Parent: %s, child: %s", this.getFullName(), this.getChild().getFullName());
-//    	return "Parent [child=" + child + "]";
+    	String answer = String.format("Parent: %s, username: %s, child: %s", this.getFullName(), this.getUsername(), this.getChild().getFullName());
+    	return answer;
     }
     
     public int hashCode() {

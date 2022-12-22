@@ -63,7 +63,8 @@ public class Librarian extends Employee implements Serializable {
     }
   
     public String toString() {
-    	return String.format("Librarian: %s, ID: %s", this.getFullName(), this.getId());
+    	String answer = String.format("Librarian: %s, ID: %s, username: %s", this.getFullName(), this.getId(), this.getUsername());
+    	return answer;
     }
   
     public int hashCode() {

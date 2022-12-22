@@ -88,6 +88,7 @@ public class Admin extends Employee implements Serializable  {
     }
     
     public String toString() {
-    	return String.format("Admin: %s, ID: %s", this.getFullName(), this.getId());
+    	String answer = String.format("Admin: %s, ID: %s, username: %s", this.getFullName(), this.getId(), this.getUsername());
+    	return answer;
     }
 }

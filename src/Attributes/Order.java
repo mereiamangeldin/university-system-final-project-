@@ -53,6 +53,6 @@ public class Order implements Serializable {
 	}
 
 	public String toString() {
-		return "Order [student=" + student + ", book=" + book + ", monthLeft=" + monthLeft + "]";
+		return "Order from student: " + this.getStudent().getFullName() + ", book: " + this.getBook().getName();
 	}
 }

@@ -111,8 +111,9 @@ public class Course implements Serializable {
 	}
 
 	public String toString() {
-		return String.format("Course: %s, id: %s, prerequisite: %s, number of credits: %s, school: %s, science degree: %s, type: %s",
-				this.getName(), this.getId(), this.getPrerequisite().getName(), this.getSchool().getShortName(), this.getScienceDegree().name(), this.getType().name());
+    	String answer = String.format("Course: %s, id: %s, number of credits: %s, school: %s, science degree: %s, type: %s",
+				this.getName(), this.getId(), this.getNumberOfCredits(), this.getSchool().getShortName(), this.getScienceDegree().name(), this.getType().name());
+    	return answer;
 	}
 
 	public Vector<Teacher> getTeachers() {

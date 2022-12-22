@@ -85,7 +85,7 @@ public class School implements Serializable {
 
 	@Override
 	public String toString() {
-		return "School [name=" + name + ", specialities=" + specialities + ", managers=" + managers + ", dean=" + dean
-				+ "]";
+    	String answer = String.format("Name: %s, dean: %s", this.getShortName(), this.getDean().getFullName());
+    	return answer;
 	}
 }

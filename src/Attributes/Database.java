@@ -54,9 +54,10 @@ public final class Database implements Serializable {
 		Database.deserializeBooks();
 		Database.deserializeCourses();
 		Database.deserializeSchools();
+		Database.deserializeUserActions();
     }
-    
-    public static Vector<Action> getUserActions(){
+   
+	public static Vector<Action> getUserActions(){
     	return userActions;
     }
     
@@ -211,6 +212,7 @@ public final class Database implements Serializable {
     	Database.serializeCourses();
     	Database.serializeNews();
     	Database.serializeSchools();
+    	Database.serializeUserActions();
     }
     
 	public static void serializeUsers() {
@@ -314,6 +316,40 @@ public final class Database implements Serializable {
 			news = new Vector<News>();
 		}
 	}
+	
+    public static void serializeUserActions() {
+		try {
+			FileOutputStream fos = new FileOutputStream(path + "userActions.txt");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(userActions);
+			oos.flush();
+			oos.close();
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();	
+		} catch(IOException e) {
+			e.printStackTrace();
+		}		
+	}
+
+    @SuppressWarnings("unchecked")
+	public static void deserializeUserActions() {
+		try {
+			FileInputStream fis = new FileInputStream(path + "userActions.txt");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			userActions = (Vector<Action>)ois.readObject();
+			fis.close();
+			ois.close();
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+			userActions = new Vector<Action>();
+		} catch(IOException e) {
+			e.printStackTrace();
+			userActions = new Vector<Action>();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			userActions = new Vector<Action>();
+		} 
+    }
 	
 	public static void serializeBooks() {
 		try {

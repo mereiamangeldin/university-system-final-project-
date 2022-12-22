@@ -15,13 +15,11 @@ import Interfaces.*;
 
 public class Menu {
 	public static void main(String[] args) throws IOException, ParseException {	
+		Database.loadAttributes();
 		
-//		Database.loadAttributes();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		Dean d = new Dean(new SimpleUser("Alibek", "Bisembayev", "sitetop", dateFormat.parse("1986/06/02")), "D1", dateFormat.parse("2006/02/28"), 800000, "203-139");
-		School SITE = new School("School of Information Technologies and Engineering", d, "SITE");
-		Student s = new Student(new SimpleUser("Assem", "Abay", "assem", dateFormat.parse("2005/12/01")), "21B030944", SITE, 1, true, 36500, ScienceDegree.BACHELOR);
-
+//		System.out.println(Database.getUsers());
+//		System.out.println(Database.getBooks());
+		
 		InputStreamReader myStream = new InputStreamReader(System.in);        
 		BufferedReader reader = new BufferedReader(myStream);		
 	
@@ -121,11 +119,20 @@ public class Menu {
 					} else {
 						user.setPassword(newPassword);
 						System.out.println("Password was changed succesfully.");
+						Database.getUserActions().add(new Action(user, new Date(), String.format("User: %s changed password", user.getFullName())));
 					}
 
 				} else {
 					System.out.println("New passwords don't match");
 				}
+			} else {
+				System.out.println("Not correct current password.\n1. Try again\n2. Return to main menu.");
+				option = reader.readLine();
+				if(option.equals("1")) {
+					continue;
+				} else if(option.equals("2")){
+						return;
+				}		
 			}
 			System.out.println("1. Change again\n0. Return to main menu.");
 			option = reader.readLine();
@@ -156,10 +163,14 @@ public class Menu {
 	
 	public static void viewNews(Employee employee, BufferedReader reader) throws NumberFormatException, IOException {
 		int newsOrder = 1; 
+		System.out.println("NEWS");
 		for(News n : Database.getNews()) {
-			System.out.println(newsOrder + ". " + n);
+			System.out.println(newsOrder + ". " + n.getTitle() + "\n" + n.getText() + "\nComments: ");
+			for(String s : n.getComments()) {
+				System.out.println(s);
+			}
 			newsOrder += 1;
-		}
+		} 
 		String newsMenu = ("""
 				\n1. Comment news.
 				0. Back. """);
@@ -205,7 +216,7 @@ public class Menu {
 				text = reader.readLine();
 				TechSupportWorker t = Database.getTechSupportWorkerById(id);
 				if(t != null) {
-					System.out.println(employee.makeRequest(new Request(employee.getId(), RequestType.EmployeeRequest, text), Database.getTechSupportWorkerById(id)));
+					System.out.println(employee.makeRequest(new Request(employee.getId(), RequestType.SimpleRequest, text), Database.getTechSupportWorkerById(id)));
 				} else {
 					System.out.println("Tech support worker does not found.");
 				}
@@ -217,30 +228,37 @@ public class Menu {
 					i += 1;
 				}
 				System.out.print("What school do you want to apply to? (enter number): ");
-				System.out.println(Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getManagers());
-				System.out.print(String.format("Enter the id of the manager of %s", Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getName()));
+				for(Manager m : Database.getSchools().get(Integer.parseInt(reader.readLine()) - 1).getManagers()) {
+					System.out.println(m);
+				}
+				
+				System.out.print("Enter the id of the manager you want to write: ");
 				id = reader.readLine();
 				System.out.print("Text the description of your request: ");
 				text = reader.readLine();
 				Manager m = Database.getManagerById(id);
+				System.out.println(text.length());
 				if(m != null) {
-					System.out.println(employee.makeRequest(new Request(employee.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id)));
+					System.out.println(employee.makeRequest(new Request(employee.getId(), RequestType.SimpleRequest, text), Database.getManagerById(id)));
 				} else {
 					System.out.println("Manager does not found.");
 				}
 			}
 			if(option.equals("3")) {
-				System.out.println(Database.getORManagers());
+				for(Manager m : Database.getORManagers()) {
+					System.out.println(m);
+				}
 				System.out.print("Enter the id of the manager of office of the register: ");
 				id = reader.readLine();
-				System.out.println("Text the description of your request: ");
+				System.out.print("Text the description of your request: ");
 				text = reader.readLine();
 				Manager m = Database.getManagerById(id);
 				if(m != null) {
-					System.out.println(employee.makeRequest(new Request(employee.getId(), RequestType.EmployeeRequest, text), Database.getManagerById(id)));
+					System.out.println(employee.makeRequest(new Request(employee.getId(), RequestType.SimpleRequest, text), Database.getManagerById(id)));
 				} else {
 					System.out.println("Manager does not found.");
-				}			}		
+				}			
+			}		
 		}	
 	}
 	
@@ -257,6 +275,17 @@ public class Menu {
 				for(Student s : employee.viewStudentBy(Integer.parseInt(option))) {
 					System.out.println(String.format("Id: %s, %s, year of study: %s, school: %s ", s.getId(), s.getFullName(), s.getYearOfStudy(), s.getSchool().getName()));
 				}
+			}
+		}
+	}
+	
+	public static void readMessages(Employee employee, BufferedReader reader) {
+		if(employee.getEmail().size() == 0) {
+			System.out.println("You don't have messages.");
+		} else {
+			for(Employee e : employee.getEmail().keySet()) {
+				Message m = employee.getEmail().get(e);
+				System.out.println("Message from: " + e.getFullName() + ", text: " + m.getText() + ", date: " + m.getDate());
 			}
 		}
 	}

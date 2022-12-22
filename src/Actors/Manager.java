@@ -4,6 +4,7 @@ import Enums.*;
 
 import Interfaces.*;
 import javafx.util.Pair;
+import javafx.util.*;
 import Attributes.*;
 import java.io.*;
 import java.util.*;
@@ -60,15 +61,18 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	/**
 	 * processing a manager request at a specific index in the request list, where requests divided to requests from Employees and Students(for registration) 
 	 * */
-	public void processRequests(int pos) {
-		if(pos > this.requests.size()) return;
+	public String processRequests(int pos) {
+		if(pos > this.requests.size()) return "There is no request for this number";
 		Request r = requests.elementAt(pos - 1);
-		if(r.getTitle().equals(RequestType.EmployeeRequest)) { // Запрос, поступивший от работников 
+		if(r.getTitle().equals(RequestType.SimpleRequest)) { // Запрос, поступивший от работников 
 			for(School s : Database.getSchools()) {
 	    		  if(s.getManagers().contains(this)) {
 	    			  if(this.sendRequestToDean(s.getDean(), r)) {
 	    				  requests.remove(pos - 1);
-	    				  return;
+	    				  return "Request has been signed by dean and and sent for processing";
+	    			  } else {
+	    				  requests.remove(pos - 1);
+	    				  return "Your request has been denied by the dean";
 	    			  }
 	    		  }
 	    	  }
@@ -78,45 +82,45 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 			int delimeter = r.getDescription().indexOf(' ');
 			String courseID = r.getDescription().substring(0, delimeter);
 			String teacherID = r.getDescription().substring(delimeter + 1, r.getDescription().length());
-			for(Course c : Database.getCourses()) {
-				if(c.getId().equals(courseID)) { // Находит курс 
-					for(Teacher t : c.getTeachers()) {
-						if(t.getId().equals(teacherID)) { // Находит тичера 
-							for(Student s : Database.getStudents()) {
-								if(s.getId().equals(studentID)) { // Находит студента 
-									int amountOfCredits = 0;
-									// Тут высчитываем количество кредитов, сколько у студента сейчас 
-							    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-							    		if(marks.getValue().getFinalScore() == 0 && !marks.getValue().getLetterGrade().equals("F")) {
-							    			amountOfCredits += marks.getKey().getKey().getNumberOfCredits();
-							    		}
-							    	}
-							    	if(amountOfCredits + c.getNumberOfCredits() > 21) return;
-							    		if(c.getPrerequisite() != null) { // Если у курса есть пререквизит, то проверяем, прошел ли он этот пререквизит (не на ритейк)
-							    			for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-							    				if(marks.getKey().getKey().equals(c.getPrerequisite())) {
-							    					if(!marks.getValue().getLetterGrade().equals("F") && !marks.getValue().getLetterGrade().equals("N")) {
-							    						Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
-							    						s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
-							    						break;
-							    					}
-							    				}
-							    			}
-							    		}
-								        else { // Если у курса нет пререквизита, то регистрируем студента на курс
-								        	Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
-								        	s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
-								        }
-								}
-							}
-							break;
-						}
-					}
-					break;
-				}
+			Course c = Database.getCourseById(courseID);
+			Teacher t = Database.getTeacherById(teacherID);
+			Student s = Database.getStudentById(studentID);
+			int amountOfCredits = 0;
+			if(s == null || t == null || c == null) {
+				return "Invalid ID";
 			}
+			// Тут высчитываем количество кредитов, сколько у студента сейчас 
+			for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
+		    	if(marks.getValue().getFinalScore() == 0 && !marks.getValue().getLetterGrade().equals("F")) {
+		    		amountOfCredits += marks.getKey().getKey().getNumberOfCredits();
+		    	}
+		    }
+	    	if(amountOfCredits + c.getNumberOfCredits() > 21) return "Course not added. Credits exceeded.";
+	    	if(c.getPrerequisite() != null) { // Если у курса есть пререквизит, то проверяем, прошел ли он этот пререквизит (не на ритейк)
+	    		for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
+	    			if(marks.getKey().getKey().equals(c.getPrerequisite())) {
+	    				if(!marks.getValue().getLetterGrade().equals("F") && !marks.getValue().getLetterGrade().equals("N")) {
+	    					Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
+	    					s.getTranscript().put(new Pair<Course, Teacher>(c, t), new Mark());
+	    					requests.remove(pos - 1);
+	    					return "Course have been succesfully added to transcript of student";
+	    				}
+	    			}
+	    		}
+	    	}
+		    else { // Если у курса нет пререквизита, то регистрируем студента на курс
+//				Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
+		    	System.out.println(c);
+		    	System.out.println(t);
+		    	System.out.println(s);
+		       	Pair p = new Pair<Course, Teacher>(c, t);
+		       	s.getTranscript().put(p, new Mark());
+		    	requests.remove(pos - 1);
+				return "Course have been succesfully added to transcript of student";
+		    }
 		}
-		requests.remove(pos - 1);
+			requests.remove(pos - 1);
+			return "Unable to process request";
 	}
 	
 	// Managing news part (Adding and removing)
@@ -238,8 +242,8 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 
 	  // hashCode(), toString() and equals()
 	  public String toString() {
-		  return String.format("Manager: %s, ID: %s, department: %s", this.getFullName(), this.getId(), this.getType().name());
-//	    return "Manager type = " + type + ", requests=" + requests;
+		  String answer = String.format("Manager: %s, ID: %s, username: %s, department: %s", this.getFullName(), this.getId(), this.getUsername(), this.getType().name());
+		  return answer;
 	  }
 
 	  public int hashCode() {

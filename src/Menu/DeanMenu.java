@@ -35,7 +35,7 @@ public class DeanMenu {
         	} else if(option.equals("3")) {
         		Menu.sendMessage(dean, reader);
         	} else if(option.equals("4")) {
-        		System.out.println(dean.getEmail());
+        		Menu.readMessages(dean, reader);
         	} else if(option.equals("5")) {
         		Menu.viewNews(dean, reader);
         	} else if(option.equals("6")) {

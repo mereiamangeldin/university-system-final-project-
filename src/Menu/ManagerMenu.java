@@ -25,6 +25,8 @@ public class ManagerMenu {
 				7. View teachers.
 				8. View requests.
 				9. Make request.
+				10. View students.
+				11. Save changes.
 				0. Logout.""";
 		while(manager.getLogged()) {
 			System.out.println(menuManager);
@@ -43,7 +45,7 @@ public class ManagerMenu {
 			} else if(option.equals("4")) {
 				Menu.sendMessage(manager, reader);
 			} else if(option.equals("5")) {
-				System.out.println(manager.getEmail());
+				Menu.readMessages(manager, reader);
 			} else if(option.equals("6")) {
 				ManagerMenu.manageCourses(manager, reader);
 			} else if(option.equals("7")) {
@@ -52,15 +54,24 @@ public class ManagerMenu {
 				ManagerMenu.processRequests(manager, reader);
 			} else if(option.equals("9")) {
 				Menu.makeRequest(manager, reader);
+			} else if(option.equals("10")) {
+				Menu.viewStudent(manager, reader);
+			} else if(option.equals("11")) {
+				Database.serializeAll();
+				System.out.println("Your changes are saved");
 			}
 		}
 	}
 	
 	public static void manageNews(Manager manager, BufferedReader reader) throws IOException {
-		int i = 1; 
+		int newsOrder = 1;
+		System.out.println("NEWS");
 		for(News n : Database.getNews()) {
-			System.out.println(i + ". " + n);
-			i += 1;
+			System.out.println(newsOrder + ". " + n.getTitle() + "\n" + n.getText() + "\nComments: ");
+			for(String s : n.getComments()) {
+				System.out.println(s);
+			}
+			newsOrder += 1;
 		}
 		while(true) {
 			System.out.println("\n1. Add news.\n2. Delete news.\n3. Cancel.");
@@ -72,7 +83,7 @@ public class ManagerMenu {
 				String text = reader.readLine();
 				System.out.println(manager.addNews(title, text));
 			} 	else if(option.equals("2")) {
-				i = 1; 
+				int i = 1; 
 				for(News n : Database.getNews()) {
 					System.out.println(i + ". " + n);
 					i += 1;
@@ -191,14 +202,14 @@ public class ManagerMenu {
 	public static void processRequests(Manager manager, BufferedReader reader) throws NumberFormatException, IOException {
 		int i = 1;
 		for(Request r : manager.getRequests()) {
-			System.out.println(i + ". " + r.getUserID() + " ," + r.getDescription());
+			System.out.println(i + ". " + r);
 			i += 1;
 		}
 		System.out.println("1. Process request.\n2. Back");
 		String option = reader.readLine();
 		if(option.equals("1")) {
 			System.out.print("Enter number of request: ");
-			manager.processRequests(Integer.parseInt(reader.readLine()));
+			System.out.println(manager.processRequests(Integer.parseInt(reader.readLine())));
 		} else if(option.equals("0")) {
 			return;
 		}

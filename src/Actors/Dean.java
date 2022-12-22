@@ -26,7 +26,7 @@ public class Dean extends Employee implements Serializable {
      * */
     public boolean signRequest(Request r) {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Dean: %s signed request of date: %s", getUsername(), r.getDateOfRequest())));
-        if(r.getDescription().length() >= 25) return true;
+        if(r.getDescription().length() >= 10) return true;
         	return false;
     }
     
@@ -40,7 +40,8 @@ public class Dean extends Employee implements Serializable {
     }
     
 	public String toString() {
-		return String.format("Dean: %s, ID: %s, school: %s", this.getFullName(), this.getId(), this.getSchool());
+//		return String.format("Dean: %s, ID: %s, school: %s", this.getFullName(), this.getId(), this.getSchool());
+		return "Dean " + this.getFullName() + ", ID: " + this.getId() + ", username: " + this.getUsername() + ", school: " + this.getSchool();
 	}
 
 	public boolean equals(Object obj) {

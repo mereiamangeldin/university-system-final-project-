@@ -13,7 +13,7 @@ public class TeacherMenu {
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	    Teacher teacher = (Teacher)user;
 	    String menuTeacher = "\nWelcome, " + teacher.getFullName() + "!" + """
-	    		\n1. Change password.
+	    		\n1. Change password. 
 	    		2. Manage course files.
 	    		3. View students. 
 	    		4. Put mark.
@@ -48,7 +48,7 @@ public class TeacherMenu {
 	    	} else if(option.equals("6")) {
 	    		Menu.sendMessage(teacher, reader);
 	    	} else if(option.equals("7")) {
-	    		System.out.println(teacher.getEmail());
+	    		Menu.readMessages(teacher, reader);
 	    	} else if(option.equals("8")) {
 	    		Menu.makeRequest(teacher, reader);
 	    	} else if(option.equals("9")) {

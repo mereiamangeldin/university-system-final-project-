@@ -39,9 +39,9 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     	this.isBlocked = false;
     }
     
-    {
+	{
 		Database.getUsers().add(this);
-    }
+	}
     
     public String getId() {
     	return id;
@@ -158,7 +158,6 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
      * */
     public String makeBookOrder(Librarian librarian, Order order){
     	String answer = librarian.orderBook(order);
-//    	System.out.println(answer);
         if(answer.equals("Accepted")) {
 			Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made order for book: %s", getUsername(), order.getBook().getName())));
         	return "The order has been done succesfully! "
@@ -173,21 +172,21 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
      * makes request to TechSupport worker for technical issues or Manager for academic issues*/ 
     public String makeRequest(Request request, Employee employee) {
     	if(employee instanceof TechSupportWorker) {
-        if(request.getDescription().length() > 20 && request.getTitle().equals(RequestType.EmployeeRequest)) {
-        	TechSupportWorker t = (TechSupportWorker)employee;
-        	t.getRequests().add(request);
-    		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s made request to Tech support worker", getUsername())));
-        	return "Your request has been sended to Tech Support worker";
-        }else {
+    		if(request.getDescription().length() > 10 && request.getTitle().equals(RequestType.SimpleRequest)) {
+    			TechSupportWorker t = (TechSupportWorker)employee;
+    			t.getRequests().add(request);
+    			Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s made request to Tech support worker", getUsername())));
+    			return "Your request has been sended to Tech Support worker";
+        } else {
         	return "Your request is rejected: description size is less than 20 and sended by employee";	
         }
       }
       else if(employee instanceof Manager) {
-		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s made request to manager", getUsername())));
-		((Manager) employee).getRequests().add(request);
-    	return "Your request has been sended to manager";
+    	  Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s made request to manager", getUsername())));
+    	  ((Manager) employee).getRequests().add(request);
+    	  return "Your request has been sended to manager";
       }
-    	return "Request can be sended only to manager or tech support worker";
+    		return "Request can be sended only to manager or tech support worker";
    }
     /**
      * to write comment under the news
@@ -208,10 +207,8 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     }
     
     public String toString() {
-    	return super.toString() + String.format(", id: %s, school: %s, year of study: %s, science degree: %S", this.getId(), this.school.getShortName(), this.scienceDegree);
-//        return super.toString() + "Student [id=" + id + ", school=" + school.getName() + ", yearOfStudy=" + yearOfStudy + ", transcript="
-//            + transcript + ", grant=" + grant + ", scholarship=" + scholarship + ", scienceDegree=" + scienceDegree
-//                + ", organizations=" + organizations + "]";
+    	String answer = String.format("Student: %s, id: %s, username: %s, school: %s, year of study: %s, science degree: %S", this.getFullName(), this.getId(), this.getUsername(), school.getShortName(), this.getYearOfStudy(), this.getScienceDegree().name());
+    	return answer;
     }
 
     public int hashCode() {
