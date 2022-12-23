@@ -176,18 +176,37 @@ public class TeacherMenu {
 		System.out.print("Enter course id: ");
 		String id = reader.readLine();
 		Course c = Database.getCourseById(id);
-		Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, teacher);
+		if(c != null) {
+//			Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, teacher);
+			for(Student s : Database.getStudents()) { 
+		    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
+		    		if(marks.getKey().getKey().equals(c) && marks.getKey().getValue().equals(teacher)) {
+		    			System.out.println(s);
+		    		}
+		        }
+			}
+		} else {
+			System.out.println("Course not found");
+			return;
+		}
+//		Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, teacher);
+		boolean found = false;
 		for(Student s : Database.getStudents()) { 
 	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
 	    		if(marks.getKey().getKey().equals(c) && marks.getKey().getValue().equals(teacher)) {
 	    			System.out.println(s);
+	    			found = true;
 	    		}
 	        }
+		}
+		if(!found) {
+			System.out.println("No one student did not register for course");
+			return;
 		}
 		System.out.print("Enter student id: ");
 		id = reader.readLine();
 		Student s = Database.getStudentById(id);
-		System.out.println("1. Put first attestation.\n2. Put second attestation.\n3. Put score for final.\n0.Cancel");
+		System.out.println("1. Put first attestation.\n2. Put second attestation.\n3. Put score for final.\n0. Cancel");
 		String option = reader.readLine();
 		if(option.equals("0")) {
 			return;

@@ -283,7 +283,12 @@ public class StudentMenu {
 			System.out.println("Enter id of the course: ");
 			String id = reader.readLine();
 			Course c = Database.getCourseById(id);
-			student.viewMark(c);
+			if(c != null) {
+				c = Database.getCourseById(id);
+				student.viewMark(c);
+			} else {
+				System.out.println("Course not found");
+			}
 		}
 		
 		public static void registeringForCourse(Student student, BufferedReader reader) throws IOException {
