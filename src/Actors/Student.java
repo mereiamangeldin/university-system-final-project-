@@ -39,9 +39,9 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     	this.isBlocked = false;
     } 
     
-	{
-		Database.getUsers().add(this);
-	}
+//	{
+//		Database.getUsers().add(this);
+//	}
     
     public String getId() {
     	return id;

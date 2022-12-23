@@ -12,7 +12,7 @@ import javafx.util.Pair;
 
 
 public class ManagerMenu {
-	public static void menu(User user) throws IOException {
+	public static void menu(User user) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		Manager manager = (Manager)user;
 		String menuManager = "\nWelcome: " + manager.getFullName() + """
@@ -27,6 +27,7 @@ public class ManagerMenu {
 				9. Make request.
 				10. View students.
 				11. Save changes.
+				12. Questionnaire.
 				0. Logout.""";
 		while(manager.getLogged()) {
 			System.out.println(menuManager);
@@ -59,7 +60,32 @@ public class ManagerMenu {
 			} else if(option.equals("11")) {
 				Database.serializeAll();
 				System.out.println("Your changes are saved");
+			} else if(option.equals("12")) {
+				ManagerMenu.questionnaire(manager, reader);
 			}
+		}
+	}
+	
+	public static void questionnaire(Manager manager, BufferedReader reader) throws Exception {
+		System.out.println("1. Get best teacher.\n2. Get teacher rate.\n3. Cancel");
+		String option = reader.readLine();
+		if(option.equals("1")) {  
+		} else if(option.equals("2")) {
+			for(Teacher t : Database.getTeachers()) {
+				System.out.println(t);
+			}
+			System.out.print("Enter teacher id: ");
+			String id = reader.readLine();
+			Teacher t = Database.getTeacherById(id);
+			
+			if(t == null) {
+				throw new Exception("Teacher is not found");
+			} else {
+//				System.out.println();
+				System.out.println(Questionnaire.getTeacherRate(t));
+			}
+		} else {
+			return;
 		}
 	}
 	
@@ -179,7 +205,7 @@ public class ManagerMenu {
 		} else if(option.equals("3")) {
 			System.out.println(Database.getCourses());
 			System.out.print("Enter course id: ");
-			manager.createReport(Database.getCourseById(reader.readLine()));
+			System.out.println(manager.createReport(Database.getCourseById(reader.readLine())));
 			
 		} else if(option.equals("4")) {
 			return;

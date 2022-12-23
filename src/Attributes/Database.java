@@ -94,11 +94,6 @@ public final class Database implements Serializable {
     	return t;
     }
     
-//    public static WithStudentResearcher getStudentResearcherById() {
-//    	WithStudentResearcher ws = Database.getUsers().stream().filter(x -> x instanceof WithStudentResearcher).findFirst().orElse(null);
-//    	return ws;
-//    }
-    
     public static TechSupportWorker getTechSupportWorkerById(String id) {
     	TechSupportWorker t = getTechSupportWorkers().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
     	return t;

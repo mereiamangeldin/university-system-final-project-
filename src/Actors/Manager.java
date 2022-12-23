@@ -184,10 +184,10 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	 * creates report on the progress of students in a particular course, the number of students, the maximum, minimum and average scores for the course
 	 * */
 	public String createReport(Course course) {
-		double mx = 101, mn = -1, total = 0, n = 0;
+		double mx = -1, mn = 101, total = 0, n = 0;
 	    for(Student s : Database.getStudents()) {
 	    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
-	    		if(marks.getKey().getKey().equals(course) && !marks.getValue().getLetterGrade().equals("F") && !marks.getValue().getLetterGrade().equals("N")) {
+	    		if(marks.getKey().getKey().equals(course) && !marks.getValue().getLetterGrade().equals("N")) {
 	    			total += marks.getValue().getTotal();
 	    			n += 1;
 	    			if(mx < marks.getValue().getTotal()) mx = marks.getValue().getTotal();

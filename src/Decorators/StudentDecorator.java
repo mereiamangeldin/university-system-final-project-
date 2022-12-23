@@ -90,7 +90,7 @@ public abstract class StudentDecorator extends UserDecorator implements Serializ
     	return decoratedStudent.getTranscript();
     }  
     
-    public String makeBookOrder(Librarian librarian, Order order){
+    public String makeBookOrder(Librarian librarian, Order order) throws Exception{
     	return decoratedStudent.makeBookOrder(librarian, order);
     }
     

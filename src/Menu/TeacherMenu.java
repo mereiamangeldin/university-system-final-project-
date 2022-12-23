@@ -54,7 +54,7 @@ public class TeacherMenu {
 	    		System.out.print("Enter course id: ");
 	    		Course c = Database.getCourseById(reader.readLine());
 	    		if(c != null) {
-		    		System.out.println(teacher.viewMark(Database.getCourseById(reader.readLine())));
+		    		System.out.println(teacher.viewMark(c));
 	    		}  else {
 	    			throw new Exception("Course not found");
 	    		}

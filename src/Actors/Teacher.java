@@ -24,9 +24,9 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
       	this.type = type;
     }    
     
-    {
-		Database.getUsers().add(this);
-    }
+//    {
+//		Database.getUsers().add(this);
+//    }
     
     public School getSchool() {
     	return school;
@@ -89,7 +89,7 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
      * */
 	public String viewMark(Course c) {
 		String answer = "";
-		Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
+//		Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
 		for(Student s: Database.getStudents()) {
 			for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : s.getTranscript().entrySet()) {
 				if(t.getKey().getKey().equals(c) && t.getKey().getValue().equals(this)) {

@@ -54,13 +54,13 @@ public final class Questionnaire {
 	 * returns all the teachers with rates from max to min rate
 	 * */
 	public static Vector<Pair<Teacher, Double>> getTeachersRate() {
-		Vector<Pair<Teacher, Double>> sortedByRate = new Vector<Pair<Teacher, Double>>();
-		for(HashMap.Entry<Teacher, Vector<Double>> r: rating.entrySet()) {
-			sortedByRate.add(new Pair<Teacher, Double>(r.getKey(), getTeacherRate(r.getKey())));
-		}
-		Collections.sort(sortedByRate, new RateComparator());
-		return sortedByRate;
-	}
+	    Vector<Pair<Teacher, Double>> sortedByRate = new Vector<Pair<Teacher, Double>>();
+	    for(HashMap.Entry<Teacher, Vector<Double>> r: rating.entrySet()) {
+	      sortedByRate.add(new Pair<Teacher, Double>(r.getKey(), getTeacherRate(r.getKey())));
+	    }
+	    Collections.sort(sortedByRate, new RateComparator());
+	    return sortedByRate;
+	  }
 	/**
 	 * returns all the teachers with their rating
 	 * */

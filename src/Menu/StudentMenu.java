@@ -279,13 +279,15 @@ public class StudentMenu {
 		}
 		
 		public static void viewMark(Student student, BufferedReader reader) throws IOException {
-			System.out.println(Database.getCourses());
-			System.out.println("Enter id of the course: ");
+			for(Course c : student.getCourses()) {
+				System.out.println(c);
+			}
+			System.out.print("Enter id of the course: ");
 			String id = reader.readLine();
 			Course c = Database.getCourseById(id);
 			if(c != null) {
 				c = Database.getCourseById(id);
-				student.viewMark(c);
+				System.out.println(student.viewMark(c));
 			} else {
 				System.out.println("Course not found");
 			}
@@ -330,13 +332,16 @@ public class StudentMenu {
 			}
 		} 
 		
-		public static void rateTeacher(Student student, BufferedReader reader) throws IOException {
+		public static void rateTeacher(Student student, BufferedReader reader) throws Exception {
 			System.out.println(student.getTeachers());
 			System.out.print("Teacher id: ");
 			String id = reader.readLine();
 			Teacher t = Database.getTeacherById(id);
 			System.out.print("Rate the teacher on a 10-point scale: ");
 			double mark = Double.parseDouble(reader.readLine());
+			if(mark < 0) {
+				throw new Exception("Not valid rate");
+			}
 			student.rateTeacher(t, mark);
 			System.out.println("Thank you for your feedback!");
 		}
