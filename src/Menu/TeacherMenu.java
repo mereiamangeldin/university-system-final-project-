@@ -29,6 +29,7 @@ public class TeacherMenu {
 	    		8. Make request.
 	    		9. View news.
 	    		10. Researcher page.
+	    		11. Save changes.
 	    		0. Logout.
 	    		"""; 
 	    while(teacher.getLogged()) {
@@ -51,7 +52,12 @@ public class TeacherMenu {
 	    	} else if(option.equals("5")) {
 	    		System.out.println(Database.getTeachersCourse(teacher));
 	    		System.out.print("Enter course id: ");
-	    		System.out.println(teacher.viewMark(Database.getCourseById(reader.readLine())));
+	    		Course c = Database.getCourseById(reader.readLine());
+	    		if(c != null) {
+		    		System.out.println(teacher.viewMark(Database.getCourseById(reader.readLine())));
+	    		}  else {
+	    			System.out.println("Course not found!");
+	    		}
 	    	} else if(option.equals("6")) {
 	    		Menu.sendMessage(teacher, reader);
 	    	} else if(option.equals("7")) {
@@ -64,6 +70,9 @@ public class TeacherMenu {
 	    		TeacherMenu.manageCourseFiles(teacher, reader);
 	    	} else if(option.equals("10")) {
 	    		TeacherMenu.researcherPage(teacher, reader);
+	    	} else if(option.equals("11")) {
+        		Database.serializeAll();
+        		System.out.println("Your changes ase saved");
 	    	}
 	    }
 	}
@@ -190,7 +199,7 @@ public class TeacherMenu {
 				teacher.putMark(c, s, Integer.parseInt(option), Double.parseDouble(reader.readLine()));
 			} else if(option.equals("3")) {
 				teacher.putMark(c, s, Integer.parseInt(option), Double.parseDouble(reader.readLine()));
-		}			
+			}			
 		}
 	}
 	

@@ -28,6 +28,7 @@ public class StudentMenu {
 				8. Register for course.
 				9. Rate teachers.
 				10. Researcher page.
+				11. Save changes.
 				0. Logout.""";
 		while(student.getLogged()) {
 			System.out.println(menuStudent);
@@ -73,6 +74,10 @@ public class StudentMenu {
 			}
 			else if(option.equals("10")) {
 				StudentMenu.researchPage(student, reader);
+			}
+			else if(option.equals("11")) {
+        		Database.serializeAll();
+        		System.out.println("Your changes ase saved");
 			}
 		}
 	}

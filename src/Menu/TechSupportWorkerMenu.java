@@ -45,6 +45,9 @@ public class TechSupportWorkerMenu {
 				TechSupportWorkerMenu.processRequest(tsw, reader);
 			} else if(option.equals("7")) {
 				Menu.makeRequest(tsw, reader);
+			} else if(option.equals("8")) {
+        		Database.serializeAll();
+        		System.out.println("Your changes ase saved");
 			}
 		}
 	}

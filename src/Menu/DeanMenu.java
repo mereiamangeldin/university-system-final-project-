@@ -18,6 +18,7 @@ public class DeanMenu {
         		4. Read messages.
         		5. View news.
         		6. Make requests.
+        		7. Save changes.
         		0. Logout.
         		""";
         while(dean.getLogged()) {
@@ -40,6 +41,9 @@ public class DeanMenu {
         		Menu.viewNews(dean, reader);
         	} else if(option.equals("6")) {
         		Menu.makeRequest(dean, reader);
+        	} else if(option.equals("7")) {
+        		Database.serializeAll();
+        		System.out.println("Your changes ase saved");
         	}
         }
 	}

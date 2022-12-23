@@ -26,6 +26,7 @@ public class LibrarianMenu {
         		5. Make request.
         		6. Send messages.
         		7. Read messages.
+        		8. Save changes.
         		0. Logout.
         		""";
         while(librarian.getLogged()) {
@@ -59,6 +60,10 @@ public class LibrarianMenu {
         	}
         	else if(option.equals("7")) {
         		Menu.readMessages(librarian, reader);
+        	} 
+        	else if(option.equals("8")) {
+        		Database.serializeAll();
+        		System.out.println("Your changes ase saved");
         	}
         }	
 	}

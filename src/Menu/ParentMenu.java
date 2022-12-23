@@ -18,6 +18,7 @@ public class ParentMenu {
         		2. View info about child.
         		3. View transcript of child.
         		4. View mark of child.
+        		5. Save changes.
         		0. Logout.
         		""";
         while(parent.getLogged()) {
@@ -40,6 +41,10 @@ public class ParentMenu {
         		String id = reader.readLine();
         		Course c = Database.getCourseById(id);
         		parent.viewMark(c);
+        	} 
+        	else if(option.equals("5")) {
+        		Database.serializeAll();
+        		System.out.println("Your changes ase saved");
         	}
         }
       }

@@ -29,6 +29,7 @@ public class TeacherResearcherMenu {
 	    		8. Make request.
 	    		9. View news.
 	    		10. Researcher page.
+	    		11. Save changes.
 	    		0. Logout.
 	    		"""; 
 	    while(teacher.getLogged()) {
@@ -64,6 +65,9 @@ public class TeacherResearcherMenu {
 	    		TeacherResearcherMenu.manageCourseFiles(teacher, reader);
 	    	} else if(option.equals("10")) {
 	    		TeacherResearcherMenu.researcherPage(teacher, reader);
+	    	} else if(option.equals("11")) {
+        		Database.serializeAll();
+        		System.out.println("Your changes ase saved");
 	    	}
 	    }
 	}
