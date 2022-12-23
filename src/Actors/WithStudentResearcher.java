@@ -2,14 +2,23 @@ package Actors;
 import Decorators.*;
 import Interfaces.*;
 import Attributes.*;
+
+import java.io.Serializable;
 import java.util.*;
 /**for decorating Student*/
 
-public class WithStudentResearcher extends StudentDecorator implements CanResearch{
+public class WithStudentResearcher extends StudentDecorator implements CanResearch, Serializable {
+	private static final long serialVersionUID = 5133030162836155384L;
 	private Vector<ResearchPaper> researchPapers;
 	private Vector<ResearchProject> researchProjects;
+	
 	public WithStudentResearcher(User user) {
 		super((Student)user);
+	}
+	
+	{
+		researchPapers = new Vector<ResearchPaper>();
+		researchProjects = new Vector<ResearchProject>();
 	}
 	// researcher methods
 	/**adds research paper*/
@@ -44,6 +53,14 @@ public class WithStudentResearcher extends StudentDecorator implements CanResear
 
 	public Vector<ResearchProject> getResearchProjects() {
 		return researchProjects;
+	}
+	
+	public void setResearchPapers(Vector<ResearchPaper> v) {
+		this.researchPapers = v;
+	}
+	
+	public void setResearchProjects(Vector<ResearchProject> v) {
+		this.researchProjects = v;
 	}
 
 }

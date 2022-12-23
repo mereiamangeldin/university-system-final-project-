@@ -1,4 +1,5 @@
 package Actors;
+import java.io.Serializable;
 import java.util.Vector;
 
 import Attributes.ResearchPaper;
@@ -7,12 +8,18 @@ import Decorators.*;
 import Interfaces.*;
 /**for decorating Teacher*/
 
-public class WithTeacherResearcher extends TeacherDecorator implements CanResearch {
+public class WithTeacherResearcher extends TeacherDecorator implements CanResearch, Serializable {
+	private static final long serialVersionUID = 5133030162836155384L;
 	private Vector<ResearchPaper> researchPapers;
 	private Vector<ResearchProject> researchProjects;
 	
 	public WithTeacherResearcher(User user) {
 		super((Teacher)user);
+	}
+	
+	{
+		researchPapers = new Vector<ResearchPaper>();
+		researchProjects = new Vector<ResearchProject>();
 	}
 	
 	//research methods

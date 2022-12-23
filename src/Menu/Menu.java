@@ -6,23 +6,78 @@ import java.io.Reader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Vector;
 
 import Actors.*;
 import Attributes.*;
 import Enums.*;
 import Exceptions.*;
 import Interfaces.*;
+import javafx.util.Pair;
 
 public class Menu {
 	public static void main(String[] args) throws IOException, ParseException {	
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//		Dean d = new Dean(new SimpleUser("Alibek", "Bisembayev", "sitetop", dateFormat.parse("1986/06/02")), "D1", dateFormat.parse("2006/02/28"), 800000, "203-139");
+//		Dean d2 = new Dean(new SimpleUser("Assylbek", "Issakhov", "mkmtop", dateFormat.parse("1986/12/20")), "D2", dateFormat.parse("2006/04/12"), 800000, "405-294");
+//		Dean d3 = new Dean(new SimpleUser("Martin", "Kennes", "lsetop", dateFormat.parse("1980/11/11")), "D3", dateFormat.parse("2001/01/09"), 900000, "139-293");
+//		Dean d4 = new Dean(new SimpleUser("Marat", "Farad", "bstop", dateFormat.parse("1985/02/11")), "D4", dateFormat.parse("2004/03/01"), 1000000, "353-224");
+//		School SITE = new School("School of Information Technologies and Engineering", d, "SITE");
+//		School SAM = new School("School of Applied Mathematics", d2, "SAM");
+//		School ISE = new School("International School of Economucs", d3, "ISE");
+//		School BS = new School("Business School", d4, "BS");
+//		Admin a = new Admin(new SimpleUser("Kirill", "Ivanov", "admin1", dateFormat.parse("1980/10/31")), "A20103", dateFormat.parse("1980/10/31"), 2000000, "123-456");
+//		Student s = new Student(new SimpleUser("Karashash", "Serikova", "karashash", dateFormat.parse("2004/12/01")), "21B030944", SITE, 1, true, 32500, ScienceDegree.BACHELOR);
+//		WithStudentResearcher sr = new WithStudentResearcher(s);
+//		Student s2 = new Student(new SimpleUser("Dinara", "Berikova", "dinara", dateFormat.parse("2003/06/02")), "21B030723", SAM, 2, true, 65000, ScienceDegree.BACHELOR);
+//		Student s3 = new Student(new SimpleUser("Ermek", "Berikova", "ermek", dateFormat.parse("2003/06/02")), "21B030723", SAM, 2, true, 65000, ScienceDegree.BACHELOR);
+//		Teacher t = new Teacher(new SimpleUser("Asel", "Kereeva", "aselkapuper", dateFormat.parse("1976/09/22")), "T3214", dateFormat.parse("1996/05/05"), 360000, "125-999", SITE, TeacherTypes.TUTOR);
+//		Teacher t2 = new Teacher(new SimpleUser("Kemel", "Uteev", "kemek", dateFormat.parse("1990/08/21")), "T9384", dateFormat.parse("2020/01/25"), 380000, "101-199", SAM, TeacherTypes.PROFESSOR);
+//		Teacher t3 = new Teacher(new SimpleUser("Danial", "Salamatov", "d_salamatov", dateFormat.parse("1980/11/21")), "T1234", dateFormat.parse("2002/06/13"), 450000, "111-890", SITE, TeacherTypes.LECTURER);
+//		Teacher t4 = new Teacher(new SimpleUser("Adema", "Aldash", "adema_dema", dateFormat.parse("1990/02/12")), "T0909", dateFormat.parse("2020/03/15"), 250000, "154-904", SAM, TeacherTypes.TUTOR);
+//		Teacher t5 = new Teacher(new SimpleUser("Uldana", "Ustemirova", "uldana_98", dateFormat.parse("1998/08/01")), "T1256", dateFormat.parse("2019/12/22"), 470000, "167-790", BS, TeacherTypes.PROFESSOR);
+//		Teacher t7 = new Teacher(new SimpleUser("Gaziz", "Idrisov", "gazi_mazi00", dateFormat.parse("1979/12/29")), "T7894", dateFormat.parse("2005/12/09"), 550000, "190-210", SITE, TeacherTypes.TUTOR);
+//		Course c = new Course("CL1", "Calculus 1", null, 3, SAM, ScienceDegree.BACHELOR, CourseType.REQUIRED);
+//		Course c1 = new Course("LA1", "Linear Algebra", null, 3, SAM, ScienceDegree.BACHELOR, CourseType.REQUIRED);
+//		Course c2 = new Course("CL2", "Calculus 2", c, 3, SAM, ScienceDegree.BACHELOR, CourseType.REQUIRED);
+//		Course c3 = new Course("PP1", "Programming Principles 1", null, 4, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
+//		Course c4 = new Course("PP2", "Programming Principles 2", c3, 4, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
+//		Course c5 = new Course("OOP1", "Object-Oriented Programming", c4, 3, SITE, ScienceDegree.BACHELOR, CourseType.REQUIRED);
+//		News n = new News("Announcement about the competition \"A. S. Pushkin's Poetry Evening\".", "We invite all students to take part in the competition. For the record - a.omarova@kbtu.kz");
+//		News n2 = new News("On the transfer of the classes of the teacher Kereev A. to the online format", "Classes on the subject \"Oratory\" by Kereeva Asel are transferred from offline to online format due to the health of the teacher.");
+//		Manager m = new Manager(new SimpleUser("Assylai", "Aman", "assylai", dateFormat.parse("1989/12/01")), "M1", dateFormat.parse("1999/08/12"), 500000, "122-122", ManagerType.SITE);
+//		Manager m1 = new Manager(new SimpleUser("Tatyana", "Morgunova", "tanya", dateFormat.parse("1960/04/02")), "M2", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.SAM);
+//		Manager m3 = new Manager(new SimpleUser("Assel", "Koka", "assel", dateFormat.parse("1983/04/02")), "M3", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.BS);
+//		Manager m4 = new Manager(new SimpleUser("Dameli", "Li", "dameli", dateFormat.parse("1983/04/02")), "M4", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.OR);
+//		Manager m6 = new Manager(new SimpleUser("Nataliya", "Sneg", "nata", dateFormat.parse("1983/04/02")), "M5", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.SITE);
+//		Manager m7 = new Manager(new SimpleUser("Juliya", "Merezhko", "juliya", dateFormat.parse("1983/04/02")), "M6", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.ISE);
+//		Manager m8 = new Manager(new SimpleUser("Fariza", "Nurjan", "fariza", dateFormat.parse("1983/04/02")), "M7", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.OR);
+//		Manager m9 = new Manager(new SimpleUser("Maksat", "Kani", "maksat", dateFormat.parse("1983/04/02")), "M8", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.ISE);
+//		Manager m10 = new Manager(new SimpleUser("Lyazzat", "R", "lyazzat", dateFormat.parse("1960/04/02")), "M9", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.SAM);
+//		Manager m11 = new Manager(new SimpleUser("Meruert", "N", "meru", dateFormat.parse("1960/04/02")), "M10", dateFormat.parse("1980/04/05"), 600000, "194-135", ManagerType.SITE);
+//		Librarian l = new Librarian(new SimpleUser("Antonina", "Tsoy", "antonina", dateFormat.parse("1991/02/01")), "L3234", dateFormat.parse("2021/04/05"), 310000, "112-135");
+//		TechSupportWorker tsw = new TechSupportWorker(new SimpleUser("Alikhan", "Karabayev", "alikhan", dateFormat.parse("1970/06/04")), "TS9234", dateFormat.parse("1985/02/28"), 390000, "130-139");
+//		Parent p = new Parent(new SimpleUser("Tamara", "Beken", "tamara", dateFormat.parse("1984/03/23")), s);
+//		Book b1 = new Book("Algorithms and Data Structures in Java", 100, "Michael Goodrich", 1997);
+//		Book b2 = new Book("Schaum's Outline of Linear Algebra, Sixth Edition", 50, "Seymour Lipschutz", 2017);
+//		Book b3 = new Book("Business Kazakh Language", 75, "Gulzhan Utebayeva", 2016);
+//		Book b4 = new Book("Object-Oriented Programming and Design", 100, "Pakizar Shamoi", 2014);
+//		Book b5 = new Book("Discrete Structures and Its Apllications", 150, "Kenneth Rosen", 1995);
+//		Book b6 = new Book("Clean Code: A Handbook of Agile Software Craftsmanship", 20, "Robert C. Martin", 2004);
+//		Book b7 = new Book("Introduction to Algorithms", 35, "Thomas H. Cormen", 2007);
+//		Book b8 = new Book("Structure and Interpretation of Computer Programs (SICP)", 10, "Harold Abelson", 2010);
+//		Book b9 = new Book("Design Patterns: Elements of Reusable Object-Oriented Software", 30, "Erich Gamma", 2001);
+//		Book b10 = new Book("Mathematical Statisctics with Applications", 60, "Dennis Wackerly", 2002);
+//		Book b11 = new Book("Practical problems in molecular physics and thermodynamics", 100, "Vladimir Voronkov", 2013);
+//
+//		Database.serializeAll();
+
 		Database.loadAttributes();
-		
-//		System.out.println(Database.getUsers());
-//		System.out.println(Database.getBooks());
 		
 		InputStreamReader myStream = new InputStreamReader(System.in);        
 		BufferedReader reader = new BufferedReader(myStream);		
-	
+				
 		System.out.println("""
 				╔╗╔╗╔╗╔═══╗╔╗──╔══╗╔══╗╔╗──╔╗╔═══╗───╔════╗╔══╗───╔════╗╔╗╔╗╔═══╗───╔╗╔╗╔╗─╔╗╔══╗╔╗╔╗╔═══╗╔═══╗╔══╗╔══╗╔════╗╔╗╔╗───╔══╗╔╗╔╗╔══╗╔════╗╔═══╗╔╗──╔╗
 				║║║║║║║╔══╝║║──║╔═╝║╔╗║║║──║║║╔══╝───╚═╗╔═╝║╔╗║───╚═╗╔═╝║║║║║╔══╝───║║║║║╚═╝║╚╗╔╝║║║║║╔══╝║╔═╗║║╔═╝╚╗╔╝╚═╗╔═╝║║║║───║╔═╝║║║║║╔═╝╚═╗╔═╝║╔══╝║║──║║
@@ -55,7 +110,9 @@ public class Menu {
 
 				if(user != null) {
 					if(user instanceof Student) StudentMenu.menu(user);
+					else if(user instanceof WithStudentResearcher) StudentResearcherMenu.menu(user);
 					else if(user instanceof Teacher) TeacherMenu.menu(user);
+					else if(user instanceof WithTeacherResearcher) TeacherMenu.menu(((WithTeacherResearcher)user).getDecoratedTeacher());
 					else if(user instanceof Admin) AdminMenu.menu(user);
 					else if(user instanceof Manager) ManagerMenu.menu(user);
 					else if(user instanceof Librarian) LibrarianMenu.menu(user);

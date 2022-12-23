@@ -65,25 +65,19 @@ public class School implements Serializable {
 		this.dean = d;
 	}
 
-	@Override
 	public int hashCode() {
 		return Objects.hash(dean, managers, name, specialities);
 	}
 
-	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
 		School other = (School) obj;
 		return Objects.equals(dean, other.dean) && Objects.equals(managers, other.managers)
 				&& Objects.equals(name, other.name) && Objects.equals(specialities, other.specialities);
 	}
-
-	@Override
+ 
 	public String toString() {
     	String answer = String.format("Name: %s, dean: %s", this.getShortName(), this.getDean().getFullName());
     	return answer;

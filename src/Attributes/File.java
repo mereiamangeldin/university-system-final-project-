@@ -16,7 +16,7 @@ public class File implements Serializable {
 		this.typeOfFile = typeOfFile;
 		this.content = content;
 	}
-    
+     
     {
     	numberOfFiles++;
     	id = numberOfFiles;
@@ -72,4 +72,3 @@ public class File implements Serializable {
 		return "File [name=" + name + ", typeOfFile=" + typeOfFile + ", content=" + content + "]";
 	}
 }
-

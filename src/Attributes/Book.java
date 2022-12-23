@@ -22,7 +22,7 @@ public class Book implements Serializable {
     	Database.getBooks().add(this);
     	numberOfBooks++;
     	id = numberOfBooks;
-    }
+    } 
     
 	public String getName() {
 		return name;

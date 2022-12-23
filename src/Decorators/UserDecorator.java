@@ -7,6 +7,10 @@ import java.util.Vector;
 import Attributes.News;
 
 public class UserDecorator implements User, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5388768865736602398L;
 	protected final User DecoratedUser;
 	public UserDecorator(User u) {
 		this.DecoratedUser = u;
@@ -55,5 +59,9 @@ public class UserDecorator implements User, Serializable {
 	}
 	public String getFullName() {
 		return DecoratedUser.getFullName();
+	}
+	
+	public String toString() {
+		return DecoratedUser.toString();
 	}
 }

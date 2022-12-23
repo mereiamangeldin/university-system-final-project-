@@ -120,12 +120,15 @@ public class AdminMenu {
 
 			}
 	}
-	
     
     public static void addUser(String userType, BufferedReader r) throws IOException, ParseException {
     	String name, surname, password, date;
     	Date d;
+    	boolean isStudentResearcher = false;
+    	boolean isTeacherResearcher = false;
     	User user = null;
+    	WithTeacherResearcher wt = null;
+    	WithStudentResearcher ws = null;
         BufferedReader reader = r;
         
         // General date 
@@ -183,9 +186,16 @@ public class AdminMenu {
 		    } else if(sd.equals("3")) {
 		    	scienceD = ScienceDegree.PHD;
 		    }
-		    user = new Student(new SimpleUser(name, surname, password, d), id, s, yearOfStudy, grant, scholarship, scienceD);
-    	} 
-    	
+			System.out.println("Is student doing research?\n1. Yes\n2. No");
+		    String option = reader.readLine();
+		    if(option.equals("1")) {
+			    user = new Student(new SimpleUser(name, surname, password, d), id, s, yearOfStudy, grant, scholarship, scienceD);
+			    ws = new WithStudentResearcher(user);
+			    isStudentResearcher = true;
+		    } else if(option.equals("2")) {
+			    user = new Student(new SimpleUser(name, surname, password, d), id, s, yearOfStudy, grant, scholarship, scienceD);
+		    }
+    	}
     	// Parent date 
 		else if(userType.equals("6")) {
 			for(Student st : Database.getStudents()) {
@@ -245,7 +255,15 @@ public class AdminMenu {
         			case "4":
         				t = TeacherTypes.PROFESSOR;
         		}
-        		user = new Teacher(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber, s, t);
+    			System.out.println("Is teacher doing research?\n1. Yes\n2.No");
+    			option = reader.readLine();
+    			if(option.equals("1")) {
+            		user = new Teacher(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber, s, t);
+            		wt = new WithTeacherResearcher(user);
+            		isTeacherResearcher = true;
+    			} else if(option.equals("2")) {
+            		user = new Teacher(new SimpleUser(name, surname, password, d), id, hireDate, salary, insuranceNumber, s, t);
+    			}
     		} 
     		else if(userType.equals("3")) {
     			System.out.print("Manager type:\n1. OR\n2. SITE\n3. SAM\n4. BS\n5. ISE");
@@ -276,11 +294,27 @@ public class AdminMenu {
     		}	
     	}
     	
-    	if(!Database.getUsers().contains(user)) {
-    		Database.getUsers().add(user);
-    		System.out.println("User has been successfully created.");
+    	if(isStudentResearcher) {
+    		if(!Database.getUsers().contains(ws)) {
+    			Database.getUsers().add(ws);
+        		System.out.println("User has been successfully created.");
+    		} else {
+    			System.out.println("Error! Such user already exists in a system");
+    		}
+    	} else if(isTeacherResearcher) {
+    		if(!Database.getUsers().contains(wt)) {
+    			Database.getUsers().add(wt);
+        		System.out.println("User has been successfully created.");
+    		} else {
+    			System.out.println("Error! Such user already exists in a system");
+    		}
     	} else {
-    		System.out.println("Error. Such a user exists in a system.");
+    		if(!Database.getUsers().contains(user)) {
+    			Database.getUsers().add(user);
+        		System.out.println("User has been successfully created.");
+    		} else {
+    			System.out.println("Error! Such user already exists in a system");
+    		}
     	}
     }
 }

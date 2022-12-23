@@ -1,6 +1,7 @@
 package Attributes;
+import java.io.Serializable;
 import java.util.*;
-public class ResearchProject {
+public class ResearchProject implements Serializable {
 	private String title;
 	private String description;
 	private Vector<ResearchProject> citations;
@@ -9,6 +10,7 @@ public class ResearchProject {
 		this.setTitle(title);
 		this.setDescription(description);
 		this.setDateOfPublish(dateOfPublish);
+		this.citations = new Vector<ResearchProject>();
 	}
 	public String getTitle() {
 		return title;

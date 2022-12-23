@@ -37,7 +37,7 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
     }
 
     public TeacherTypes getType() {
-    	return type;
+    	return type; 
     }
 
     public void setType(TeacherTypes type) {
@@ -88,16 +88,21 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
      * to view mark of specific course he teaches
      * */
 	public String viewMark(Course c) {
+		String answer = "";
 		Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, this);
 		for(Student s: Database.getStudents()) {
 			for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : s.getTranscript().entrySet()) {
-				if(t.getKey().equals(p)) {
+				if(t.getKey().getKey().equals(c) && t.getKey().getValue().equals(this)) {
 					Database.getUserActions().add(new Action(this, new Date(), String.format("Teacher: %s viewed mark of course: %s", getFullName(), c.getName())));
-		    		return s.getFullName() + ": " + t.getValue();
-		    	}
+		    		answer += s.getFullName() + ": " + t.getValue().getTotal() + " points\n";
+				}
+//				if(t.getKey().equals(p)) {
+//					Database.getUserActions().add(new Action(this, new Date(), String.format("Teacher: %s viewed mark of course: %s", getFullName(), c.getName())));
+//		    		answer += s.getFullName() + ": " + t.getValue().getTotal() + "\n";
+//		    	}
 		    }
 	   }
-	   return null;
+	   return answer;
 	}
 
    public String toString() {
@@ -119,7 +124,7 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
 	   Teacher other = (Teacher) obj;
 	   return Objects.equals(school, other.school) && type == other.type;
     } 
-   
+    
    public int compareTo(Teacher t) {
    		int resultByName = this.getName().compareTo(t.getName());
    		if(resultByName != 0) return resultByName;

@@ -13,10 +13,10 @@ import Enums.*;
 import Exceptions.*;
 import Interfaces.*;
 
-public class StudentMenu {
+public class StudentResearcherMenu {
 	public static void menu(User user) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		Student student = (Student)user;
+		WithStudentResearcher student = (WithStudentResearcher)user;
 		String menuStudent = "\nWelcome, Student: " + student.getFullName() + """
 				\n1. Change password.
 				2. View courses.
@@ -51,125 +51,126 @@ public class StudentMenu {
 				}
 			}
 			else if(option.equals("3")) {
-				StudentMenu.bookOrdering(student, reader);
+				StudentResearcherMenu.bookOrdering(student, reader);
 			}
 			else if(option.equals("4")) {
-				StudentMenu.makeRequest(student, reader);
+				StudentResearcherMenu.makeRequest(student, reader);
 			} 
 			else if(option.equals("5")) {
-				StudentMenu.viewNews(student, reader);
+				StudentResearcherMenu.viewNews(student, reader);
 			}
 			else if(option.equals("6")) {
 				student.viewTranscript();
 			}
 			else if(option.equals("7")) {
-				StudentMenu.viewMark(student, reader);
+				StudentResearcherMenu.viewMark(student, reader);
 			}
 			else if(option.equals("8")) {
-				StudentMenu.registeringForCourse(student, reader);
+				StudentResearcherMenu.registeringForCourse(student, reader);
 			}
 			else if(option.equals("9")) {
-				StudentMenu.rateTeacher(student, reader);
+				StudentResearcherMenu.rateTeacher(student, reader);
 			}
 			else if(option.equals("10")) {
-				StudentMenu.researchPage(student, reader);
+				StudentResearcherMenu.researchPage(student, reader);
 			}
 		}
 	}
 	
 	public static void researchPage(User user, BufferedReader reader) throws IOException {
 		String option = "";
-		if(!(user instanceof WithStudentResearcher)) {
-			Student s = (Student)user;
-			System.out.println("1. Become researcher.\n2. Cancel.");
-			option = reader.readLine();
-			if(option.equals("1")) {
-				WithStudentResearcher ws = new WithStudentResearcher(s);
-				Database.getUsers().remove(s);
-				Database.getUsers().add(ws);
-				System.out.println("YOU BECAME RESEARCHER!");
-			} else if(option.equals("2")) {
-				return;
-			}
+		WithStudentResearcher ws = (WithStudentResearcher)user;
+		System.out.println("1. Show h-index.\n2. Add research paper.\n3. Add research project");
+		option = reader.readLine();
+		if(option.equals("1")) {
+			System.out.println("Your h-index: " + ws.getHindex());
 		} else {
-			WithStudentResearcher ws = (WithStudentResearcher)user;
-			System.out.println("1. Show h-index.\n2. Add research paper.\n3. Add research project");
-			option = reader.readLine();
-			if(option.equals("1")) {
-				System.out.println("Your h-index: " + ws.getHindex());
-			} else {
-				String title, description;
-				System.out.print("Enter research title: ");
-				title = reader.readLine();
-				System.out.print("Text description of research: ");
-				description = reader.readLine();
-				System.out.print("Enter date of publishing in format yyyy/MM/dd: ");
-		    	String date = reader.readLine();
-		    	Date d;
-		    	try {
-		        	d = new SimpleDateFormat("yyyy/MM/dd").parse(date);
-		    	} catch(ParseException p) {
-		    		System.out.println("Incorrect date. Pleasy retry again.");
-		    		return;
-		    	}
-		    	if(option.equals("2")) {
-					ws.addResearchPaper(new ResearchPaper(title, description, d));
-		    	} else if(option.equals("3")) {
-		    		ResearchProject rp = new ResearchProject(title, description, d);
-		    		System.out.print("Did you citate someone in your project? If yes, put 1, otherwise 0: ");
-		    		option = reader.readLine();
-		    		if(option.equals("1")) {
-		    			for(User u : Database.getUsers()) {
-		    				if(u instanceof WithStudentResearcher) {
-		    					System.out.println(u.getFullName() + ", ID: " + ((WithStudentResearcher)u).getId());
-		    				} else if(u instanceof WithTeacherResearcher) {
-		    					System.out.println(u.getFullName() + ", ID: " + ((WithTeacherResearcher)u).getId());
+			String title, description;
+			System.out.print("Enter research title: ");
+			title = reader.readLine();
+			System.out.print("Text description of research: ");
+			description = reader.readLine();
+			System.out.print("Enter date of publishing in format yyyy/MM/dd: ");
+	    	String date = reader.readLine();
+	    	Date d;
+	    	try {
+	        	d = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+	    	} catch(ParseException p) {
+	    		System.out.println("Incorrect date. Pleasy retry again.");
+	    		return;
+	    	}
+	    	if(option.equals("2")) {
+				ws.addResearchPaper(new ResearchPaper(title, description, d));
+				System.out.println("You have uploaded your research paper into the system!");
+	    	} else if(option.equals("3")) {
+	    		ResearchProject rp = new ResearchProject(title, description, d);
+	    		System.out.print("Did you citate someone in your project? If yes, put 1, otherwise 0: ");
+	    		option = reader.readLine();
+	    		if(option.equals("1")) {
+	    			for(User u : Database.getUsers()) {
+	    				if(u instanceof WithStudentResearcher) {
+	    					System.out.println(u.getFullName() + ", ID: " + ((WithStudentResearcher)u).getId());
+	    				} else if(u instanceof WithTeacherResearcher) {
+	    					System.out.println(u.getFullName() + ", ID: " + ((WithTeacherResearcher)u).getId());
+	    				}
+	    			}
+	    			
+	    			System.out.print("Enter ID of researcher which project you citated: ");
+	    			String id = reader.readLine();
+	    			int i = 1;
+	    			for(User u : Database.getUsers()) {
+	    				if(u instanceof WithStudentResearcher && ((WithStudentResearcher)u).getId().equals(id)) {
+	    					WithStudentResearcher _ws = (WithStudentResearcher)u;
+	    					if(_ws.getResearchProjects().size() == 0) {
+	    						System.out.println("Researcher does not have project yet.");
+	    						break;
+	    					}
+	    					for(ResearchProject p : _ws.getResearchProjects()) {
+	    						System.out.println(i + ". " + p);
+	    						i++;
+	    					}
+		    				System.out.print("Number of project: ");
+		    				int numberOfProject = Integer.parseInt(reader.readLine());
+		    				if(_ws.getResearchProjects().size() >= numberOfProject) {
+		    					rp.getCitations().add(_ws.getResearchProjects().get(numberOfProject - 1));
+		    				} else {
+		    					System.out.println("Number is out of range");
 		    				}
-		    			}
-		    			
-		    			System.out.print("Enter ID of researcher which project you citated: ");
-		    			String id = reader.readLine();
-		    			int i = 1;
-		    			for(User u : Database.getUsers()) {
-		    				if(u instanceof WithStudentResearcher && ((WithStudentResearcher)u).getId().equals(id)) {
-		    					WithStudentResearcher _ws = (WithStudentResearcher)u;
-		    					for(ResearchProject p : _ws.getResearchProjects()) {
-		    						System.out.println(i + ". " + p);
-		    						i++;
-		    					}
-			    				System.out.print("Number of project: ");
-			    				int numberOfProject = Integer.parseInt(reader.readLine());
-			    				if(_ws.getResearchProjects().size() <= numberOfProject) {
-			    					rp.getCitations().add(_ws.getResearchProjects().get(numberOfProject - 1));
-			    				} else {
-			    					System.out.println("Number is out of range");
-			    				}
-		    					break;
-		    				} 
-		    				if(u instanceof WithTeacherResearcher && ((WithTeacherResearcher)u).getId().equals(id)) {
-		    					WithTeacherResearcher _wt = (WithTeacherResearcher)u;
-		    					for(ResearchProject p : _wt.getResearchProjects()) {
-		    						System.out.println(i + ". " + p);
-		    						i++;
-		    					}
-			    				System.out.print("Number of project: ");
-			    				int numberOfProject = Integer.parseInt(reader.readLine());
-			    				if(_wt.getResearchProjects().size() <= numberOfProject) {
-			    					rp.getCitations().add(_wt.getResearchProjects().get(numberOfProject - 1));
-			    				} else {
-			    					System.out.println("Number is out of range");
-			    				}
-		    					break;
-		    				}		
-		    			}
-		    			ws.addResearchProject(rp);
-		    		}
-		    	}
-			}
+	    					break;
+	    				} 
+	    				if(u instanceof WithTeacherResearcher && ((WithTeacherResearcher)u).getId().equals(id)) {
+	    					WithTeacherResearcher _wt = (WithTeacherResearcher)u;
+	    					if(_wt.getResearchProjects().size() == 0) {
+	    						System.out.println("Researcher does not have project yet.");
+	    						break;
+	    					}
+	    					for(ResearchProject p : _wt.getResearchProjects()) {
+	    						System.out.println(i + ". " + p);
+	    						i++;
+	    					}
+		    				System.out.print("Number of project: ");
+		    				int numberOfProject = Integer.parseInt(reader.readLine());
+		    				if(_wt.getResearchProjects().size() >= numberOfProject) {
+		    					rp.getCitations().add(_wt.getResearchProjects().get(numberOfProject - 1));
+		    				} else {
+		    					System.out.println("Number is out of range");
+		    				}
+	    					break;
+	    				}		
+	    			}
+	    			ws.addResearchProject(rp);
+	    			System.out.println("You have uploaded your research project to the system!");
+	    		} else {
+	    			ws.addResearchProject(rp);
+	    			System.out.println("You have uploaded your research project to the system!");
+
+	    		}
+	    	}
 		}
 	}
 	
-	public static void makeRequest(Student student, BufferedReader reader) throws IOException {
+	
+	public static void makeRequest(WithStudentResearcher student, BufferedReader reader) throws IOException {
 		String requestMenu = "Who do you want to contact?\n1. Technical Support Center.\n2. Dean's office.\n3. Office of the register.\n0. Back.";
 		String option;
 		while(true) {
@@ -220,7 +221,7 @@ public class StudentMenu {
 		}
 	}
 		
-	public static void viewNews(Student student, BufferedReader reader) throws NumberFormatException, IOException {
+	public static void viewNews(WithStudentResearcher student, BufferedReader reader) throws NumberFormatException, IOException {
 		int newsOrder = 1; 
 		System.out.println("NEWS");
 		for(News n : Database.getNews()) {
@@ -249,7 +250,7 @@ public class StudentMenu {
 		}
 	}
 		
-		public static void bookOrdering(Student student, BufferedReader reader) throws IOException {
+		public static void bookOrdering(WithStudentResearcher student, BufferedReader reader) throws IOException {
 			for(Book b : Database.getBooks()) {
 				System.out.println(b);
 			}
@@ -264,7 +265,7 @@ public class StudentMenu {
 			Librarian l = Database.getLibrarianById(i);
 			if(b != null) {
 				if(l != null) {
-					System.out.println(student.makeBookOrder(l, new Order(student, b)));
+					System.out.println(student.makeBookOrder(l, new Order(student.getDecoratedStudent(), b)));
 				} else {
 					System.out.println("Librarian does not found");
 				}
@@ -273,7 +274,7 @@ public class StudentMenu {
 			}
 		}
 		
-		public static void viewMark(Student student, BufferedReader reader) throws IOException {
+		public static void viewMark(WithStudentResearcher student, BufferedReader reader) throws IOException {
 			System.out.println(Database.getCourses());
 			System.out.println("Enter id of the course: ");
 			String id = reader.readLine();
@@ -281,7 +282,7 @@ public class StudentMenu {
 			student.viewMark(c);
 		}
 		
-		public static void registeringForCourse(Student student, BufferedReader reader) throws IOException {
+		public static void registeringForCourse(WithStudentResearcher student, BufferedReader reader) throws IOException {
 			for(Course c : Database.getCourses()) {
 				System.out.println(String.format(("Course id: %s, name: %s, number of credits: %s, school: %s, type: %s"), c.getId(), c.getName(), c.getNumberOfCredits(), c.getSchool().getName(), c.getType()));
 			}
@@ -320,7 +321,7 @@ public class StudentMenu {
 			}
 		} 
 		
-		public static void rateTeacher(Student student, BufferedReader reader) throws IOException {
+		public static void rateTeacher(WithStudentResearcher student, BufferedReader reader) throws IOException {
 			System.out.println(student.getTeachers());
 			System.out.print("Teacher id: ");
 			String id = reader.readLine();

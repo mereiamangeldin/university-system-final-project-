@@ -1,14 +1,21 @@
 package Attributes;
+import java.io.Serializable;
 import java.util.*;
-public class ResearchPaper {
+public class ResearchPaper implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String title;
 	private String description;
 	private Date dateOfPublish;
+	
 	public ResearchPaper(String title, String description, Date dateOfPublish) {
 		this.setTitle(title);
 		this.setDescription(description);
 		this.setDateOfPublish(dateOfPublish);
 	}
+	
 	public String getTitle() {
 		return title;
 	}

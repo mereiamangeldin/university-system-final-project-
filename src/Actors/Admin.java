@@ -11,7 +11,7 @@ public class Admin extends Employee implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	public Admin(User user) {super(user);};
-	
+	 
 	public Admin(User user, String id, Date hireDate, double salary, String insuranceNumber) {
 		super(user, id, hireDate, salary, insuranceNumber);
 	}

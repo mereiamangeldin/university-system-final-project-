@@ -37,7 +37,7 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     	this.transcript = new HashMap<Pair<Course, Teacher>, Mark>();  
     	this.organizations = new HashMap<Organization, Position>();
     	this.isBlocked = false;
-    }
+    } 
     
 	{
 		Database.getUsers().add(this);
@@ -67,7 +67,7 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     	this.yearOfStudy = yearOfStudy;
     }
 
-    public Boolean getGrant() {
+    public boolean getGrant() {
     	return grant;
     }
 
@@ -201,9 +201,8 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     public void viewTranscript() {
 		Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has viewed transcript", getUsername())));
     	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : transcript.entrySet()) {
-    		System.out.println(marks.getKey().getKey().getName() + ": " + marks.getValue().getTotal());
+    		System.out.println(marks.getKey().getKey().getName() + ": " + marks.getValue().getTotal() + "points, " + ", teacher: " + marks.getKey().getValue());
         }
-    	System.out.println("Transcript");
     }
     
     public String toString() {

@@ -3,10 +3,12 @@ package Attributes;
 import Actors.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Vector;
 import Enums.*;
 
 public class Course implements Serializable {
+	private static final long serialVersionUID = -5321144807295132416L;
 	private String id;
     private String name;
     private Course prerequisite;
@@ -28,7 +30,7 @@ public class Course implements Serializable {
 		this.files = new Vector<File>();
 		this.teachers = new Vector<Teacher>();
 	}
-    
+     
     {
     	Database.getCourses().add(this);
     }
@@ -122,5 +124,24 @@ public class Course implements Serializable {
 
 	public void setTeachers(Vector<Teacher> teachers) {
 		this.teachers = teachers;
+	}
+	
+    public int hashCode() {
+    	final int prime = 31;
+        int result = 1;
+        result = prime * result
+            + Objects.hash(files, id, name, numberOfCredits, prerequisite, school, scienceDegree, teachers, type);
+        return result;
+    }
+
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Course other = (Course) obj;
+		return Objects.equals(files, other.files) && Objects.equals(id, other.id) && Objects.equals(name, other.name)
+				&& numberOfCredits == other.numberOfCredits && Objects.equals(prerequisite, other.prerequisite)
+				&& Objects.equals(school, other.school) && scienceDegree == other.scienceDegree
+				&& Objects.equals(teachers, other.teachers) && type == other.type;
 	}
 }

@@ -4,7 +4,6 @@ import Enums.*;
 
 import Interfaces.*;
 import javafx.util.Pair;
-import javafx.util.*;
 import Attributes.*;
 import java.io.*;
 import java.util.*;
@@ -25,7 +24,7 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 		super(user, id, hireDate, salary, insuranceNumber);
 		this.type = type;
 		requests = new Vector<Request>();
-		if(this.type.equals(ManagerType.SITE)) {
+		if(this.type.equals(ManagerType.SITE)) { 
 			Database.getSchoolByName("SITE").getManagers().add(this);
 		} else if(this.type.equals(ManagerType.BS)) {
 			Database.getSchoolByName("BS").getManagers().add(this);
@@ -109,12 +108,10 @@ public class Manager extends Employee implements CanViewMarks, Serializable {
 	    		}
 	    	}
 		    else { // Если у курса нет пререквизита, то регистрируем студента на курс
-//				Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
-		    	System.out.println(c);
-		    	System.out.println(t);
-		    	System.out.println(s);
-		       	Pair p = new Pair<Course, Teacher>(c, t);
+				Database.getUserActions().add(new Action(this, new Date(), String.format("Student: %s has registered for course: %s", s.getUsername(), c.getName())));
+		       	Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, t);
 		       	s.getTranscript().put(p, new Mark());
+		       	c.getTeachers().add(t);
 		    	requests.remove(pos - 1);
 				return "Course have been succesfully added to transcript of student";
 		    }

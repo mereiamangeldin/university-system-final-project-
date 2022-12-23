@@ -1,11 +1,13 @@
 package Decorators;
+import java.io.Serializable;
 import java.util.*;
 import Attributes.*;
 import Enums.*;
 import javafx.util.Pair;
 import Actors.*;
 
-public abstract class StudentDecorator extends UserDecorator {
+public abstract class StudentDecorator extends UserDecorator implements Serializable {
+	private static final long serialVersionUID = -3759375878641148730L;
 	protected final Student decoratedStudent;
 	public StudentDecorator(Student s) {
 		super(s);
@@ -14,6 +16,10 @@ public abstract class StudentDecorator extends UserDecorator {
 	public String getId() {
     	return decoratedStudent.getId();
     }
+	
+	public Student getDecoratedStudent() {
+		return decoratedStudent;
+	}
   
     public void setId(String id) {
     	decoratedStudent.setId(id);
@@ -84,8 +90,8 @@ public abstract class StudentDecorator extends UserDecorator {
     	return decoratedStudent.getTranscript();
     }  
     
-    public void makeBookOrder(Librarian librarian, Order order){
-    	decoratedStudent.makeBookOrder(librarian, order);
+    public String makeBookOrder(Librarian librarian, Order order){
+    	return decoratedStudent.makeBookOrder(librarian, order);
     }
     
     public String makeRequest(Request request, Employee employee) {
@@ -115,4 +121,13 @@ public abstract class StudentDecorator extends UserDecorator {
     public void setIsBlocked(boolean isBlocked) {
     	decoratedStudent.setIsBlocked(isBlocked);
     }
+    
+    public Vector<Course> getCourses(){
+    	return decoratedStudent.getCourses();
+    }
+    
+   public void rateTeacher(Teacher teacher, double mark){
+	   decoratedStudent.rateTeacher(teacher, mark);
+   }
+
 }

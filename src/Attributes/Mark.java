@@ -58,11 +58,12 @@ public class Mark implements Serializable {
     }
     
     public double getFinalScore() {
-    	return finalScore;
+    	return this.finalScore;
     }
     
     public void setFinalScore(double finalScore) {
     	if(letterGrade.equals("N")) {
+    		this.total = this.firstAttestation + this.secondAttestation + this.finalScore;
 	    	this.finalScore = finalScore;
 	    	double sum = firstAttestation + secondAttestation + finalScore;
 	    	if(sum >= 95) {
@@ -113,7 +114,7 @@ public class Mark implements Serializable {
     }
     
     public double getTotal() {
-    	return total;
+    	return this.firstAttestation + this.secondAttestation + this.finalScore;
     }
     
     public void setTotal(double total) {

@@ -94,6 +94,11 @@ public final class Database implements Serializable {
     	return t;
     }
     
+//    public static WithStudentResearcher getStudentResearcherById() {
+//    	WithStudentResearcher ws = Database.getUsers().stream().filter(x -> x instanceof WithStudentResearcher).findFirst().orElse(null);
+//    	return ws;
+//    }
+    
     public static TechSupportWorker getTechSupportWorkerById(String id) {
     	TechSupportWorker t = getTechSupportWorkers().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
     	return t;
@@ -108,11 +113,12 @@ public final class Database implements Serializable {
     	Course c = Database.getCourses().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
     	return c;
     }
-    
+     
     public static User getUserByUsername(String username) {
     	User u = Database.getUsers().stream().filter(x -> x.getUsername().equals(username)).findFirst().orElse(null);
     	return u;
     }
+   
     
     public static Employee getEmployeeById(String id) {
     	Employee e = Database.getEmployees().stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
