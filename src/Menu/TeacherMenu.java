@@ -15,7 +15,7 @@ import javafx.util.Pair;
 import Enums.*;
 
 public class TeacherMenu {
-	public static void menu(User user) throws IOException {
+	public static void menu(User user) throws Exception {
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	    Teacher teacher = (Teacher)user;
 	    String menuTeacher = "\nWelcome, " + teacher.getFullName() + "!" + """
@@ -56,7 +56,7 @@ public class TeacherMenu {
 	    		if(c != null) {
 		    		System.out.println(teacher.viewMark(Database.getCourseById(reader.readLine())));
 	    		}  else {
-	    			System.out.println("Course not found!");
+	    			throw new Exception("Course not found");
 	    		}
 	    	} else if(option.equals("6")) {
 	    		Menu.sendMessage(teacher, reader);
@@ -169,15 +169,16 @@ public class TeacherMenu {
 		}
 	}
 	
-	public static void putMark(Teacher teacher, BufferedReader reader) throws IOException {
+	public static void putMark(Teacher teacher, BufferedReader reader) throws Exception {
 		for(Course c : Database.getTeachersCourse(teacher)) {
 			System.out.println(c);
 		}
 		System.out.print("Enter course id: ");
 		String id = reader.readLine();
 		Course c = Database.getCourseById(id);
-		if(c != null) {
-//			Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, teacher);
+		if(c == null) {
+			throw new Exception("Course not found");
+		} else {
 			for(Student s : Database.getStudents()) { 
 		    	for(HashMap.Entry<Pair<Course, Teacher>, Mark> marks : s.getTranscript().entrySet()) {
 		    		if(marks.getKey().getKey().equals(c) && marks.getKey().getValue().equals(teacher)) {
@@ -185,9 +186,6 @@ public class TeacherMenu {
 		    		}
 		        }
 			}
-		} else {
-			System.out.println("Course not found");
-			return;
 		}
 //		Pair<Course, Teacher> p = new Pair<Course, Teacher>(c, teacher);
 		boolean found = false;

@@ -17,7 +17,7 @@ import Interfaces.*;
 import javafx.util.Pair;
 
 public class Menu {
-	public static void main(String[] args) throws IOException, ParseException {	
+	public static void main(String[] args) throws Exception {	
 //		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 //		Dean d = new Dean(new SimpleUser("Alibek", "Bisembayev", "sitetop", dateFormat.parse("1986/06/02")), "D1", dateFormat.parse("2006/02/28"), 800000, "203-139");
 //		Dean d2 = new Dean(new SimpleUser("Assylbek", "Issakhov", "mkmtop", dateFormat.parse("1986/12/20")), "D2", dateFormat.parse("2006/04/12"), 800000, "405-294");

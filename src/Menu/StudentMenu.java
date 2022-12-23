@@ -14,7 +14,7 @@ import Exceptions.*;
 import Interfaces.*;
 
 public class StudentMenu {
-	public static void menu(User user) throws IOException {
+	public static void menu(User user) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		Student student = (Student)user;
 		String menuStudent = "\nWelcome, Student: " + student.getFullName() + """
@@ -254,7 +254,7 @@ public class StudentMenu {
 		}
 	}
 		
-		public static void bookOrdering(Student student, BufferedReader reader) throws IOException {
+		public static void bookOrdering(Student student, BufferedReader reader) throws Exception {
 			for(Book b : Database.getBooks()) {
 				System.out.println(b);
 			}

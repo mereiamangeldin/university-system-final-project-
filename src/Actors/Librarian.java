@@ -25,8 +25,9 @@ public class Librarian extends Employee implements Serializable {
     }
     /**
      * receives order from Student, checks for containing of book in Database
+     * @throws Exception 
      * */
-    public String orderBook(Order order) {
+    public String orderBook(Order order) throws Exception {
     	if(Database.getBooks().contains(order.getBook())) {
     		if(order.getBook().getQuantity() > 0) {
     			order.getBook().setQuantity(order.getBook().getQuantity() - 1);
@@ -34,7 +35,7 @@ public class Librarian extends Employee implements Serializable {
     			return "Accepted";
     		} 
     		else {
-    			return "Books over";
+    			throw new Exception("Books over");
         	}
     	}
     	else {

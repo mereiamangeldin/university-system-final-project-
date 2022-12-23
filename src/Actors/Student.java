@@ -155,8 +155,9 @@ public class Student extends UserDecorator implements CanWriteComment, CanMakeRe
     }  
     /**
      * makes book order to Librarian
+     * @throws Exception 
      * */
-    public String makeBookOrder(Librarian librarian, Order order){
+    public String makeBookOrder(Librarian librarian, Order order) throws Exception{
     	String answer = librarian.orderBook(order);
         if(answer.equals("Accepted")) {
 			Database.getUserActions().add(new Action(this, new Date(), String.format("User: %s made order for book: %s", getUsername(), order.getBook().getName())));
