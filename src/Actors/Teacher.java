@@ -94,12 +94,8 @@ public class Teacher extends Employee implements CanViewMarks, Comparable<Teache
 			for(HashMap.Entry<Pair<Course, Teacher>, Mark> t : s.getTranscript().entrySet()) {
 				if(t.getKey().getKey().equals(c) && t.getKey().getValue().equals(this)) {
 					Database.getUserActions().add(new Action(this, new Date(), String.format("Teacher: %s viewed mark of course: %s", getFullName(), c.getName())));
-		    		answer += s.getFullName() + ": " + t.getValue().getTotal() + " points\n";
+		    		answer += "Student: " + s.getFullName() + ", points: " + t.getValue().getTotal() + ", letter grade: " + t.getValue().getLetterGrade();
 				}
-//				if(t.getKey().equals(p)) {
-//					Database.getUserActions().add(new Action(this, new Date(), String.format("Teacher: %s viewed mark of course: %s", getFullName(), c.getName())));
-//		    		answer += s.getFullName() + ": " + t.getValue().getTotal() + "\n";
-//		    	}
 		    }
 	   }
 	   return answer;
