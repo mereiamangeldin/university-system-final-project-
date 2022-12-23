@@ -71,13 +71,14 @@ public class TeacherMenu {
 	public static void researcherPage(User user, BufferedReader reader) throws IOException {
 		String option = "";
 		if(!(user instanceof WithTeacherResearcher)) {
-			Teacher s = (Teacher)user;
+			Teacher t = (Teacher)user;
 			System.out.println("1. Become researcher.\n2. Cancel");
 			option = reader.readLine();
 			if(option.equals("1")) {
-				WithTeacherResearcher wt = new WithTeacherResearcher(s);
-				Database.getUsers().remove(wt);
+				WithTeacherResearcher wt = new WithTeacherResearcher(t);
+				Database.getUsers().remove(t);
 				Database.getUsers().add(wt);
+				System.out.println("YOU ARE RESEARCHER NOW!");
 			} else if(option.equals("2")) {
 				return;
 			}
@@ -188,7 +189,7 @@ public class TeacherMenu {
 			} else if(option.equals("2")) {
 				teacher.putMark(c, s, Integer.parseInt(option), Double.parseDouble(reader.readLine()));
 			} else if(option.equals("3")) {
-				teacher.putMark(c, s, Integer.parseInt(option), 0);
+				teacher.putMark(c, s, Integer.parseInt(option), Double.parseDouble(reader.readLine()));
 		}			
 		}
 	}
